@@ -163,3 +163,6 @@ C:\Users\46633783825\Desktop\2023-3S-3DS-Alunos\API-VitalHub\WebAPI\WebAPI\obj\D
 C:\Users\46633783825\Desktop\2023-3S-3DS-Alunos\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.pdb
 C:\Users\46633783825\Desktop\2023-3S-3DS-Alunos\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.genruntimeconfig.cache
 C:\Users\46633783825\Desktop\2023-3S-3DS-Alunos\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\ref\WebAPI.dll
+C:\Users\56262631879\Desktop\Vital-Hub-Duo-Project\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.dll
+C:\Users\56262631879\Desktop\Vital-Hub-Duo-Project\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\refint\WebAPI.dll
+C:\Users\56262631879\Desktop\Vital-Hub-Duo-Project\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.pdb

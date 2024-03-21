@@ -10,6 +10,8 @@
 
         public Guid? EspecialidadeId { get; set; }
 
+        public Guid IdTipoUsuario { get; set; }
+
         public string? Crm { get; set; }
     }
 }
