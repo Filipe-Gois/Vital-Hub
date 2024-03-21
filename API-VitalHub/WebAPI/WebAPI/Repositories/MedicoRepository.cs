@@ -2,6 +2,7 @@
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
+using WebAPI.Utils;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Repositories
@@ -39,6 +40,15 @@ namespace WebAPI.Repositories
         public Medico BuscarPorId(Guid Id)
         {
             return ctx.Medicos.FirstOrDefault(x => x.Id == Id);
+        }
+
+        
+
+        public void Cadastrar(Usuario medico)
+        {
+            medico.Senha = Criptografia.GerarHash(medico.Senha!);
+            ctx.Usuarios.Add(medico);
+            ctx.SaveChanges();
         }
 
         public List<Medico> ListarTodos()

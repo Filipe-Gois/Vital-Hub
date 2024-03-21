@@ -81,6 +81,14 @@ namespace WebAPI.Controllers
             user.Paciente.Rg = pacienteModel.Rg;
             user.Paciente.Cpf = pacienteModel.Cpf;
 
+            user.Paciente.Endereco = new Endereco();
+
+            user.Paciente.Endereco.Cep = pacienteModel.Cep;
+            user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
+            user.Paciente.Endereco.Numero = pacienteModel.Numero;
+
+
+
             pacienteRepository.Cadastrar(user);
 
             return Ok();
