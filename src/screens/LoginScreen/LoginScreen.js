@@ -30,10 +30,40 @@ import {
   TextCreateAccount2,
 } from "../../components/Paragraph/style.js";
 
+
+import api from '../../service/service'
+import { useState } from "react";
+
 const LoginScreen = ({ navigation }) => {
-  const Login = async () => {
+
+  const [email, setEmail] = useState('otavio@otavio .com')
+  const [senha, setSenha] = useState('12345')
+
+  const Log = async () => {
     navigation.replace("Main");
   };
+
+
+  const Login = async () => {
+
+    try {
+      const response = await api.post('/Login', {
+        email: email,
+        senha: senha
+      })
+
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+
+
+
+
+    // navigation.navigate("Main")
+
+  }
+
 
   return (
     <Container>
@@ -44,8 +74,15 @@ const LoginScreen = ({ navigation }) => {
           <Title>Entrar ou criar conta</Title>
 
           <InputBox gap={"20px"}>
-            <Input placeholder={"Email:"} />
-            <Input placeholder={"Senha:"} />
+            <Input fieldValue={email} placeholder={"Email:"}
+
+              onChangeText={(txt) => setSenha(txt)}
+
+            />
+            <Input fieldValue={senha} placeholder={"Senha:"}
+
+              eonChangeTextext={(txt) => setSenha(txt)}
+            />
           </InputBox>
           <ButtonSecondary
             alignSelf={"flex-start"}

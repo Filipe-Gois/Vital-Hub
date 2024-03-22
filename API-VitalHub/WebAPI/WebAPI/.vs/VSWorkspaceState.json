@@ -4,8 +4,9 @@
     "\\Contexts",
     "\\Controllers",
     "\\Interfaces",
+    "\\Repositories",
     "\\ViewModels"
   ],
-  "SelectedNode": "\\Controllers\\MedicosController.cs",
+  "SelectedNode": "\\WebAPI.csproj",
   "PreviewInSolutionExplorer": false
 }

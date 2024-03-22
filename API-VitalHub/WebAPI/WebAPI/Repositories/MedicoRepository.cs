@@ -2,11 +2,12 @@
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
+using WebAPI.Utils;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Repositories
 {
-    
+
     public class MedicoRepository : IMedicoRepository
     {
         VitalContext ctx = new VitalContext();
@@ -32,13 +33,22 @@ namespace WebAPI.Repositories
             ctx.Medicos.Update(medicoBuscado);
             ctx.SaveChanges();
 
-            return medicoBuscado;   
+            return medicoBuscado;
 
         }
 
         public Medico BuscarPorId(Guid Id)
         {
             return ctx.Medicos.FirstOrDefault(x => x.Id == Id);
+        }
+
+
+
+        public void Cadastrar(Usuario medico)
+        {
+            medico.Senha = Criptografia.GerarHash(medico.Senha!);
+            ctx.Usuarios.Add(medico);
+            ctx.SaveChanges();
         }
 
         public List<Medico> ListarTodos()
