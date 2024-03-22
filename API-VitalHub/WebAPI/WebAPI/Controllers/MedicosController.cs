@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
         {
             return Ok(_medicoRepository.ListarTodos());
         }
-
+         
         [Authorize]
         [HttpPut]
         public IActionResult AtualizarPerfil(MedicoViewModel medico)

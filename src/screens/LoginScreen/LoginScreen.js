@@ -29,10 +29,21 @@ import {
   TextCreateAccount1,
   TextCreateAccount2,
 } from "../../components/Paragraph/style.js";
+import { useState } from "react";
+import api, { loginRoute } from "../../Services/Service.js";
+import { Alert } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
+  const [user, setUser] = useState({ email: "l@l.com", senha: "12345" });
+
   const Login = async () => {
-    navigation.replace("Main");
+    try {
+      const response = await api.post(loginRoute, user);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    // navigation.replace("Main");
   };
 
   return (
@@ -44,19 +55,29 @@ const LoginScreen = ({ navigation }) => {
           <Title>Entrar ou criar conta</Title>
 
           <InputBox gap={"20px"}>
-            <Input placeholder={"Email:"} />
-            <Input placeholder={"Senha:"} />
+            <Input
+              fieldValue={user.email}
+              onChangeText={(txt) => setUser({ ...user, email: txt })}
+              placeholder={"Email:"}
+            />
+            <Input
+              fieldValue={user.senha}
+              onChangeText={(txt) => setUser({ ...user, senha: txt })}
+              placeholder={"Senha:"}
+            />
           </InputBox>
           <ButtonSecondary
             alignSelf={"flex-start"}
             padding={"0"}
             onPress={() => navigation.navigate("RecoverPassword")}
           >
-            <LinkMedium onPress={() => navigation.navigate("RecoverPassword")}>Esqueceu sua senha?</LinkMedium>
+            <LinkMedium onPress={() => navigation.navigate("RecoverPassword")}>
+              Esqueceu sua senha?
+            </LinkMedium>
           </ButtonSecondary>
 
           <ButtonBox>
-            <Button onPress={(e) => Login()}>
+            <Button onPress={() => Login()}>
               <ButtonTitle>Entrar</ButtonTitle>
             </Button>
 
@@ -75,7 +96,11 @@ const LoginScreen = ({ navigation }) => {
         </FormBox>
 
         <CreateAccountBox>
-          <TextCreateAccount1 onPress={(e) => navigation.replace("CreateAccount")}>Não tem conta ? {""}</TextCreateAccount1>
+          <TextCreateAccount1
+            onPress={(e) => navigation.replace("CreateAccount")}
+          >
+            Não tem conta ? {""}
+          </TextCreateAccount1>
 
           <ButtonSecondary
             padding={"0"}
