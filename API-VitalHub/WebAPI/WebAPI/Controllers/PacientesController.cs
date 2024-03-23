@@ -50,48 +50,78 @@ namespace WebAPI.Controllers
         [HttpGet("PerfilLogado")]
         public IActionResult BuscarLogado()
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(pacienteRepository.BuscarPorId(idUsuario));
+                return Ok(pacienteRepository.BuscarPorId(idUsuario));
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
         }
 
         [Authorize]
         [HttpGet("BuscarPorID")]
         public IActionResult BuscarPorID(Usuario user)
         {
-            Guid idUsuario = user.Id;
+            try
+            {
+                Guid idUsuario = user.Id;
 
-            return Ok(pacienteRepository.BuscarPorId(idUsuario));
+                return Ok(pacienteRepository.BuscarPorId(idUsuario));
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPost]
         public IActionResult Post(PacienteViewModel pacienteModel)
         {
-            Usuario user = new Usuario();
+            try
+            {
+                Usuario user = new Usuario();
 
-            user.Nome = pacienteModel.Nome;
-            user.Email = pacienteModel.Email;
-            user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
-            user.Foto = pacienteModel.Foto;
-            user.Senha = pacienteModel.Senha;
+                user.Nome = pacienteModel.Nome;
+                user.Email = pacienteModel.Email;
+                user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
+                user.Foto = pacienteModel.Foto;
+                user.Senha = pacienteModel.Senha;
 
-            user.Paciente = new Paciente();
+                user.Paciente = new Paciente();
 
-            user.Paciente.DataNascimento = pacienteModel.DataNascimento;
-            user.Paciente.Rg = pacienteModel.Rg;
-            user.Paciente.Cpf = pacienteModel.Cpf;
+                user.Paciente.DataNascimento = pacienteModel.DataNascimento;
+                user.Paciente.Rg = pacienteModel.Rg;
+                user.Paciente.Cpf = pacienteModel.Cpf;
 
-            user.Paciente.Endereco = new Endereco();
+                user.Paciente.Endereco = new Endereco();
 
-            user.Paciente.Endereco.Cep = pacienteModel.Cep;
-            user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
-            user.Paciente.Endereco.Numero = pacienteModel.Numero;
+                user.Paciente.Endereco.Cep = pacienteModel.Cep;
+                user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
+                user.Paciente.Endereco.Numero = pacienteModel.Numero;
 
 
 
-            pacienteRepository.Cadastrar(user);
+                pacienteRepository.Cadastrar(user);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
+
         }
     }
 }

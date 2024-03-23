@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[Clinicas](
 	[RazaoSocial] [varchar](150) NULL,
 	[Latitude] [decimal](8, 6) NULL,
 	[Longitude] [decimal](9, 6) NULL,
-	[Email] [varchar](225) NULL,
+	[Email] [varchar](225) unique NULL,
  CONSTRAINT [PK_Clinicas] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -212,6 +212,13 @@ CREATE TABLE [dbo].[Usuarios](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+
+ALTER TABLE [dbo].[Usuarios]
+ADD CONSTRAINT UC_Email UNIQUE (Email);
+
+
+
 INSERT [dbo].[Especialidades] ([ID], [Especialidade]) VALUES (N'3fa85f64-5717-4562-b3fc-2c963f66afa6', N'Cardiologia')
 GO
 ALTER TABLE [dbo].[Consultas]  WITH CHECK ADD  CONSTRAINT [FK_Consultas_MedicosClinicas] FOREIGN KEY([MedicoClinicaID])

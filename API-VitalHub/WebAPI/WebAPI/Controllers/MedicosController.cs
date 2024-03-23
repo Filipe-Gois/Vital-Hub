@@ -22,16 +22,36 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_medicoRepository.ListarTodos());
+            try
+            {
+                return Ok(_medicoRepository.ListarTodos());
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
         }
-         
+
         [Authorize]
         [HttpPut]
         public IActionResult AtualizarPerfil(MedicoViewModel medico)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+            try
+            {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+
+                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost]
