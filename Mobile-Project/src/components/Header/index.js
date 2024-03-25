@@ -4,7 +4,25 @@ import { HeaderContentBox, HeaderStyle } from "./style";
 import { MaterialIcons } from "@expo/vector-icons";
 import { WelCome } from "../WelCome";
 
+import { userDecodeToken } from "../../Utils/Auth";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export const Header = ({ src = "", viewProfile }) => {
+  const profileLoad = async () => {
+    const token = await userDecodeToken();
+
+    if (token !== null) {
+      console.log(token);
+    }
+  };
+
+  useEffect(() => {
+    profileLoad();
+
+    return (cleanUp = () => {});
+  }, []);
+
   return (
     <HeaderStyle onPress={viewProfile}>
       <LinearGradient

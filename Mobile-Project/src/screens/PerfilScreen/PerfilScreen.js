@@ -13,6 +13,7 @@ import { Theme } from "../../themes";
 import { ContainerInputBox } from "../../components/Container";
 import { Input } from "../../components/Input";
 import { ParagraphSemiBold } from "../../components/Paragraph/style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const PerfilScreen = ({ navigation }) => {
   return (
@@ -85,7 +86,13 @@ export const PerfilScreen = ({ navigation }) => {
               <ButtonTitle>Editar</ButtonTitle>
             </Button>
 
-            <ButtonGray onPress={() => navigation.goBack()}>
+            <ButtonGray
+              onPress={async () => {
+                await AsyncStorage.removeItem("token");
+                navigation.replace("Login");
+                console.log(await AsyncStorage.getItem("token"));
+              }}
+            >
               <ButtonTitle>Sair do app</ButtonTitle>
             </ButtonGray>
           </FormBox>

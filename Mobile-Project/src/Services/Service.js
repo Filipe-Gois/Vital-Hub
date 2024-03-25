@@ -9,7 +9,10 @@ const ipFilipePcDoSenai = "172.16.39.113";
 
 const apiPortFilipePcDoSenai = "4466";
 
-const localApiUrlFilipePcDoSenai = `http://${ipFilipePcDeCasa}:${apiPortFilipePcDoSenai}/api`;
+const localApiUrlFilipePcDoSenai = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
+
+const externalApiCep = `https://api.brasilaberto.com/v1/zipcode`;
+
 
 //rotas da api
 
@@ -26,6 +29,10 @@ export const usuarioResource = `/Usuario`;
 
 const api = axios.create({
   baseURL: localApiUrlFilipePcDoSenai,
+});
+
+export const apiCep = axios.create({
+  baseURL: externalApiCep,
 });
 
 export default api;

@@ -24,14 +24,20 @@ const CreateAccountScreen = ({ navigation }) => {
   const [user, setUser] = useState({
     rg: "449574398",
     cpf: "45459168481",
-    dataNascimento: "1990-02-14",
+    dataNascimento: "2007-01-14",
     cep: "77001213",
     logradouro: "Plano Diretor Norte",
-    numero: 114,
+    numero: "104",
     nome: "",
     email: "",
     senha: "",
-    idTipoUsuario: "F727FBD3-03E9-467E-81B5-E2DBA9E70CD4",
+    idTipoUsuario:
+      // "F727FBD3-03E9-467E-81B5-E2DBA9E70CD4"
+      //banco de casa
+
+      "51270D4C-86C6-487A-A033-25D49B9B6FC6",
+    //banco do senai
+
     foto: "12321312312",
   });
   const HandleSubmit = async () => {
@@ -100,6 +106,44 @@ const CreateAccountScreen = ({ navigation }) => {
                 onChangeText={(txt) => setconfirmPassword(txt)}
                 fieldValue={confirmPassword}
                 placeholder={"Confirmar Senha"}
+              />
+
+              <Input
+                // keyType={"visible-password"}
+                onChangeText={(txt) => setUser({ ...user, cpf: txt })}
+                fieldValue={user.cpf}
+                placeholder={"CPF"}
+              />
+              <Input
+                // keyType={"visible-password"}
+                onChangeText={(txt) => setUser({ ...user, rg: txt })}
+                fieldValue={user.rg}
+                placeholder={"RG"}
+              />
+
+              <Input
+                // keyType={"visible-password"}
+                onChangeText={(txt) => setUser({ ...user, dataNascimento: txt })}
+                fieldValue={user.dataNascimento}
+                placeholder={"Data de nascimento:"}
+              />
+              <Input
+                // keyType={"visible-password"}
+                onChangeText={(txt) => setUser({ ...user, cep: txt })}
+                fieldValue={user.cep}
+                placeholder={"CEP"}
+              />
+              <Input
+                // keyType={"visible-password"}
+                onChangeText={(txt) => setUser({ ...user, logradouro: txt })}
+                fieldValue={user.logradouro}
+                placeholder={"Endereço"}
+              />
+              <Input
+                // keyType={"visible-password"}
+                onChangeText={(txt) => setUser({ ...user, numero: txt })}
+                fieldValue={user.numero}
+                placeholder={"Número"}
               />
             </InputBox>
 

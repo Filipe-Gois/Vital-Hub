@@ -34,14 +34,26 @@ import { useState } from "react";
 import api, { loginResource } from "../../Services/Service.js";
 import { Alert } from "react-native";
 import os from "react-native-os";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
-  const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
+  const [user, setUser] = useState({ email: "l@l.com", senha: "12345" });
 
   const Login = async () => {
+    // await api
+    //   .post(loginResource, user)
+    //   .then(async (response) => {
+    //     await AsyncStorage.setItem("token", JSON.stringify(response.data));
+
+    //     navigation.replace("Main");
+    //   })
+    //   .catch((error) => console.log(error));
+
     try {
       const response = await api.post(loginResource, user);
-      console.log(response);
+      await AsyncStorage.setItem("token", JSON.stringify(response.data));
+
+      // console.log("setItem:", await AsyncStorage.getItem("token"));
 
       navigation.replace("Main");
     } catch (error) {

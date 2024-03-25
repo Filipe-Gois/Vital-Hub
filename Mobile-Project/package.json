@@ -12,10 +12,12 @@
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo-google-fonts/montserrat-alternates": "^0.2.3",
     "@expo-google-fonts/quicksand": "^0.2.3",
+    "@react-native-async-storage/async-storage": "1.21.0",
     "@react-navigation/bottom-tabs": "^6.5.16",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "axios": "^1.6.8",
+    "base-64": "^1.0.0",
     "expo": "~50.0.6",
     "expo-camera": "~14.1.1",
     "expo-font": "~11.10.2",
@@ -25,6 +27,7 @@
     "expo-notifications": "~0.27.6",
     "expo-status-bar": "~1.11.1",
     "expo-updates": "~0.24.11",
+    "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
     "react": "18.2.0",
     "react-native": "0.73.2",
@@ -35,6 +38,7 @@
     "react-native-os": "^1.2.6",
     "react-native-picker-select": "^9.0.1",
     "react-native-reanimated": "^3.7.1",
+    "remask": "^1.2.2",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
