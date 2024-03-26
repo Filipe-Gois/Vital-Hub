@@ -32,7 +32,7 @@ import {
 } from "../../components/Paragraph/style.js";
 import { useContext, useState } from "react";
 import api, { loginResource } from "../../Services/Service.js";
-import { Alert } from "react-native";
+import { ActivityIndicator, Alert, TouchableHighlight } from "react-native";
 import os from "react-native-os";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -42,14 +42,18 @@ import {
 } from "../../Utils/Auth.js";
 
 const LoginScreen = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
   const { userData, setUserData } = useContext(UserContext);
 
   const Login = async () => {
     try {
+      setLoading(loading); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
       const response = await api.post(loginResource, user);
 
       await AsyncStorage.setItem("token", JSON.stringify(response.data));
+
+      setLoading(!loading); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
 
       // const tokenDescriptografado = userDecodeToken2(response.data.token);
 
@@ -104,8 +108,15 @@ const LoginScreen = ({ navigation }) => {
             </ButtonSecondary>
 
             <ButtonBox>
-              <Button onPress={() => Login()}>
-                <ButtonTitle>Entrar</ButtonTitle>
+              <Button onPress={() => Login()} disabled={loading}>
+                {loading ? (
+                  <ActivityIndicator
+                    size={20}
+                    color={Theme.colors.whiteColor}
+                  />
+                ) : (
+                  <ButtonTitle>Entrar</ButtonTitle>
+                )}
               </Button>
 
               <ButtonGoogle>

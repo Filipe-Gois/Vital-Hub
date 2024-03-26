@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   FormBox,
@@ -15,36 +15,53 @@ import DoctorAlessandra from "../../assets/doctorAlessandra.png";
 import DoctorKumushiro from "../../assets/doctorKumushiro.png";
 import DoctorRodrigo from "../../assets/doctorRodrigo.png";
 import DoctorCard from "../../components/DoctorCard";
+import api, { medicosResource } from "../../Services/Service";
 
 const SelectDoctorScreen = ({ navigation }) => {
   const [selectedDoctor, setSelectedDoctor] = useState();
   const [doctors, setDoctors] = useState([
-    {
-      id: "1",
-      srcImage: DoctorAlessandra,
-      name: "Dra Alessandra",
-      specialty1: "Demartologa",
-      specialty2: "Esteticista",
-    },
-    {
-      id: "2",
-      srcImage: DoctorKumushiro,
-      name: "Dr Kumushiro",
-      specialty1: "Cirurgião",
-      specialty2: "Cardiologista",
-    },
-    {
-      id: "3",
-      srcImage: DoctorRodrigo,
-      name: "Dr Rodrigo Santos",
-      specialty1: "Clínico",
-      specialty2: "Pediatra",
-    },
+    // {
+    //   id: "1",
+    //   srcImage: DoctorAlessandra,
+    //   name: "Dra Alessandra",
+    //   specialty1: "Demartologa",
+    //   specialty2: "Esteticista",
+    // },
+    // {
+    //   id: "2",
+    //   srcImage: DoctorKumushiro,
+    //   name: "Dr Kumushiro",
+    //   specialty1: "Cirurgião",
+    //   specialty2: "Cardiologista",
+    // },
+    // {
+    //   id: "3",
+    //   srcImage: DoctorRodrigo,
+    //   name: "Dr Rodrigo Santos",
+    //   specialty1: "Clínico",
+    //   specialty2: "Pediatra",
+    // },
   ]);
 
   // const handleDoctorSelect = (doctorId) => {
   //   setSelectedDoctor(doctorId);
   // };
+
+  const getDoctors = async () => {
+    try {
+      const response = await api.get(medicosResource);
+
+      setDoctors(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDoctors();
+
+    return (cleanUp = () => {});
+  }, []);
 
   return (
     <Container>

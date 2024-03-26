@@ -7,7 +7,7 @@ using WebAPI.ViewModels;
 
 namespace WebAPI.Repositories
 {
-    
+
     public class MedicoRepository : IMedicoRepository
     {
         VitalContext ctx = new VitalContext();
@@ -33,7 +33,7 @@ namespace WebAPI.Repositories
             ctx.Medicos.Update(medicoBuscado);
             ctx.SaveChanges();
 
-            return medicoBuscado;   
+            return medicoBuscado;
 
         }
 
@@ -42,7 +42,7 @@ namespace WebAPI.Repositories
             return ctx.Medicos.FirstOrDefault(x => x.Id == Id);
         }
 
-        
+
 
         public void Cadastrar(Usuario medico)
         {
@@ -53,7 +53,7 @@ namespace WebAPI.Repositories
 
         public List<Medico> ListarTodos()
         {
-            return ctx.Medicos.ToList();
+            return ctx.Medicos.Include(m => m.Especialidade).Include(m => m.IdNavigation).ToList();
         }
     }
 }
