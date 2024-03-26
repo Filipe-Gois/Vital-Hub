@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ButtonBox,
   Container,
@@ -133,6 +133,16 @@ const HomeScreen = ({ navigation }) => {
   //state para a exibição dos modais
   const [showModalCancel, setShowModalCancel] = useState(false);
   const [showModalAppointment, setShowModalAppointment] = useState(false);
+
+  useEffect(() => {
+    async () => {
+      const token = await userDecodeToken();
+
+      setProfile(token.role);
+    };
+    return (cleanUp = () => {});
+  }, []);
+
   return (
     <Container>
       <MainContentScroll>
@@ -247,7 +257,7 @@ const HomeScreen = ({ navigation }) => {
         </MainContent>
       </MainContentScroll>
 
-      {profile === "Paciente" && (
+      {profile !== "Paciente" && (
         <Stethoscope
           agendarConsulta={agendarConsulta}
           onPressAgendar={() => setAgendarConsulta(true)}

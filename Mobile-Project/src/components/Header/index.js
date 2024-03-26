@@ -9,15 +9,19 @@ import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Header = ({ src = "", viewProfile }) => {
+  const tokenn = async () => await userDecodeToken();
+
   const profileLoad = async () => {
     const token = await userDecodeToken();
-
     if (token !== null) {
-      console.log(token);
+      return null;
     }
+
+    return token;
   };
 
   useEffect(() => {
+
     profileLoad();
 
     return (cleanUp = () => {});
@@ -32,7 +36,7 @@ export const Header = ({ src = "", viewProfile }) => {
         end={{ x: 1, y: 0 }} // Fim no canto inferior direito
       >
         <HeaderContentBox>
-          <WelCome viewProfile={viewProfile} src={src} />
+          <WelCome viewProfile={viewProfile} src={src} name={"Fefe"} />
           <MaterialIcons name="notifications" size={25} color="white" />
         </HeaderContentBox>
       </LinearGradient>

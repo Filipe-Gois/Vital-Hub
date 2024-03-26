@@ -30,30 +30,39 @@ import {
   TextCreateAccount1,
   TextCreateAccount2,
 } from "../../components/Paragraph/style.js";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api, { loginResource } from "../../Services/Service.js";
 import { Alert } from "react-native";
 import os from "react-native-os";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  UserContext,
+  userDecodeToken,
+  userDecodeToken2,
+} from "../../Utils/Auth.js";
 
 const LoginScreen = ({ navigation }) => {
-  const [user, setUser] = useState({ email: "l@l.com", senha: "12345" });
+  const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
+  const { userData, setUserData } = useContext(UserContext);
 
   const Login = async () => {
-    // await api
-    //   .post(loginResource, user)
-    //   .then(async (response) => {
-    //     await AsyncStorage.setItem("token", JSON.stringify(response.data));
-
-    //     navigation.replace("Main");
-    //   })
-    //   .catch((error) => console.log(error));
-
     try {
       const response = await api.post(loginResource, user);
+
       await AsyncStorage.setItem("token", JSON.stringify(response.data));
 
-      // console.log("setItem:", await AsyncStorage.getItem("token"));
+      // const tokenDescriptografado = userDecodeToken2(response.data.token);
+
+      // setUserData(tokenDescriptografado);
+      // await AsyncStorage.setItem(
+      //   "token",
+      //   JSON.stringify(tokenDescriptografado)
+      // );
+
+      // console.log("tokenDescriptografado:", tokenDescriptografado);
+      // console.log("AsyncStorage.getItem:", await AsyncStorage.getItem("token"));
+
+      // console.log("userData:", userData);
 
       navigation.replace("Main");
     } catch (error) {
@@ -115,7 +124,7 @@ const LoginScreen = ({ navigation }) => {
 
           <CreateAccountBox>
             <TextCreateAccount1
-              onPress={(e) => navigation.replace("CreateAccount")}
+              onPress={(e) => navigation.navigate("CreateAccount")}
             >
               Não tem conta ? {""}
             </TextCreateAccount1>

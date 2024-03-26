@@ -9,7 +9,7 @@ const ipFilipePcDoSenai = "172.16.39.113";
 
 const apiPortFilipePcDoSenai = "4466";
 
-const localApiUrlFilipePcDoSenai = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
+const localApiUrlFilipePcDoSenai = `http://${ipFilipePcDeCasa}:${apiPortFilipePcDoSenai}/api`;
 
 const externalApiCep = `https://api.brasilaberto.com/v1/zipcode`;
 

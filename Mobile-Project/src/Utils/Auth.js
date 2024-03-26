@@ -20,12 +20,6 @@ export const userDecodeToken = async () => {
     return null;
   }
 
-  //decodifica o token recebido
-
-  //   console.log("token:", token);
-
-  //   console.log("jwtdecode", jwtDecode(token));
-
   const decoded = jwtDecode(token);
 
   return {
@@ -33,5 +27,15 @@ export const userDecodeToken = async () => {
     id: decoded.jti,
     name: decoded.name,
     role: decoded.role,
+  };
+};
+
+export const userDecodeToken2 = (theToken) => {
+  const decoded = jwtDecode(theToken); //objeto do payload
+  return {
+    role: decoded.role,
+    userId: decoded.jti,
+    nome: decoded.name,
+    token: theToken,
   };
 };

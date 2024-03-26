@@ -4,7 +4,7 @@ import Doctor from "../../assets/doctorFull.png";
 import { Paragraph, TextCreateAccount1 } from "../Paragraph/style";
 import { Theme } from "../../themes";
 
-export const WelCome = ({ src = "", viewProfile }) => {
+export const WelCome = ({ src = "", viewProfile, name = "" }) => {
   return (
     <WelComeStyle onPress={viewProfile}>
       <WelComeImage
@@ -17,7 +17,7 @@ export const WelCome = ({ src = "", viewProfile }) => {
       <WelComeTextBox>
         <Paragraph textAlign={"left"}>Bem-Vindo</Paragraph>
         <TextCreateAccount1 color={Theme.colors.lightWhite}>
-          Richard Kosta
+          {name}
         </TextCreateAccount1>
       </WelComeTextBox>
     </WelComeStyle>
