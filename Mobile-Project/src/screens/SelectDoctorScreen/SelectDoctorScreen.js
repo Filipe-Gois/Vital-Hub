@@ -50,7 +50,7 @@ const SelectDoctorScreen = ({ navigation }) => {
   const getDoctors = async () => {
     try {
       const response = await api.get(medicosResource);
-      console.log(response.data)
+
       setDoctors(response.data);
     } catch (error) {
       console.log(error);

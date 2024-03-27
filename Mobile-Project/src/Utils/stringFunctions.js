@@ -18,3 +18,10 @@ export const getLocation = async (cep, setData) => {
     console.log("Erro ao buscar cep.", error);
   }
 };
+
+export const dateDbToView = (date) => {
+  date = date.substr(0, 10);
+  date = date.split("-");
+
+  return `${data[2]}/${data[1]}/${data[0]}`;
+};

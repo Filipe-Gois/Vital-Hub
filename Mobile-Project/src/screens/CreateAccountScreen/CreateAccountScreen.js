@@ -36,7 +36,7 @@ const CreateAccountScreen = ({ navigation }) => {
       // "F727FBD3-03E9-467E-81B5-E2DBA9E70CD4"
       //banco de casa
 
-      "D0378C73-715C-407E-9500-C926FF90C0E0",
+      "3107729F-08DE-46ED-A7CD-3715B384D25D",
     //banco do senai
 
     foto: "12321312312",
