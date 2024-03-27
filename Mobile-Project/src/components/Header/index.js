@@ -5,26 +5,21 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { WelCome } from "../WelCome";
 
 import { userDecodeToken } from "../../Utils/Auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Header = ({ src = "", viewProfile }) => {
-  const tokenn = async () => await userDecodeToken();
+  const [user, setUser] = useState({});
 
-  const profileLoad = async () => {
-    const token = await userDecodeToken();
-    if (token !== null) {
-      return null;
+  const fetchUserName = async () => {
+    const userInfo = await userDecodeToken();
+    if (userInfo) {
+      setUser(userInfo);
     }
-
-    return token;
   };
 
   useEffect(() => {
-
-    profileLoad();
-
-    return (cleanUp = () => {});
+    fetchUserName();
   }, []);
 
   return (
@@ -36,7 +31,7 @@ export const Header = ({ src = "", viewProfile }) => {
         end={{ x: 1, y: 0 }} // Fim no canto inferior direito
       >
         <HeaderContentBox>
-          <WelCome viewProfile={viewProfile} src={src} name={"Fefe"} />
+          <WelCome viewProfile={viewProfile} src={src} name={user.name} />
           <MaterialIcons name="notifications" size={25} color="white" />
         </HeaderContentBox>
       </LinearGradient>

@@ -40,33 +40,22 @@ import {
   userDecodeToken,
   userDecodeToken2,
 } from "../../Utils/Auth.js";
+import { AuthContext } from "../../Context/AuthProvider.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
-  const { userData, setUserData } = useContext(UserContext);
+  // const { userData, setUserData } = useContext(AuthContext);
 
   const Login = async () => {
     try {
       setLoading(loading); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
+
       const response = await api.post(loginResource, user);
 
       await AsyncStorage.setItem("token", JSON.stringify(response.data));
 
       setLoading(!loading); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
-
-      // const tokenDescriptografado = userDecodeToken2(response.data.token);
-
-      // setUserData(tokenDescriptografado);
-      // await AsyncStorage.setItem(
-      //   "token",
-      //   JSON.stringify(tokenDescriptografado)
-      // );
-
-      // console.log("tokenDescriptografado:", tokenDescriptografado);
-      // console.log("AsyncStorage.getItem:", await AsyncStorage.getItem("token"));
-
-      // console.log("userData:", userData);
 
       navigation.replace("Main");
     } catch (error) {

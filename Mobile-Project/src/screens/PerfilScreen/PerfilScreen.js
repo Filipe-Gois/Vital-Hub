@@ -14,17 +14,34 @@ import { ContainerInputBox } from "../../components/Container";
 import { Input } from "../../components/Input";
 import { ParagraphSemiBold } from "../../components/Paragraph/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+import { userDecodeToken } from "../../Utils/Auth";
 
 export const PerfilScreen = ({ navigation }) => {
+  const [user, setUser] = useState({});
+
+  const fetchProfileData = async () => {
+    const userInfo = await userDecodeToken();
+
+    if (userInfo) {
+      setUser(userInfo);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfileData();
+    return (cleanUp = () => {});
+  }, []);
+
   return (
     <Container>
       <MainContentScroll>
         <MainContent>
           <BannerUserComponent
             src={UserImage}
-            name="Richard Kosta"
+            name={user.name}
             isAge={false}
-            email="richard.kosta@gmail.com"
+            email={user.email}
           />
 
           <FormBox>
@@ -90,7 +107,6 @@ export const PerfilScreen = ({ navigation }) => {
               onPress={async () => {
                 await AsyncStorage.removeItem("token");
                 navigation.replace("Login");
-                console.log(await AsyncStorage.getItem("token"));
               }}
             >
               <ButtonTitle>Sair do app</ButtonTitle>
