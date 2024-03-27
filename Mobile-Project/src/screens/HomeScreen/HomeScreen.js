@@ -24,7 +24,7 @@ import { WelComeImage } from "../../components/ImageProfile";
 import { HandleCallNotification } from "../../components/Notification/Notification";
 
 const HomeScreen = ({ navigation }) => {
-  const [profile, setProfile] = useState("Paciente");
+  const [profile, setProfile] = useState("Paciente  ");
 
   const [statusLista, setStatusLista] = useState("Pendente");
   const [agendarConsulta, setAgendarConsulta] = useState(false);

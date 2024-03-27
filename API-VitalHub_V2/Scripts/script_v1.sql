@@ -186,7 +186,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[TiposUsuario](
 	[ID] [uniqueidentifier] NOT NULL,
-	[TipoUsuario] [nchar](10) NULL,
+	[TipoUsuario] [varchar](255) NULL,
  CONSTRAINT [PK_TiposUsuario] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

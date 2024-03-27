@@ -59,7 +59,16 @@ namespace WebAPI.Controllers
         [HttpGet("BuscarPorId")]
         public IActionResult BuscarPorId(Guid id)
         {
-            return Ok(pacienteRepository.BuscarPorId(id));
+            try
+            {
+                return Ok(pacienteRepository.BuscarPorId(id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPost]

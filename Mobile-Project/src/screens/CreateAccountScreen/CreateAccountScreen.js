@@ -17,6 +17,7 @@ import {
 } from "../../components/Paragraph/style";
 import { Title } from "../../components/Title/style";
 import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CreateAccountScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(false);
@@ -48,6 +49,7 @@ const CreateAccountScreen = ({ navigation }) => {
       }
 
       const responseCreateAccount = await api.post(pacientesResource, user);
+      
 
       if (responseCreateAccount.status !== 200) {
         console.log("Erro ao criar conta.");
@@ -59,6 +61,8 @@ const CreateAccountScreen = ({ navigation }) => {
       const responseLogin = await api.post(loginResource, user);
 
       console.log("Token: ", responseLogin.data);
+
+      await AsyncStorage.setItem("token", JSON.stringify(responseLogin.data));
 
       navigation.replace("Main");
     } catch (error) {
@@ -123,7 +127,9 @@ const CreateAccountScreen = ({ navigation }) => {
 
               <Input
                 // keyType={"visible-password"}
-                onChangeText={(txt) => setUser({ ...user, dataNascimento: txt })}
+                onChangeText={(txt) =>
+                  setUser({ ...user, dataNascimento: txt })
+                }
                 fieldValue={user.dataNascimento}
                 placeholder={"Data de nascimento:"}
               />
