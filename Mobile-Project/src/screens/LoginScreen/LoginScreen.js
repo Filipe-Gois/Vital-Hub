@@ -44,23 +44,21 @@ import { AuthContext } from "../../Context/AuthProvider.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
+  const [user, setUser] = useState({ email: "f@f.com", senha: "12345" });
   // const { userData, setUserData } = useContext(AuthContext);
 
   const Login = async () => {
+    setLoading(loading); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
     try {
-      setLoading(loading); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
-
       const response = await api.post(loginResource, user);
 
       await AsyncStorage.setItem("token", JSON.stringify(response.data));
-
-      setLoading(!loading); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
 
       navigation.replace("Main");
     } catch (error) {
       console.log(error);
     }
+    setLoading(!loading); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
   };
 
   return (
