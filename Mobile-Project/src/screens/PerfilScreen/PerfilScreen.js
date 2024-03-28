@@ -17,40 +17,73 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { userDecodeToken } from "../../Utils/Auth";
 import api, { pacientesResource } from "../../Services/Service";
-import { dateDbToView } from "../../Utils/stringFunctions";
+import {
+  cepMasked,
+  cpfMasked,
+  dateDbToView,
+} from "../../Utils/stringFunctions";
 import { Alert } from "react-native";
+import { ButtonAsync } from "../../components/Button";
 
 export const PerfilScreen = ({ navigation }) => {
-  const [user, setUser] = useState({});
-  const [paciente, setPaciente] = useState({});
+  const [editUserInfo, setEditUserInfo] = useState(false);
 
+  const [userGlobalData, setUserGlobalData] = useState({});
+
+  const [dadosPessoaisDoUsuario, setDadosPessoaisDoUsuario] = useState({});
+
+  const [cep, setCep] = useState("");
+
+  const [cpf, setCpf] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  //pega as propriedades do token
   const fetchProfileData = async () => {
     const userInfo = await userDecodeToken();
 
     if (userInfo) {
-      setUser(userInfo);
+      setUserGlobalData(userInfo);
     }
   };
 
+  //traz os dados pessoais do usuario Ex: cpf, logradouro, etc
   const getUserInfo = async () => {
     try {
-      console.log(user.id);
       const response = await api.get(
-        `${pacientesResource}/BuscarPorId?id=${user.id}`
+        `${pacientesResource}/BuscarPorId?id=${userGlobalData.id}`
       );
-      setPaciente(response.data)
+      setDadosPessoaisDoUsuario(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleUpdate = async () => {
+    try {
+      const response = await api.put(); //Atualmente, só existe rota para alterar senha, criar outra rota para alterar os outros dados
+    } catch (error) {
+      console.log(error);
+    }
+
+    setEditUserInfo(!editUserInfo);
+  };
+
+  const showUpdateForm = () => {
+    setEditUserInfo(true);
+  };
+
+  const editActionAbort = () => {
+    setEditUserInfo(false);
+  };
+
   useEffect(() => {
     fetchProfileData();
-    if (user.id) {
+    if (userGlobalData.id) {
       getUserInfo();
     }
     return (cleanUp = () => {});
-  }, [user.id]);
+  }, [userGlobalData.id, dadosPessoaisDoUsuario]);
 
   return (
     <Container>
@@ -58,34 +91,62 @@ export const PerfilScreen = ({ navigation }) => {
         <MainContent>
           <BannerUserComponent
             src={UserImage}
-            name={user.name}
+            name={userGlobalData.name}
             isAge={false}
-            email={user.email}
+            email={userGlobalData.email}
           />
 
           <FormBox>
             <Label
+              onChangeText={(txt) =>
+                setDadosPessoaisDoUsuario({
+                  ...dadosPessoaisDoUsuario,
+                  dataNascimento: txt,
+                })
+              }
+              fieldValue={
+                dadosPessoaisDoUsuario.dataNascimento &&
+                dateDbToView(dadosPessoaisDoUsuario.dataNascimento)
+              }
+              editable={false}
               placeholderTextColor={Theme.colors.grayV1}
               titulo="Data de nascimento:"
-              placeholder={dateDbToView("2007-01-14")}
+              placeholder={"14/01/2000"}
               border="none"
               backGround={Theme.colors.v2LightWhite}
             />
 
-            {user.role === "Paciente" && (
+            {userGlobalData.role === "Paciente" && (
               <Label
+                onChangeText={(txt) => setCpf(cpfMasked(txt))}
+                fieldValue={
+                  dadosPessoaisDoUsuario.cpf &&
+                  cpfMasked(dadosPessoaisDoUsuario.cpf)
+                }
+                editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
                 titulo="CPF"
-                placeholder={paciente.cpf}
+                placeholder={"999.999.999-99"}
                 border="none"
                 backGround={Theme.colors.v2LightWhite}
               />
             )}
 
             <Label
+              onChangeText={(txt) =>
+                setDadosPessoaisDoUsuario({
+                  ...dadosPessoaisDoUsuario.endereco,
+                  logradouro: txt,
+                })
+              }
+              fieldValue={
+                dadosPessoaisDoUsuario.endereco &&
+                dadosPessoaisDoUsuario.endereco.logradouro
+              }
+              editable={editUserInfo}
               placeholderTextColor={Theme.colors.grayV1}
               titulo="Endereço"
-              placeholder={paciente.endereco.logradouro}
+              placeholder={"Rua Niterói, 180."}
               border="none"
               backGround={Theme.colors.v2LightWhite}
             />
@@ -95,34 +156,61 @@ export const PerfilScreen = ({ navigation }) => {
               fieldJustifyContent="space-between"
             >
               <Label
+                onChangeText={(txt) => setCep(cepMasked(txt))}
+                fieldValue={
+                  dadosPessoaisDoUsuario.endereco &&
+                  cepMasked(dadosPessoaisDoUsuario.endereco.cep)
+                }
+                editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
                 widthLabel={"45%"}
                 fieldWidth={"100"}
                 fieldMaxWidth={100}
                 titulo="Cep"
-                placeholder={paciente.endereco.cep}
+                placeholder={"99999-999"}
                 border="none"
                 backGround={Theme.colors.v2LightWhite}
               />
 
               <Label
+                onChangeText={(txt) =>
+                  setDadosPessoaisDoUsuario({
+                    ...dadosPessoaisDoUsuario.endereco,
+                    cidade: txt,
+                  })
+                }
+                fieldValue={
+                  dadosPessoaisDoUsuario.endereco &&
+                  dadosPessoaisDoUsuario.endereco.cidade
+                }
+                editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
                 widthLabel={"45%"}
                 fieldWidth={"100"}
                 fieldMaxWidth={100}
                 titulo="Cidade"
-                placeholder={"Moema-SP"}
+                placeholder={"Cidade"}
                 border="none"
                 backGround={Theme.colors.v2LightWhite}
               />
             </ContainerInputBox>
 
-            <Button>
-              <ButtonTitle>Salvar</ButtonTitle>
-            </Button>
-            <Button>
-              <ButtonTitle>Editar</ButtonTitle>
-            </Button>
+            {editUserInfo && (
+              <ButtonAsync
+                loading={loading}
+                disabled={loading}
+                textButton={"Salvar"}
+                onPress={() => handleUpdate()}
+              />
+            )}
+
+            <ButtonAsync
+              onPress={() =>
+                !editUserInfo ? showUpdateForm() : editActionAbort()
+              }
+              textButton={editUserInfo ? "Cancelar" : "Editar"}
+              loading={false}
+            />
 
             <ButtonGray
               onPress={async () => {

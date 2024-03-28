@@ -161,5 +161,19 @@ namespace WebAPI.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPut("AtualizarPerfil")]
+        public IActionResult Put(Guid id, PacienteViewModel pacienteViewModel)
+        {
+            try
+            {
+                return StatusCode(204, pacienteRepository.AtualizarPerfil(id, pacienteViewModel));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

@@ -1,11 +1,17 @@
-import { Image } from "react-native";
+import { ActivityIndicator, Image } from "react-native";
 import {
   ButtonTextStyle,
   ButtonTitle,
   ButtonTitleGoogle,
 } from "../ButtonTitle/style";
-import { ButtonAquaStyle, ButtonGoogle, ButtonTabStyle } from "./style";
+import {
+  ButtonAquaStyle,
+  ButtonAsyncStyle,
+  ButtonGoogle,
+  ButtonTabStyle,
+} from "./style";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Theme } from "../../themes";
 
 export const ButtonGoogleComponent = () => {
   return (
@@ -40,5 +46,28 @@ export const ButtonAqua = ({ onPress }) => {
       <MaterialIcons name="add-a-photo" size={20} color="white" />
       <ButtonTitle>Enviar</ButtonTitle>
     </ButtonAquaStyle>
+  );
+};
+
+//botão utilizado em requisições de api. Tem as seguintes validações: exibe um componente de loading ao processar requisição e trava o botão ao realizar uma requisição
+export const ButtonAsync = ({
+  textButton,
+  loading = false,
+  onPress,
+  disabled = false,
+  sizeActivityIndicator = 20,
+  colorsizeActivityIndicator = Theme.colors.whiteColor,
+}) => {
+  return (
+    <ButtonAsyncStyle disabled={disabled} onPress={onPress}>
+      {loading ? (
+        <ActivityIndicator
+          size={sizeActivityIndicator}
+          color={colorsizeActivityIndicator}
+        />
+      ) : (
+        <ButtonTitle>{textButton}</ButtonTitle>
+      )}
+    </ButtonAsyncStyle>
   );
 };

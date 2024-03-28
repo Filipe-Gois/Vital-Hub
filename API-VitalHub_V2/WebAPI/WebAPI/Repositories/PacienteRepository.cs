@@ -20,6 +20,7 @@ namespace WebAPI.Repositories
 
             Paciente pacienteBuscado = ctx.Pacientes.FirstOrDefault(x => x.Id == Id)!;
 
+
             if (paciente.Foto != null)
                 pacienteBuscado!.IdNavigation.Foto = paciente.Foto;
 
@@ -42,6 +43,13 @@ namespace WebAPI.Repositories
             ctx.SaveChanges();
 
             return pacienteBuscado!;
+
+
+
+
+
+
+
         }
 
         public List<Consulta> BuscarAgendadas(Guid Id)

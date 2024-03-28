@@ -5,8 +5,10 @@ import { apiCep } from "../Services/Service";
 // export const cepMasked = data => mask(unMask(data), ["99.999.999/9999-99"])
 export const cepMasked = (data) => mask(unMask(data), ["99999-999"]);
 
+export const cpfMasked = (data) => mask(unMask(data), ["999.999.999-99"]);
+
 //tira a mascara do value que contém o cep
-export const cepUnMasked = (data) => unMask(data);
+export const unMasked = (data) => unMask(data);
 
 //-----------------//
 

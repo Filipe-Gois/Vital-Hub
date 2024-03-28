@@ -14,6 +14,11 @@ export const Button = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const ButtonAsyncStyle = styled(Button)`
+  background-color: ${(props) =>
+    props.backgroundColor ? props.backgroundColor : Theme.colors.secondary};
+`;
+
 export const ButtonGray = styled(Button)`
   background-color: ${Theme.colors.grayV5};
   width: 50%;

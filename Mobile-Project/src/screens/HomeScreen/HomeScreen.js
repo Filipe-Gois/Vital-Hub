@@ -263,7 +263,7 @@ const HomeScreen = ({ navigation }) => {
         </MainContent>
       </MainContentScroll>
 
-      {profile.trim !== "Paciente" && (
+      {profile !== "Paciente" && (
         <Stethoscope
           agendarConsulta={agendarConsulta}
           onPressAgendar={() => setAgendarConsulta(true)}
