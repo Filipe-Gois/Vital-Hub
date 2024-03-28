@@ -24,16 +24,25 @@ namespace WebAPI.Controllers
         [HttpPut("AlterarSenha")]
         public IActionResult AlterarSenha(AlterarSenhaViewModel senhas)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
 
-            bool correto = usuarioRepository.AlterarSenha(idUsuario, senhas.SenhaAntiga, senhas.SenhaNova);
-            if (!correto)
-                return Unauthorized("Senha incorreta");
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok();
+                bool correto = usuarioRepository.AlterarSenha(idUsuario, senhas.SenhaAntiga, senhas.SenhaNova);
+                if (!correto)
+                    return Unauthorized("Senha incorreta");
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
-        
+
 
     }
 }
