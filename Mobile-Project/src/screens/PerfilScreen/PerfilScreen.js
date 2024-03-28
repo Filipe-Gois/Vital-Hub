@@ -16,9 +16,13 @@ import { ParagraphSemiBold } from "../../components/Paragraph/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { userDecodeToken } from "../../Utils/Auth";
+import api, { pacientesResource } from "../../Services/Service";
+import { dateDbToView } from "../../Utils/stringFunctions";
+import { Alert } from "react-native";
 
 export const PerfilScreen = ({ navigation }) => {
   const [user, setUser] = useState({});
+  const [paciente, setPaciente] = useState({});
 
   const fetchProfileData = async () => {
     const userInfo = await userDecodeToken();
@@ -28,10 +32,25 @@ export const PerfilScreen = ({ navigation }) => {
     }
   };
 
+  const getUserInfo = async () => {
+    try {
+      console.log(user.id);
+      const response = await api.get(
+        `${pacientesResource}/BuscarPorId?id=${user.id}`
+      );
+      setPaciente(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchProfileData();
+    if (user.id) {
+      getUserInfo();
+    }
     return (cleanUp = () => {});
-  }, []);
+  }, [user.id]);
 
   return (
     <Container>
@@ -48,23 +67,25 @@ export const PerfilScreen = ({ navigation }) => {
             <Label
               placeholderTextColor={Theme.colors.grayV1}
               titulo="Data de nascimento:"
-              placeholder={"04/05/1999"}
+              placeholder={dateDbToView("2007-01-14")}
               border="none"
               backGround={Theme.colors.v2LightWhite}
             />
 
-            <Label
-              placeholderTextColor={Theme.colors.grayV1}
-              titulo="CPF"
-              placeholder={"859********"}
-              border="none"
-              backGround={Theme.colors.v2LightWhite}
-            />
+            {user.role === "Paciente" && (
+              <Label
+                placeholderTextColor={Theme.colors.grayV1}
+                titulo="CPF"
+                placeholder={paciente.cpf}
+                border="none"
+                backGround={Theme.colors.v2LightWhite}
+              />
+            )}
 
             <Label
               placeholderTextColor={Theme.colors.grayV1}
               titulo="Endereço"
-              placeholder={"Rua Vicenso Silva, 987"}
+              placeholder={paciente.endereco.logradouro}
               border="none"
               backGround={Theme.colors.v2LightWhite}
             />
@@ -79,7 +100,7 @@ export const PerfilScreen = ({ navigation }) => {
                 fieldWidth={"100"}
                 fieldMaxWidth={100}
                 titulo="Cep"
-                placeholder={"06548-909"}
+                placeholder={paciente.endereco.cep}
                 border="none"
                 backGround={Theme.colors.v2LightWhite}
               />

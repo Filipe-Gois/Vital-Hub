@@ -44,10 +44,10 @@ public partial class VitalContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    => optionsBuilder.UseSqlServer($"Data Source=NOTE16-SALA19; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Senai@134; TrustServerCertificate=true");
+    //=> optionsBuilder.UseSqlServer($"Data Source=NOTE16-SALA19; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Senai@134; TrustServerCertificate=true");
 
     //conexão com o pc de casa Filipe
-    //=> optionsBuilder.UseSqlServer("Data Source=FilipeDesktop\\SQLEXPRESS; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Xtringer28700; TrustServerCertificate=true");
+    => optionsBuilder.UseSqlServer("Data Source=FilipeDesktop\\SQLEXPRESS; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Xtringer28700; TrustServerCertificate=true");
     //=> optionsBuilder.UseSqlServer(IpFunctions.GetIpv4() == "192.168.15.61" ? "Data Source=FilipeDesktop\\SQLEXPRESS; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Xtringer28700; TrustServerCertificate=true" : "Data Source=NOTE16-SALA19; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Senai@134; TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

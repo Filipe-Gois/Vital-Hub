@@ -23,5 +23,5 @@ export const dateDbToView = (date) => {
   date = date.substr(0, 10);
   date = date.split("-");
 
-  return `${data[2]}/${data[1]}/${data[0]}`;
+  return `${date[2]}/${date[1]}/${date[0]}`;
 };
