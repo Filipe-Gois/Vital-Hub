@@ -22,8 +22,9 @@ import {
   cpfMasked,
   dateDbToView,
 } from "../../Utils/stringFunctions";
-import { Alert } from "react-native";
+import { Alert, Text } from "react-native";
 import { ButtonAsync } from "../../components/Button";
+import { unMask, unmask } from "remask";
 
 export const PerfilScreen = ({ navigation }) => {
   const [editUserInfo, setEditUserInfo] = useState(false);
@@ -53,7 +54,11 @@ export const PerfilScreen = ({ navigation }) => {
       const response = await api.get(
         `${pacientesResource}/BuscarPorId?id=${userGlobalData.id}`
       );
+
+      setCep(response.data.endereco.cep);
+      setCpf(response.data.cpf);
       setDadosPessoaisDoUsuario(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +66,25 @@ export const PerfilScreen = ({ navigation }) => {
 
   const handleUpdate = async () => {
     try {
-      const response = await api.put(); //Atualmente, só existe rota para alterar senha, criar outra rota para alterar os outros dados
+      const response = await api.put(
+        pacientesResource + `/AtualizarPerfil?id=${userGlobalData.id}`,
+        {
+          // rg: unMask(dadosPessoaisDoUsuario.rg),
+          cpf: unMask(cpf),
+          dataNascimento: dadosPessoaisDoUsuario.dataNascimento,
+          cep: unMask(cep),
+          logradouro: dadosPessoaisDoUsuario.endereco.logradouro,
+          // numero: dadosPessoaisDoUsuario.endereco.numero,
+          cidade: dadosPessoaisDoUsuario.endereco.cidade,
+          // nome: userGlobalData.nome,
+          // email: userGlobalData.email,
+          // senha: "12345",
+
+          foto: dadosPessoaisDoUsuario.idNavigation.foto,
+        }
+      );
+
+      console.log(response.status);
     } catch (error) {
       console.log(error);
     }
@@ -83,7 +106,7 @@ export const PerfilScreen = ({ navigation }) => {
       getUserInfo();
     }
     return (cleanUp = () => {});
-  }, [userGlobalData.id, dadosPessoaisDoUsuario]);
+  }, [userGlobalData.id]);
 
   return (
     <Container>
@@ -120,8 +143,8 @@ export const PerfilScreen = ({ navigation }) => {
               <Label
                 onChangeText={(txt) => setCpf(cpfMasked(txt))}
                 fieldValue={
-                  dadosPessoaisDoUsuario.cpf &&
-                  cpfMasked(dadosPessoaisDoUsuario.cpf)
+                  // dadosPessoaisDoUsuario.cpf &&
+                  cpfMasked(cpf)
                 }
                 editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
@@ -132,6 +155,8 @@ export const PerfilScreen = ({ navigation }) => {
               />
             )}
 
+            {/* <Text>{cpf}</Text> */}
+
             <Label
               onChangeText={(txt) =>
                 setDadosPessoaisDoUsuario({
@@ -140,8 +165,9 @@ export const PerfilScreen = ({ navigation }) => {
                 })
               }
               fieldValue={
-                dadosPessoaisDoUsuario.endereco &&
-                dadosPessoaisDoUsuario.endereco.logradouro
+                dadosPessoaisDoUsuario.endereco
+                  ? dadosPessoaisDoUsuario.endereco.logradouro
+                  : "Ex: Rua Niterói, 180."
               }
               editable={editUserInfo}
               placeholderTextColor={Theme.colors.grayV1}
@@ -158,8 +184,7 @@ export const PerfilScreen = ({ navigation }) => {
               <Label
                 onChangeText={(txt) => setCep(cepMasked(txt))}
                 fieldValue={
-                  dadosPessoaisDoUsuario.endereco &&
-                  cepMasked(dadosPessoaisDoUsuario.endereco.cep)
+                  dadosPessoaisDoUsuario.endereco ? cepMasked(cep) : "99999-999"
                 }
                 editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
@@ -167,7 +192,7 @@ export const PerfilScreen = ({ navigation }) => {
                 fieldWidth={"100"}
                 fieldMaxWidth={100}
                 titulo="Cep"
-                placeholder={"99999-999"}
+                placeholder={"Ex: 99999-999"}
                 border="none"
                 backGround={Theme.colors.v2LightWhite}
               />

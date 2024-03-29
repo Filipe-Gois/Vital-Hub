@@ -167,7 +167,8 @@ namespace WebAPI.Controllers
         {
             try
             {
-                return StatusCode(204, pacienteRepository.AtualizarPerfil(id, pacienteViewModel));
+                pacienteRepository.AtualizarPerfil(id, pacienteViewModel);
+                return StatusCode(204);
             }
             catch (Exception e)
             {
