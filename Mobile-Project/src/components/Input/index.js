@@ -1,3 +1,4 @@
+import React from "react";
 import { InputCheckEmailStyle, InputSelectBox, InputStyle } from "./style";
 import { StyleSheet, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
@@ -6,27 +7,31 @@ import RNPickerSelect from "react-native-picker-select";
 // import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesome } from "@expo/vector-icons";
 
-export const Input = ({
-  placeholder,
-  fieldValue,
-  onChangeText,
-  keyType,
-  maxLength,
-  onEndEditing,
-  fieldWidth = 100,
-  fieldMaxWidth = 100,
-  fieldHeight = 55,
-  backGround = "",
-  border = "",
-  placeholderTextColor,
-  fieldPaddingBottom,
-  textColor,
-  fieldTextAlign,
-  fieldMinHeight,
-  secureTextEntry = false,
-}) => {
+export const Input = React.forwardRef((props, ref) => {
+  const {
+    placeholder,
+    fieldValue,
+    onChangeText,
+    keyType,
+    maxLength,
+    onEndEditing,
+    fieldWidth = 100,
+    fieldMaxWidth = 100,
+    fieldHeight = 55,
+    backGround = "",
+    border = "",
+    placeholderTextColor,
+    fieldPaddingBottom,
+    textColor,
+    fieldTextAlign,
+    fieldMinHeight,
+    secureTextEntry = false,
+    autoFocus,
+  } = props;
+
   return (
     <InputStyle
+      ref={ref}
       secureTextEntry={secureTextEntry}
       fieldMinHeight={fieldMinHeight}
       fieldWidth={fieldWidth}
@@ -46,9 +51,11 @@ export const Input = ({
       fieldTextAlign={fieldTextAlign}
       multiline={true}
       numberOfLines={4}
+      autoFocus={autoFocus}
     />
   );
-};
+});
+
 export const InputCheckEmail = ({
   placeholder,
   fieldValue,

@@ -38,6 +38,7 @@ namespace WebAPI.Repositories
                     pacienteBuscado.Endereco.Logradouro = paciente.Logradouro;
                     pacienteBuscado.Endereco.Numero = paciente.Numero;
                     pacienteBuscado.Endereco.Cep = paciente.Cep;
+                    pacienteBuscado.Endereco.Cidade = paciente.Cidade;
                 }
 
                 ctx.Pacientes.Update(pacienteBuscado);

@@ -42,8 +42,7 @@
               "RelativeToolTip": "WebAPI\\Domains\\Paciente.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-29T01:28:26.614Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-29T01:28:26.614Z"
             },
             {
               "$type": "Document",
@@ -55,8 +54,7 @@
               "RelativeToolTip": "WebAPI\\Controllers\\PacientesController.cs",
               "ViewState": "AQIAAJsAAAAAAAAAAAAAAKgAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-29T01:24:24.066Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-29T01:24:24.066Z"
             },
             {
               "$type": "Document",
@@ -66,7 +64,7 @@
               "RelativeDocumentMoniker": "WebAPI\\Repositories\\PacienteRepository.cs",
               "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V2\\WebAPI\\WebAPI\\Repositories\\PacienteRepository.cs",
               "RelativeToolTip": "WebAPI\\Repositories\\PacienteRepository.cs",
-              "ViewState": "AQIAAEkAAAAAAAAAAAAAAE8AAABVAAAA",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-28T19:44:20.548Z",
               "EditorCaption": ""
@@ -81,8 +79,7 @@
               "RelativeToolTip": "WebAPI\\Interfaces\\IPacienteRepository.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-29T01:23:37.587Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-29T01:23:37.587Z"
             },
             {
               "$type": "Document",
@@ -94,8 +91,7 @@
               "RelativeToolTip": "WebAPI\\ViewModels\\PacienteViewModel.cs",
               "ViewState": "AQIAAA4AAAAAAAAAAAAAAA8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-28T19:42:07.289Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-28T19:42:07.289Z"
             }
           ]
         }

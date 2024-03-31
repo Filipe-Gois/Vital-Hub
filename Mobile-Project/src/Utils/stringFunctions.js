@@ -1,5 +1,6 @@
 import { mask, unMask } from "remask";
 import { apiCep } from "../Services/Service";
+import { Alert } from "react-native";
 
 //máscara para input que receber cep
 // export const cepMasked = data => mask(unMask(data), ["99.999.999/9999-99"])
@@ -7,23 +8,30 @@ export const cepMasked = (data) => mask(unMask(data), ["99999-999"]);
 
 export const cpfMasked = (data) => mask(unMask(data), ["999.999.999-99"]);
 
+export const dateMasked = (data) => mask(unMask(data), ["99/99/9999"]);
+//formato DD/MM/AAAA
+
 //tira a mascara do value que contém o cep
 export const unMasked = (data) => unMask(data);
 
 //-----------------//
 
-export const getLocation = async (cep, setData) => {
+export const getLocation = async (cep) => {
   try {
     const response = await apiCep.get("/" + cep);
-    setData(response.data.result);
+
+    return response.data.result;
   } catch (error) {
-    console.log("Erro ao buscar cep.", error);
+    Alert.alert("Erro", "Cep não encontrado!");
   }
 };
 
 export const dateDbToView = (date) => {
   date = date.substr(0, 10);
-  date = date.split("-");
+  date = date.split("-").reverse().join("/");
+  date = dateMasked(date);
 
-  return `${date[2]}/${date[1]}/${date[0]}`;
+  return date;
 };
+
+export const dateViewToDb = (date) => date.split("/").reverse().join("-");

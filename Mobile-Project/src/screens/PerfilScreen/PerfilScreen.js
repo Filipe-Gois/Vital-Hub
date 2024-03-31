@@ -14,15 +14,18 @@ import { ContainerInputBox } from "../../components/Container";
 import { Input } from "../../components/Input";
 import { ParagraphSemiBold } from "../../components/Paragraph/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { userDecodeToken } from "../../Utils/Auth";
 import api, { pacientesResource } from "../../Services/Service";
 import {
   cepMasked,
   cpfMasked,
   dateDbToView,
+  dateMasked,
+  dateViewToDb,
+  getLocation,
 } from "../../Utils/stringFunctions";
-import { Alert, Text } from "react-native";
+import { Alert, Text, TouchableOpacity } from "react-native";
 import { ButtonAsync } from "../../components/Button";
 import { unMask, unmask } from "remask";
 
@@ -33,7 +36,27 @@ export const PerfilScreen = ({ navigation }) => {
 
   const [dadosPessoaisDoUsuario, setDadosPessoaisDoUsuario] = useState({});
 
+  const [editDadosPessoaisDoUsuario, setEditDadosPessoaisDoUsuario] = useState(
+    dadosPessoaisDoUsuario
+  );
+
+  const [dataNascimento, setDataNascimento] = useState("");
+
+  const [logradouro, setLogradouro] = useState("");
+
+  const [cidade, setCidade] = useState("");
+
   const [cep, setCep] = useState("");
+
+  const [enderecoLocalizado, setEnderecoLocalizado] = useState({
+    street: "",
+    complement: "",
+    district: "",
+    city: "",
+    state: "",
+    stateShortname: "",
+    zipcode: "",
+  });
 
   const [cpf, setCpf] = useState("");
 
@@ -55,41 +78,65 @@ export const PerfilScreen = ({ navigation }) => {
         `${pacientesResource}/BuscarPorId?id=${userGlobalData.id}`
       );
 
+      setDadosPessoaisDoUsuario(response.data);
+
+      setDataNascimento(response.data.dataNascimento);
+      setLogradouro(response.data.endereco.logradouro);
+      setCidade(response.data.endereco.cidade);
       setCep(response.data.endereco.cep);
       setCpf(response.data.cpf);
-      setDadosPessoaisDoUsuario(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleUpdate = async () => {
+    setLoading(true);
     try {
+      if (
+        cpf === undefined ||
+        dataNascimento === undefined ||
+        cep === undefined ||
+        cidade.trim() === "" ||
+        cpf.trim() === "" ||
+        dataNascimento.trim() === "" ||
+        cep.trim() === "" ||
+        cidade.trim() === ""
+      ) {
+        Alert.alert(
+          "Atenção",
+          "Todos os campos devem ser preenchidos corretamente!"
+        );
+        setLoading(false);
+        return;
+      }
+
       const response = await api.put(
         pacientesResource + `/AtualizarPerfil?id=${userGlobalData.id}`,
         {
           // rg: unMask(dadosPessoaisDoUsuario.rg),
           cpf: unMask(cpf),
-          dataNascimento: dadosPessoaisDoUsuario.dataNascimento,
-          cep: unMask(cep),
-          logradouro: dadosPessoaisDoUsuario.endereco.logradouro,
+          dataNascimento: dateViewToDb(dataNascimento),
+          cep: enderecoLocalizado.zipcode,
+          logradouro: enderecoLocalizado.street,
           // numero: dadosPessoaisDoUsuario.endereco.numero,
-          cidade: dadosPessoaisDoUsuario.endereco.cidade,
+          cidade: enderecoLocalizado.city,
           // nome: userGlobalData.nome,
           // email: userGlobalData.email,
           // senha: "12345",
 
-          foto: dadosPessoaisDoUsuario.idNavigation.foto,
+          foto: "fefe123.png",
         }
       );
-
+      // getUserInfo();
       console.log(response.status);
     } catch (error) {
+      editActionAbort();
       console.log(error);
     }
 
     setEditUserInfo(!editUserInfo);
+    setLoading(false);
   };
 
   const showUpdateForm = () => {
@@ -98,6 +145,20 @@ export const PerfilScreen = ({ navigation }) => {
 
   const editActionAbort = () => {
     setEditUserInfo(false);
+    getUserInfo();
+  };
+
+  const getCidadeELogradouro = async () => {
+    try {
+      const enderecoApi = await getLocation(cep);
+
+      if (enderecoApi) {
+        console.log("enderecoApi:", enderecoApi);
+        setEnderecoLocalizado(enderecoApi);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -105,8 +166,9 @@ export const PerfilScreen = ({ navigation }) => {
     if (userGlobalData.id) {
       getUserInfo();
     }
+
     return (cleanUp = () => {});
-  }, [userGlobalData.id]);
+  }, [userGlobalData.id, enderecoLocalizado.zipcode]);
 
   return (
     <Container>
@@ -121,30 +183,35 @@ export const PerfilScreen = ({ navigation }) => {
 
           <FormBox>
             <Label
+              // autoFocus={false}
+              pointerEvents={!editUserInfo ? "none" : "auto"}
               onChangeText={(txt) =>
-                setDadosPessoaisDoUsuario({
-                  ...dadosPessoaisDoUsuario,
-                  dataNascimento: txt,
-                })
+                // setDadosPessoaisDoUsuario({
+                //   ...dadosPessoaisDoUsuario,
+                //   dataNascimento: txt,
+                // })
+                setDataNascimento(dateDbToView(txt))
               }
               fieldValue={
-                dadosPessoaisDoUsuario.dataNascimento &&
-                dateDbToView(dadosPessoaisDoUsuario.dataNascimento)
+                // dadosPessoaisDoUsuario.dataNascimento &&
+                // dateDbToView(dadosPessoaisDoUsuario.dataNascimento)
+                dataNascimento && dateDbToView(dataNascimento)
               }
               editable={false}
               placeholderTextColor={Theme.colors.grayV1}
               titulo="Data de nascimento:"
-              placeholder={"14/01/2000"}
+              placeholder={"Ex: 14/01/2000"}
               border="none"
               backGround={Theme.colors.v2LightWhite}
             />
 
             {userGlobalData.role === "Paciente" && (
               <Label
+                pointerEvents={!editUserInfo ? "none" : "auto"}
                 onChangeText={(txt) => setCpf(cpfMasked(txt))}
                 fieldValue={
                   // dadosPessoaisDoUsuario.cpf &&
-                  cpfMasked(cpf)
+                  cpf && cpfMasked(cpf)
                 }
                 editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
@@ -155,19 +222,21 @@ export const PerfilScreen = ({ navigation }) => {
               />
             )}
 
-            {/* <Text>{cpf}</Text> */}
-
             <Label
+              pointerEvents={"none"}
               onChangeText={(txt) =>
-                setDadosPessoaisDoUsuario({
-                  ...dadosPessoaisDoUsuario.endereco,
-                  logradouro: txt,
-                })
+                // setDadosPessoaisDoUsuario({
+                //   ...dadosPessoaisDoUsuario.endereco,
+                //   logradouro: txt,
+                // })
+                setLogradouro(
+                  enderecoLocalizado.street ? enderecoLocalizado.street : txt
+                )
               }
               fieldValue={
-                dadosPessoaisDoUsuario.endereco
-                  ? dadosPessoaisDoUsuario.endereco.logradouro
-                  : "Ex: Rua Niterói, 180."
+                editUserInfo && enderecoLocalizado.street
+                  ? enderecoLocalizado.street
+                  : logradouro && logradouro
               }
               editable={editUserInfo}
               placeholderTextColor={Theme.colors.grayV1}
@@ -182,10 +251,10 @@ export const PerfilScreen = ({ navigation }) => {
               fieldJustifyContent="space-between"
             >
               <Label
+                onEndEditing={getCidadeELogradouro}
+                pointerEvents={!editUserInfo ? "none" : "auto"}
                 onChangeText={(txt) => setCep(cepMasked(txt))}
-                fieldValue={
-                  dadosPessoaisDoUsuario.endereco ? cepMasked(cep) : "99999-999"
-                }
+                fieldValue={cep && cepMasked(cep)}
                 editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
                 widthLabel={"45%"}
@@ -198,17 +267,25 @@ export const PerfilScreen = ({ navigation }) => {
               />
 
               <Label
-                onChangeText={(txt) =>
-                  setDadosPessoaisDoUsuario({
-                    ...dadosPessoaisDoUsuario.endereco,
-                    cidade: txt,
-                  })
-                }
+                pointerEvents={"none"}
+                onChangeText={(txt) => {
+                  // setDadosPessoaisDoUsuario({
+                  //   ...dadosPessoaisDoUsuario.endereco,
+                  //   cidade: txt,
+                  // });
+                  setCidade(
+                    dadosPessoaisDoUsuario.endereco.cidade
+                      ? dadosPessoaisDoUsuario.endereco.cidade
+                      : txt
+                  );
+                }}
                 fieldValue={
-                  dadosPessoaisDoUsuario.endereco &&
-                  dadosPessoaisDoUsuario.endereco.cidade
+                  // dadosPessoaisDoUsuario.endereco &&
+                  // dadosPessoaisDoUsuario.endereco.cidade
+                  editUserInfo && enderecoLocalizado.city
+                    ? enderecoLocalizado.city
+                    : cidade && cidade
                 }
-                editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
                 widthLabel={"45%"}
                 fieldWidth={"100"}
