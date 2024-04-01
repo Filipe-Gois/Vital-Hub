@@ -33,8 +33,6 @@ const CreateAccountScreen = ({ navigation }) => {
     email: "",
     senha: "",
     idTipoUsuario:
-      // "F727FBD3-03E9-467E-81B5-E2DBA9E70CD4"
-      //banco de casa
 
       "D0378C73-715C-407E-9500-C926FF90C0E0",
     //banco do senai
@@ -49,7 +47,7 @@ const CreateAccountScreen = ({ navigation }) => {
       }
 
       const responseCreateAccount = await api.post(pacientesResource, user);
-      
+
 
       if (responseCreateAccount.status !== 200) {
         console.log("Erro ao criar conta.");

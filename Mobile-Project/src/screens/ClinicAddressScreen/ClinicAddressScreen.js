@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Container,
   FormBox,
@@ -12,6 +13,7 @@ import { ButtonSecondary } from "../../components/Button/style";
 import { TextCreateAccount2 } from "../../components/Paragraph/style";
 import MapaGps from "../../components/MapaGps";
 import { View } from "react-native";
+import axios from "axios";
 
 const ClinicAddressScreen = ({ navigation }) => {
   const [clinic, setClinic] = useState({

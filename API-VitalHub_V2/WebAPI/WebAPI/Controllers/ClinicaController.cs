@@ -19,7 +19,16 @@ namespace WebAPI.Controllers
         [HttpGet("ListarTodas")]
         public IActionResult Get()
         {
-            return Ok(clinicaRepository.Listar());
+            try
+            {
+                return Ok(clinicaRepository.Listar());
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("Cadastrar")]
