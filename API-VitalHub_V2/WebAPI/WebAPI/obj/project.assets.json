@@ -3347,19 +3347,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fytho\\.nuget\\packages\\": {}
+    "C:\\Users\\46633783825\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V2\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V2\\WebAPI\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V2\\WebAPI\\WebAPI\\WebAPI.csproj",
-      "packagesPath": "C:\\Users\\fytho\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V2\\WebAPI\\WebAPI\\obj\\",
+      "projectPath": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V2\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "packagesPath": "C:\\Users\\46633783825\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V2\\WebAPI\\WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\fytho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\46633783825\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

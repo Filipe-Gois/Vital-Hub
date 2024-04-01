@@ -128,7 +128,7 @@ export const PerfilScreen = ({ navigation }) => {
           foto: "fefe123.png",
         }
       );
-      // getUserInfo();
+      getUserInfo();
       console.log(response.status);
     } catch (error) {
       editActionAbort();
@@ -251,10 +251,14 @@ export const PerfilScreen = ({ navigation }) => {
               fieldJustifyContent="space-between"
             >
               <Label
-                onEndEditing={getCidadeELogradouro}
+                onEndEditing={() => {
+                  getCidadeELogradouro();
+                  enderecoLocalizado.zipcode &&
+                    setCep(enderecoLocalizado.zipcode);
+                }}
                 pointerEvents={!editUserInfo ? "none" : "auto"}
                 onChangeText={(txt) => setCep(cepMasked(txt))}
-                fieldValue={cep && cepMasked(cep)}
+                fieldValue={cep ? cepMasked(cep) : null}
                 editable={editUserInfo}
                 placeholderTextColor={Theme.colors.grayV1}
                 widthLabel={"45%"}

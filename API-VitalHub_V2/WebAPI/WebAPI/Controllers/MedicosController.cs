@@ -34,6 +34,21 @@ namespace WebAPI.Controllers
             }
         }
 
+
+        [HttpGet("BuscarPorData")]
+        public IActionResult GetByDate(DateTime data, Guid id)
+        {
+            try
+            {
+                return StatusCode(200, _medicoRepository.BuscarPorData(data, id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {

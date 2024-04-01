@@ -4,6 +4,7 @@ using Microsoft.Identity.Client;
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Repositories
 {
@@ -17,60 +18,73 @@ namespace WebAPI.Repositories
             return ctx.Consultas.Find(id);
         }
 
-        public void Cadastrar(Consulta clinica)
+        public void Cadastrar(Consulta consulta)
         {
-            ctx.Consultas.Add(clinica);
+            ctx.Consultas.Add(consulta);
             ctx.SaveChanges();
-        }
-
-        public void EditarProntuario(Consulta consulta)
-        {
-            Consulta buscada = ctx.Consultas.Find(consulta.Id)!;
-
-            buscada.Descricao = consulta.Descricao;
-            buscada.Diagnostico = consulta.Diagnostico;
-            ctx.Update(buscada);
-            ctx.SaveChanges();
-        }
-
-        public void EditarStatus(Consulta consulta)
-        {
-            Consulta buscada = ctx.Consultas.Find(consulta.Id);
-
-            buscada.SituacaoId = consulta.SituacaoId;
-            ctx.Update(buscada);
-            ctx.SaveChanges();
-        }
 
 
-        public List<Consulta> ListarPorMedico(Guid IdMedico)
-        {
-            List<Consulta> listaConsultas = ctx.Consultas
-                .Include(x => x.Paciente!.IdNavigation)
-                .Include(x => x.Situacao)
-                .Include(x => x.Prioridade)
-                .Where(x => x.MedicoClinica != null && x.MedicoClinica.MedicoId == IdMedico)
-                .ToList();
 
-            return listaConsultas;
 
-        }
 
-        public List<Consulta> ListarPorPaciente(Guid IdPaciente)
-        {
-            List<Consulta> listaConsultas = ctx.Consultas
-                .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
-                .Include(x => x.Situacao)
-                .Include(x => x.Prioridade)
-                .Where(x => x.PacienteId != null && x.PacienteId == IdPaciente)
-                .ToList();
 
-            return listaConsultas;
-        }
+            public void EditarProntuario(Consulta consulta)
+            {
+                Consulta buscada = ctx.Consultas.Find(consulta.Id)!;
 
-        public List<Consulta> ListarTodos()
-        {
-            return ctx.Consultas.ToList();
+                buscada.Descricao = consulta.Descricao;
+                buscada.Diagnostico = consulta.Diagnostico;
+                ctx.Update(buscada);
+                ctx.SaveChanges();
+            }
+
+            public void EditarProntuario(ConsultaViewModel consultaModel)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void EditarStatus(Consulta consulta)
+            {
+                Consulta buscada = ctx.Consultas.Find(consulta.Id);
+
+                buscada.SituacaoId = consulta.SituacaoId;
+                ctx.Update(buscada);
+                ctx.SaveChanges();
+            }
+
+            public void EditarStatus(ConsultaViewModel consultaModel)
+            {
+                throw new NotImplementedException();
+            }
+
+            public List<Consulta> ListarPorMedico(Guid IdMedico)
+            {
+                List<Consulta> listaConsultas = ctx.Consultas
+                    .Include(x => x.Paciente!.IdNavigation)
+                    .Include(x => x.Situacao)
+                    .Include(x => x.Prioridade)
+                    .Where(x => x.MedicoClinica != null && x.MedicoClinica.MedicoId == IdMedico)
+                    .ToList();
+
+                return listaConsultas;
+
+            }
+
+            public List<Consulta> ListarPorPaciente(Guid IdPaciente)
+            {
+                List<Consulta> listaConsultas = ctx.Consultas
+                    .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
+                    .Include(x => x.Situacao)
+                    .Include(x => x.Prioridade)
+                    .Where(x => x.PacienteId != null && x.PacienteId == IdPaciente)
+                    .ToList();
+
+                return listaConsultas;
+            }
+
+            public List<Consulta> ListarTodos()
+            {
+                return ctx.Consultas.ToList();
+            }
         }
     }
-}

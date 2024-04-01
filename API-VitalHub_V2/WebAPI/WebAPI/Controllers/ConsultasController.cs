@@ -19,8 +19,8 @@ namespace WebAPI.Controllers
             consultaRepository = new ConsultaRepository();
         }
 
-        [Authorize]
-        [HttpGet]
+        //[Authorize]
+        [HttpGet("ConsultasPacienteLogado")]
         public IActionResult BuscarConsultasPaciente()
         {
             try
