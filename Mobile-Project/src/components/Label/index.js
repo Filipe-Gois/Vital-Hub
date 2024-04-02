@@ -23,12 +23,23 @@ const Label = ({
   fieldTextAlign,
   isTitulo = true,
   fieldMinHeight,
+  editable,
+  pointerEvents,
+  autoFocus,
+  refInput,
 }) => {
   return (
-    <LabelStyle widthLabel={widthLabel} maxWidthLabel={maxWidthLabel}>
+    <LabelStyle
+      pointerEvents={pointerEvents}
+      widthLabel={widthLabel}
+      maxWidthLabel={maxWidthLabel}
+    >
       {isTitulo && <ParagraphSemiBold>{titulo}</ParagraphSemiBold>}
 
       <Input
+        ref={refInput}
+        autoFocus={autoFocus}
+        editable={editable}
         textColor={textColor}
         placeholderTextColor={placeholderTextColor}
         placeholder={placeholder}

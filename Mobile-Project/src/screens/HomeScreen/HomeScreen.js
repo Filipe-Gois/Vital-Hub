@@ -22,9 +22,11 @@ import Stethoscope from "../../components/stethoscope";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { WelComeImage } from "../../components/ImageProfile";
 import { HandleCallNotification } from "../../components/Notification/Notification";
+import { Alert, Text } from "react-native";
+import { userDecodeToken } from "../../Utils/Auth";
 
 const HomeScreen = ({ navigation }) => {
-  const [profile, setProfile] = useState("Paciente  ");
+  const [profile, setProfile] = useState("");
 
   const [statusLista, setStatusLista] = useState("Pendente");
   const [agendarConsulta, setAgendarConsulta] = useState(false);
@@ -134,12 +136,15 @@ const HomeScreen = ({ navigation }) => {
   const [showModalCancel, setShowModalCancel] = useState(false);
   const [showModalAppointment, setShowModalAppointment] = useState(false);
 
-  useEffect(() => {
-    async () => {
-      const token = await userDecodeToken();
+  const fetchUserName = async () => {
+    const userInfo = await userDecodeToken();
+    if (userInfo) {
+      setProfile(userInfo.role);
+    }
+  };
 
-      setProfile(token.role);
-    };
+  useEffect(() => {
+    fetchUserName();
     return (cleanUp = () => {});
   }, []);
 
@@ -151,6 +156,7 @@ const HomeScreen = ({ navigation }) => {
             src={UserImage}
             viewProfile={() => navigation.navigate("Perfil")}
           />
+
           <CalendarList />
           <ButtonBox
             fieldFlexDirection={"row"}
@@ -257,7 +263,7 @@ const HomeScreen = ({ navigation }) => {
         </MainContent>
       </MainContentScroll>
 
-      {profile !== "Paciente" && (
+      {profile === "Paciente" && (
         <Stethoscope
           agendarConsulta={agendarConsulta}
           onPressAgendar={() => setAgendarConsulta(true)}

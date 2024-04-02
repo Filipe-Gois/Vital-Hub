@@ -41,8 +41,7 @@ import {
   userDecodeToken2,
 } from "../../Utils/Auth.js";
 import { AuthContext } from "../../Context/AuthProvider.js";
-import axios from 'axios';
-
+import { ButtonAsync } from "../../components/Button/index.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -97,16 +96,12 @@ const LoginScreen = ({ navigation }) => {
             </ButtonSecondary>
 
             <ButtonBox>
-              <Button onPress={() => Login()} disabled={loading}>
-                {loading ? (
-                  <ActivityIndicator
-                    size={20}
-                    color={Theme.colors.whiteColor}
-                  />
-                ) : (
-                  <ButtonTitle>Entrar</ButtonTitle>
-                )}
-              </Button>
+              <ButtonAsync
+                onPress={() => Login()}
+                disabled={loading}
+                loading={loading}
+                textButton={"Entrar"}
+              />
 
               <ButtonGoogle>
                 <FontAwesome6

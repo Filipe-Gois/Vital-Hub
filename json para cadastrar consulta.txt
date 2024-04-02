@@ -1,0 +1,17 @@
+{
+
+  "situacaoId": "4942F29F-8B46-4CB3-8D92-D90F97EB4737",
+  "pacienteId": "042D8D5F-4647-4DDB-B595-EBFD2DB86B98",
+  "medicoClinicaId": "377B7664-9228-442F-9BA0-45D39FD3ED73",
+  "receita": {
+    
+    "medicamento": "omeprazol",
+    "observacoes": "tomar omeprazol"
+   
+  },
+  "prioridadeId": "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
+  "dataConsulta": "2024-04-29T18:49:45.309Z",
+  "descricao": "exame!!!!",
+  "diagnostico": "paciente em estado terminal"
+  
+}

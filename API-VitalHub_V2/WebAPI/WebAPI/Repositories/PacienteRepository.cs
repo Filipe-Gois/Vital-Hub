@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
@@ -11,37 +12,50 @@ namespace WebAPI.Repositories
     {
         VitalContext ctx = new VitalContext();
 
-        public Paciente AtualizarPerfil(Guid Id, PacienteViewModel paciente)
+        public void AtualizarPerfil(Guid id, PacienteViewModel paciente)
         {
             //foto
             //data nascimento
             //cpf
             //endereco logradouro numero cep
 
-            Paciente pacienteBuscado = ctx.Pacientes.FirstOrDefault(x => x.Id == Id)!;
+            Paciente pacienteBuscado = ctx.Pacientes.Include(p => p.Endereco).Include(p => p.IdNavigation).FirstOrDefault(x => x.Id == id)!;
 
-            if (paciente.Foto != null)
-                pacienteBuscado!.IdNavigation.Foto = paciente.Foto;
 
-            if (paciente.DataNascimento != null)
-                pacienteBuscado!.DataNascimento = paciente.DataNascimento;
 
-            if (paciente.Cpf != null)
-                pacienteBuscado!.Cpf = paciente.Cpf;
+            if (pacienteBuscado != null)
+            {
+                if (pacienteBuscado.IdNavigation != null)
+                {
+                    pacienteBuscado.IdNavigation.Foto = paciente.Foto;
+                }
 
-            if (paciente.Logradouro != null)
-                pacienteBuscado!.Endereco!.Logradouro = paciente.Logradouro;
+                pacienteBuscado.DataNascimento = paciente.DataNascimento;
+                pacienteBuscado.Cpf = paciente.Cpf;
 
-            if (paciente.Numero != null)
-                pacienteBuscado!.Endereco!.Numero = paciente.Numero;
+                if (pacienteBuscado.Endereco != null)
+                {
+                    pacienteBuscado.Endereco.Logradouro = paciente.Logradouro;
+                    pacienteBuscado.Endereco.Numero = paciente.Numero;
+                    pacienteBuscado.Endereco.Cep = paciente.Cep;
+                    pacienteBuscado.Endereco.Cidade = paciente.Cidade;
+                }
 
-            if (paciente.Cep != null)
-                pacienteBuscado!.Endereco!.Cep = paciente.Cep;
+                ctx.Pacientes.Update(pacienteBuscado);
+                ctx.SaveChanges();
+            }
 
-            ctx.Pacientes.Update(pacienteBuscado!);
-            ctx.SaveChanges();
 
-            return pacienteBuscado!;
+
+
+
+
+
+
+
+
+
+
         }
 
         public List<Consulta> BuscarAgendadas(Guid Id)
@@ -57,19 +71,17 @@ namespace WebAPI.Repositories
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idPaciente)
         {
             return ctx.Consultas
-                   .Include(x => x.Situacao) 
-                   .Include(x => x.Prioridade)
-                   .Include( x=> x.MedicoClinica!.Medico!.IdNavigation)
-                   .Where(x => x.PacienteId == idPaciente && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)
-                   .ToList();
+                 .Include(x => x.Situacao)
+                 .Include(x => x.Prioridade)
+                 .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
+                 //diferença em dias entre a data da consulta e a dataConsulta é igual a 0
+                 .Where(x => x.PacienteId == idPaciente && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)
+                 .ToList();
         }
 
         public Paciente BuscarPorId(Guid Id)
         {
-            return ctx.Pacientes
-            .Include(x => x.IdNavigation)
-            .Include(x => x.Endereco)
-            .FirstOrDefault(x => x.Id == Id)!; 
+            return ctx.Pacientes.Include(x => x.Endereco).Include(x => x.IdNavigation).FirstOrDefault(x => x.Id == Id)!;
         }
 
         public List<Consulta> BuscarRealizadas(Guid Id)

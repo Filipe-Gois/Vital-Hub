@@ -28,7 +28,14 @@ namespace WebAPI.Repositories
 
         public List<Clinica> Listar()
         {
-            return ctx.Clinicas.Include(c => c.Endereco).ToList();
+            return ctx.Clinicas
+                .Select(c => new Clinica
+                {
+                    Id = c.Id,
+                    NomeFantasia = c.NomeFantasia,
+                    Endereco = c.Endereco
+                })
+                .ToList();
         }
 
         public List<Clinica> ListarPorCidade(string cidade)
@@ -40,7 +47,7 @@ namespace WebAPI.Repositories
                     NomeFantasia = c.NomeFantasia,
                     Endereco = c.Endereco
                 })
-
+                
                .Where(c => c.Endereco!.Cidade == cidade)
                 .ToList();
         }

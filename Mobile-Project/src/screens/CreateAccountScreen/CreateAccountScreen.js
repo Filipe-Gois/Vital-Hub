@@ -32,9 +32,11 @@ const CreateAccountScreen = ({ navigation }) => {
     nome: "",
     email: "",
     senha: "",
-    idTipoUsuario:
+    cidade: "São Paulo",
+    idTipoUsuario: "4EFFCFEE-7AA2-434B-A5ED-A264974317BF",
+    //banco de casa
 
-      "D0378C73-715C-407E-9500-C926FF90C0E0",
+    // "3107729F-08DE-46ED-A7CD-3715B384D25D",
     //banco do senai
 
     foto: "12321312312",
@@ -47,7 +49,6 @@ const CreateAccountScreen = ({ navigation }) => {
       }
 
       const responseCreateAccount = await api.post(pacientesResource, user);
-
 
       if (responseCreateAccount.status !== 200) {
         console.log("Erro ao criar conta.");
@@ -136,6 +137,13 @@ const CreateAccountScreen = ({ navigation }) => {
                 onChangeText={(txt) => setUser({ ...user, cep: txt })}
                 fieldValue={user.cep}
                 placeholder={"CEP"}
+              />
+
+              <Input
+                // keyType={"visible-password"}
+                onChangeText={(txt) => setUser({ ...user, cidade: txt })}
+                fieldValue={user.cidade}
+                placeholder={"Cidade"}
               />
               <Input
                 // keyType={"visible-password"}

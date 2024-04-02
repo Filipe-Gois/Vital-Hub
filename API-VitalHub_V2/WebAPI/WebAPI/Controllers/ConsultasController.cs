@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -19,45 +20,90 @@ namespace WebAPI.Controllers
             consultaRepository = new ConsultaRepository();
         }
 
-        [Authorize]
-        [HttpGet]
+        //[Authorize]
+        [HttpGet("ConsultasPacienteLogado")]
         public IActionResult BuscarConsultasPaciente()
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
 
-            List<Consulta> consultas = consultaRepository.ListarPorPaciente(idUsuario);
-            return Ok(consultas);
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+
+                List<Consulta> consultas = consultaRepository.ListarPorPaciente(idUsuario);
+                return Ok(consultas);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
-        [Authorize(Roles ="Medico")]
+        [Authorize(Roles = "Medico")]
         [HttpGet("ConsultasMedico")]
         public IActionResult BuscarConsultasMedico()
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
 
-            List<Consulta> consultas = consultaRepository.ListarPorMedico(idUsuario);
-            return Ok(consultas);
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+
+                List<Consulta> consultas = consultaRepository.ListarPorMedico(idUsuario);
+                return Ok(consultas);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("Cadastrar")]
         public IActionResult Cadastrar(Consulta consulta)
         {
-            consultaRepository.Cadastrar(consulta);
-            return StatusCode(201);
+            try
+            {
+                consultaRepository.Cadastrar(consulta);
+                return StatusCode(201);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut("Status")]
-        public IActionResult EditarStatus(Consulta consulta)
+        public IActionResult EditarStatus(Guid id, ConsultaViewModel consultaModel)
         {
-            consultaRepository.EditarStatus(consulta);
-            return Ok();
+            try
+            {
+                consultaRepository.EditarStatus(id, consultaModel);
+                return Ok();
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut("Prontuario")]
-        public IActionResult EditarProntuario(Consulta consulta)
+        public IActionResult EditarProntuario(Guid id, ConsultaViewModel consultaModel)
         {
-            consultaRepository.EditarProntuario(consulta);
-            return Ok();
+            try
+            {
+                consultaRepository.EditarProntuario(id, consultaModel);
+                return Ok();
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
     }
 }

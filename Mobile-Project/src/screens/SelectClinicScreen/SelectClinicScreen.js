@@ -12,34 +12,52 @@ import { TextCreateAccount2 } from "../../components/Paragraph/style";
 import { Theme } from "../../themes";
 import ClinicCard from "../../components/ClinicCard";
 import { FlatListStyle } from "../../components/FlatList/style";
-import axios from "axios";
 
-
-const SelectClinicScreen = ({navigation}) => {
-  const [clinics, setClinics] = useState([]);
+const SelectClinicScreen = ({ navigation }) => {
+  //variável que armazena o id da clinica selecionada
   const [selectedClinic, setSelectedClinic] = useState();
 
-  useEffect(() => {
-    const fetchClinics = async () => {
-      try {
-        const response = await axios.get(
-          "http://172.16.39.101:4466/api/Clinica/ListarTodas"
-        );
-        setClinics(response.data);
-      } catch (error) {
-        console.error("Erro ao carregar as Clinicas:", error);
-      }
-    };
-
-    fetchClinics();
-  }, []);
+  const [clinics, setClinics] = useState([
+    {
+      id: "1",
+      name: "Clínica Natureh",
+      city: "São Paulo",
+      state: "SP",
+      rate: "4,5",
+      opening: "Seg-Sex",
+    },
+    {
+      id: "2",
+      name: "Diamond Pró-Mulher",
+      city: "São Paulo",
+      state: "SP",
+      rate: "4,8",
+      opening: "Seg-Sex",
+    },
+    {
+      id: "3",
+      name: "Clinica Villa Lobos",
+      city: "Taboão",
+      state: "SP",
+      rate: "4,2",
+      opening: "Seg-Sab",
+    },
+    {
+      id: "4",
+      name: "SP Oncologia Clínica",
+      city: "Taboão",
+      state: "SP",
+      rate: "4,2",
+      opening: "Seg-Sab",
+    },
+  ]);
 
   return (
     <Container>
       <MainContentScroll>
         <MainContent>
           <FormBox margin={"30px 0 0 0"}>
-            <Title>Selecionar Clínica</Title>
+            <Title>Selecionar clínica</Title>
 
             {/* <ClinicCard dados={clinics[0]} /> */}
 
@@ -49,7 +67,6 @@ const SelectClinicScreen = ({navigation}) => {
               scrollEnabled={false}
               renderItem={({ item }) => (
                 <ClinicCard
-                  key={item.id}
                   //ao clicar no card da clinica, o id é capturado e passado p variavel que o armazenará
                   onPress={() => setSelectedClinic(item.id)}
                   //se o id armazenado no state "selectedClinic" for identico ao id do item atual do FlatList, será aplicada a borda, senão, seguirá para o proximo item, e por aí vai :)

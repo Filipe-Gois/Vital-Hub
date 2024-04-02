@@ -34,20 +34,48 @@ namespace WebAPI.Controllers
         [HttpPost("Cadastrar")]
         public IActionResult Post(Clinica clinica)
         {
-            clinicaRepository.Cadastrar(clinica);
-            return StatusCode(201);
+            try
+            {
+                clinicaRepository.Cadastrar(clinica);
+                return StatusCode(201);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(clinicaRepository.BuscarPorId(id));
+
+            try
+            {
+
+                return Ok(clinicaRepository.BuscarPorId(id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet("BuscarPorCidade")]
         public IActionResult GetByCity(string cidade)
         {
-            return Ok(clinicaRepository.ListarPorCidade(cidade));
+            try
+            {
+
+                return Ok(clinicaRepository.ListarPorCidade(cidade));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
     }
 }

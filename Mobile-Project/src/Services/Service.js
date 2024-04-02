@@ -1,16 +1,17 @@
 import axios from "axios";
 import { getIPV4 } from "../Utils/ipFunctions";
 
+//configurações da api de filipe góis no senai
 
-// declarar a porta da api  
-const portaApi = '4466'
+const ipFilipePcDeCasa = "192.168.15.61";
 
-//declarar o ip da Máquina 
-const ip = "172.16.39.101"
+const ipFilipePcDoSenai = "172.16.39.113";
 
-// definir url padrão 
+const apiPortFilipePcDoSenai = "4466";
 
-const apiUrlLocal = `http://${ip}:${portaApi}/api`
+const localApiUrlFilipePcDoSenai = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
+
+const externalApiCep = `https://api.brasilaberto.com/v1/zipcode`;
 
 //rotas da api
 
@@ -26,8 +27,11 @@ export const medicosResource = `/Medicos`;
 export const usuarioResource = `/Usuario`;
 
 const api = axios.create({
-  baseURL: apiUrlLocal,
+  baseURL: localApiUrlFilipePcDoSenai,
 });
 
+export const apiCep = axios.create({
+  baseURL: externalApiCep,
+});
 
 export default api;

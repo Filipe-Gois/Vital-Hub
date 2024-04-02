@@ -22,23 +22,64 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_medicoRepository.ListarTodos());
+            try
+            {
+                return Ok(_medicoRepository.ListarTodos());
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+
+        [HttpGet("BuscarPorData")]
+        public IActionResult GetByDate(DateTime data, Guid id)
+        {
+            try
+            {
+                return StatusCode(200, _medicoRepository.BuscarPorData(data, id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {
+            try
+            {
+                return Ok(_medicoRepository.BuscarPorId(id)); ;
 
-            return Ok(_medicoRepository.BuscarPorId(id)); ;
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [Authorize]
         [HttpPut]
         public IActionResult AtualizarPerfil(MedicoViewModel medico)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost]
@@ -46,6 +87,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+
                 Usuario user = new Usuario();
                 user.Nome = medicoModel.Nome;
                 user.Email = medicoModel.Email;
@@ -72,14 +114,21 @@ namespace WebAPI.Controllers
 
                 return BadRequest(e.Message);
             }
-
         }
 
         [HttpGet("BuscarPorIdClinica")]
         public IActionResult GetByIdClinica(Guid id)
         {
+            try
+            {
+                return Ok(_medicoRepository.ListarPorClinica(id)); ;
 
-            return Ok(_medicoRepository.ListarPorClinica(id)); ;
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
     }
 }

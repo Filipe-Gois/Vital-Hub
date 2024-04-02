@@ -4,6 +4,7 @@ using Microsoft.Identity.Client;
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Repositories
 {
@@ -17,31 +18,41 @@ namespace WebAPI.Repositories
             return ctx.Consultas.Find(id);
         }
 
-        public void Cadastrar(Consulta clinica)
+        public void Cadastrar(Consulta consulta)
         {
-            ctx.Consultas.Add(clinica);
+            ctx.Consultas.Add(consulta);
             ctx.SaveChanges();
+
         }
 
-        public void EditarProntuario(Consulta consulta)
-        {
-            Consulta buscada = ctx.Consultas.Find(consulta.Id)!;
 
-            buscada.Descricao = consulta.Descricao;
-            buscada.Diagnostico = consulta.Diagnostico;
+
+
+        public void EditarProntuario(Guid id, ConsultaViewModel consultaModel)
+        {
+            Consulta buscada = ctx.Consultas.Find(id)!;
+
+            buscada.Descricao = consultaModel.Descricao;
+            buscada.Diagnostico = consultaModel.Diagnostico;
             ctx.Update(buscada);
             ctx.SaveChanges();
         }
 
-        public void EditarStatus(Consulta consulta)
-        {
-            Consulta buscada = ctx.Consultas.Find(consulta.Id);
 
-            buscada.SituacaoId = consulta.SituacaoId;
+
+        public void EditarStatus(Guid id, ConsultaViewModel consultaModel)
+        {
+            Consulta buscada = ctx.Consultas.Find(id)!;
+
+            buscada.SituacaoId = consultaModel.SituacaoId;
             ctx.Update(buscada);
             ctx.SaveChanges();
         }
 
+        public void EditarStatus(ConsultaViewModel consultaModel)
+        {
+            throw new NotImplementedException();
+        }
 
         public List<Consulta> ListarPorMedico(Guid IdMedico)
         {
@@ -67,6 +78,7 @@ namespace WebAPI.Repositories
 
             return listaConsultas;
         }
+
         public List<Consulta> ListarTodos()
         {
             return ctx.Consultas.ToList();
