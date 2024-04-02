@@ -24,112 +24,120 @@ import { WelComeImage } from "../../components/ImageProfile";
 import { HandleCallNotification } from "../../components/Notification/Notification";
 import { Alert, Text } from "react-native";
 import { userDecodeToken } from "../../Utils/Auth";
+import api, {
+  medicosResource,
+  pacientesResource,
+} from "../../Services/Service";
 
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState("");
 
+  const [dataConsulta, setDataConsulta] = useState("");
+
+  const url = profile.role === "Paciente" ? pacientesResource : medicosResource;
+
   const [statusLista, setStatusLista] = useState("Pendente");
   const [agendarConsulta, setAgendarConsulta] = useState(false);
-  const [dadosPaciente, setDadosPaciente] = useState([
-    {
-      id: "1",
-      name: "Dr. Claudio",
-      type: "Rotina",
-      age: "22",
-      horario: "14:00",
-      srcImage: Doctor,
-      situacao: "Pendente",
-    },
-    {
-      id: "2",
-      name: "Richard Kosta",
-      type: "Urgência",
-      age: "28",
-      horario: "15:00",
-      srcImage: User,
-      situacao: "Cancelada",
-    },
-    {
-      id: "3",
-      name: "Niccole Sarga",
-      type: "Rotina",
-      age: "22",
-      horario: "14:00",
-      srcImage: Nicole,
-      situacao: "Pendente",
-    },
-    {
-      id: "4",
-      name: "Richard Kosta",
-      type: "Urgência",
-      age: "28",
-      horario: "15:00",
-      srcImage: User,
-      situacao: "Cancelada",
-    },
-    {
-      id: "5",
-      name: "Niccole Sarga",
-      type: "Rotina",
-      age: "22",
-      horario: "14:00",
-      srcImage: Nicole,
-      situacao: "Pendente",
-    },
-    {
-      id: "6",
-      name: "Richard Kosta",
-      type: "Urgência",
-      age: "28",
-      horario: "15:00",
-      srcImage: User,
-      situacao: "Cancelada",
-    },
-    {
-      id: "7",
-      name: "Niccole Sarga",
-      type: "Rotina",
-      age: "22",
-      horario: "14:00",
-      srcImage: Nicole,
-      situacao: "Realizada",
-    },
-    {
-      id: "8",
-      name: "Richard Kosta",
-      type: "Urgência",
-      age: "28",
-      horario: "15:00",
-      srcImage: User,
-      situacao: "Cancelada",
-    },
-    {
-      id: "9",
-      name: "Richard Kosta",
-      type: "Urgência",
-      age: "28",
-      horario: "15:00",
-      srcImage: User,
-      situacao: "Pendente",
-    },
-    {
-      id: "10",
-      name: "Fefe",
-      type: "Urgência",
-      age: "28",
-      horario: "15:00",
-      srcImage: User,
-      situacao: "Pendente",
-    },
-    {
-      id: "11",
-      name: "Fefe",
-      type: "Urgência",
-      age: "28",
-      horario: "15:00",
-      srcImage: User,
-      situacao: "Pendente",
-    },
+  const [consultas, setConsultas] = useState([
+    // {
+    //   id: "1",
+    //   name: "Dr. Claudio",
+    //   type: "Rotina",
+    //   age: "22",
+    //   horario: "14:00",
+    //   srcImage: Doctor,
+    //   situacao: "Pendente",
+    // },
+    // {
+    //   id: "2",
+    //   name: "Richard Kosta",
+    //   type: "Urgência",
+    //   age: "28",
+    //   horario: "15:00",
+    //   srcImage: User,
+    //   situacao: "Cancelada",
+    // },
+    // {
+    //   id: "3",
+    //   name: "Niccole Sarga",
+    //   type: "Rotina",
+    //   age: "22",
+    //   horario: "14:00",
+    //   srcImage: Nicole,
+    //   situacao: "Pendente",
+    // },
+    // {
+    //   id: "4",
+    //   name: "Richard Kosta",
+    //   type: "Urgência",
+    //   age: "28",
+    //   horario: "15:00",
+    //   srcImage: User,
+    //   situacao: "Cancelada",
+    // },
+    // {
+    //   id: "5",
+    //   name: "Niccole Sarga",
+    //   type: "Rotina",
+    //   age: "22",
+    //   horario: "14:00",
+    //   srcImage: Nicole,
+    //   situacao: "Pendente",
+    // },
+    // {
+    //   id: "6",
+    //   name: "Richard Kosta",
+    //   type: "Urgência",
+    //   age: "28",
+    //   horario: "15:00",
+    //   srcImage: User,
+    //   situacao: "Cancelada",
+    // },
+    // {
+    //   id: "7",
+    //   name: "Niccole Sarga",
+    //   type: "Rotina",
+    //   age: "22",
+    //   horario: "14:00",
+    //   srcImage: Nicole,
+    //   situacao: "Realizada",
+    // },
+    // {
+    //   id: "8",
+    //   name: "Richard Kosta",
+    //   type: "Urgência",
+    //   age: "28",
+    //   horario: "15:00",
+    //   srcImage: User,
+    //   situacao: "Cancelada",
+    // },
+    // {
+    //   id: "9",
+    //   name: "Richard Kosta",
+    //   type: "Urgência",
+    //   age: "28",
+    //   horario: "15:00",
+    //   srcImage: User,
+    //   situacao: "Pendente",
+    // },
+    // {
+    //   id: "10",
+    //   name: "Fefe",
+    //   type: "Urgência",
+    //   age: "28",
+    //   horario: "15:00",
+    //   srcImage: User,
+    //   situacao: "Pendente",
+    // },
+    // {
+    //   id: "11",
+    //   name: "Fefe",
+    //   type: "Urgência",
+    //   age: "28",
+    //   horario: "15:00",
+    //   srcImage: User,
+    //   situacao: "Pendente",
+    // },
   ]);
 
   //state para a exibição dos modais
@@ -139,7 +147,19 @@ const HomeScreen = ({ navigation }) => {
   const fetchUserName = async () => {
     const userInfo = await userDecodeToken();
     if (userInfo) {
-      setProfile(userInfo.role);
+      setProfile(userInfo);
+    }
+  };
+
+  const listarConsultas = async () => {
+    try {
+      const response = await api.get(
+        url + `/BuscarPorData?data=${dataConsulta}&id=${profile.id}`
+      );
+
+      setConsultas(response.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -147,6 +167,10 @@ const HomeScreen = ({ navigation }) => {
     fetchUserName();
     return (cleanUp = () => {});
   }, []);
+
+  useEffect(() => {
+    listarConsultas();
+  }, [dataConsulta]);
 
   return (
     <Container>
@@ -157,7 +181,7 @@ const HomeScreen = ({ navigation }) => {
             viewProfile={() => navigation.navigate("Perfil")}
           />
 
-          <CalendarList />
+          <CalendarList setDataConsulta={setDataConsulta} />
           <ButtonBox
             fieldFlexDirection={"row"}
             fieldJustifyContent={"space-between"}
@@ -192,13 +216,14 @@ const HomeScreen = ({ navigation }) => {
           </ButtonBox>
           <ContainerBoxStyle fieldAlignItems="center" fieldGap={"15px"}>
             <FlatListStyle
-              data={dadosPaciente}
+              data={consultas && consultas}
               scrollEnabled={false}
               renderItem={({ item }) =>
-                statusLista === item.situacao && (
+                statusLista === item.situacao.situacao && (
                   <CardConsulta
+                    profileData={profile}
                     onPress={
-                      profile === "Paciente"
+                      profile.role === "Paciente"
                         ? () => setShowModalAppointment(true)
                         : null
                     }
@@ -244,10 +269,12 @@ const HomeScreen = ({ navigation }) => {
               title={profile === "Paciente" ? "Dr. Claudio" : "Niccole Sarga"}
               texto1={profile === "Paciente" ? "Cliníco geral" : "22 anos"}
               texto2={
-                profile === "Paciente" ? "CRM-15286" : "niccole.sarga@gmail.com"
+                profile.role === "Paciente"
+                  ? "CRM-15286"
+                  : "niccole.sarga@gmail.com"
               }
               textButton1={
-                profile === "Paciente"
+                profile.role === "Paciente"
                   ? "Ver local da consulta"
                   : "Inserir Prontuário"
               }
@@ -255,7 +282,9 @@ const HomeScreen = ({ navigation }) => {
               cancel={false}
               HandleModal={() =>
                 navigation.navigate(
-                  profile === "Paciente" ? "ClinicAddress" : "MedicalRecord"
+                  profile.role === "Paciente"
+                    ? "ClinicAddress"
+                    : "MedicalRecord"
                 )
               }
             />
@@ -263,7 +292,7 @@ const HomeScreen = ({ navigation }) => {
         </MainContent>
       </MainContentScroll>
 
-      {profile === "Paciente" && (
+      {profile.role === "Paciente" && (
         <Stethoscope
           agendarConsulta={agendarConsulta}
           onPressAgendar={() => setAgendarConsulta(true)}
