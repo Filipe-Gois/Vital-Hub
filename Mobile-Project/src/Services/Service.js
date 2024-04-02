@@ -26,6 +26,8 @@ export const medicosResource = `/Medicos`;
 
 export const usuarioResource = `/Usuario`;
 
+export const clinicaResource = `/Clinica`;
+
 const api = axios.create({
   baseURL: localApiUrlFilipePcDoSenai,
 });

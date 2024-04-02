@@ -18,27 +18,38 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Nicole from "../../assets/nicole-sarga.png";
 import { ButtonSecondary } from "../Button/style";
 import { useState } from "react";
+import { hourDbToView } from "../../Utils/stringFunctions";
 
 export const CardConsulta = ({
   dados = [],
   onPressCancel,
   onPressAppointment,
   onPress,
+  profileData = {},
 }) => {
   const [profile, setProfile] = useState("Paciente");
   return (
     <CardConsultaStyle onPress={onPress}>
-      <WelComeImage widthImage="26%" heigthImage="100%" src={dados.srcImage} />
+      <WelComeImage widthImage="26%" heigthImage="100%" src={Nicole} />
 
       <InfoTextBox>
-        <TextCreateAccount1>{dados.name}</TextCreateAccount1>
+        <TextCreateAccount1>
+          {dados.medicoClinica.medico.idNavigation.nome}
+        </TextCreateAccount1>
 
-        <AgeAndType type={dados.type} age={dados.age} />
-        <Hour situacao={dados.situacao} horario={dados.horario} />
+        <AgeAndType
+          prioridade={dados.prioridade.prioridade}
+          age={dados.age}
+          profileData={profileData}
+        />
+        <Hour
+          situacao={dados.situacao.situacao}
+          horario={hourDbToView(dados.dataConsulta)}
+        />
       </InfoTextBox>
 
       <CancelBox>
-        {dados.situacao === "Pendente" ? (
+        {dados.situacao.situacao === "Pendente" ? (
           <ButtonSecondary padding={"0"} onPress={onPressCancel}>
             <ParagraphMA500
               color={
@@ -78,14 +89,19 @@ export const CardConsulta = ({
   );
 };
 
-const AgeAndType = ({ type = "", age = "" }) => {
+const AgeAndType = ({ prioridade, age = "", profileData = {} }) => {
   return (
     <AgeAndTypeBox>
-      <ParagraphRegular>{age} anos</ParagraphRegular>
+      {profileData.role !== "Paciente" && (
+        <>
+          <ParagraphRegular>{age} anos</ParagraphRegular>
+          <Point />
+        </>
+      )}
 
-      <Point />
-
-      <ParagraphSemiBold>{type}</ParagraphSemiBold>
+      <ParagraphSemiBold>
+        {prioridade === 0 ? "Rotina" : prioridade === 1 ? "Exame" : "Urgência"}
+      </ParagraphSemiBold>
     </AgeAndTypeBox>
   );
 };

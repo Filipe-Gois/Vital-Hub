@@ -35,3 +35,12 @@ export const dateDbToView = (date) => {
 };
 
 export const dateViewToDb = (date) => date.split("/").reverse().join("-");
+
+export const calcularIdadeDoUsuario = (nascimento) => {};
+
+export const hourDbToView = (hour) => {
+  hour = hour.substr(11, 16);
+  hour = hour.split(".")[0].substr(0, 5); //pega as horas
+
+  return hour;
+};

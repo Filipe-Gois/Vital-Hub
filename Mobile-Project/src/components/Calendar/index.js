@@ -8,7 +8,7 @@ const formatDate = (date) => {
   return date.padStart(2, "0");
 };
 
-export const CalendarList = () => {
+export const CalendarList = ({ setDataConsulta }) => {
   //define padrão pt-br para calendário
   moment.updateLocale("pt-br", {
     //meses
@@ -57,6 +57,9 @@ export const CalendarList = () => {
   //retorna o componente StyleCalendarStrip
   return (
     <StyledCalendarStrip
+      onDateSelected={(date) =>
+        setDataConsulta(moment(date).format("YYYY-MM-DD"))
+      }
       // animação e seleção de cada data
       calendarAnimation={{ type: "sequence", duration: 30 }}
       daySelectionAnimation={styles.selectedAnimationStyle}
