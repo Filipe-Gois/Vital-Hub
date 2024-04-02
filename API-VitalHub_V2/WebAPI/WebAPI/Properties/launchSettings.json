@@ -1,0 +1,36 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:4466",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+<<<<<<< HEAD:API-VitalHub/WebAPI/WebAPI/Properties/launchSettings.json
+      "applicationUrl": "http://172.16.39.101:4466",
+=======
+      "applicationUrl": "http://172.16.39.113:4466",
+      //"applicationUrl": "http://192.168.15.61:4466",
+>>>>>>> e50e9a2cfa207f035779d6e3bb4ce585c0638816:API-VitalHub_V2/WebAPI/WebAPI/Properties/launchSettings.json
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
