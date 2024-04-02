@@ -23,8 +23,8 @@ namespace WebAPI.Repositories
             ctx.Consultas.Add(consulta);
             ctx.SaveChanges();
 
-
         }
+
 
 
 
