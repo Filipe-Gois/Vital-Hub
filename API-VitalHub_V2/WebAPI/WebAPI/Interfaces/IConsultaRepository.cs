@@ -10,12 +10,12 @@ namespace WebAPI.Interfaces
 
         public Consulta BuscarPorId(Guid id);
 
-        public void EditarStatus(ConsultaViewModel consultaModel);
-        public void EditarProntuario(ConsultaViewModel consultaModel);
+        public void EditarStatus(Guid id, ConsultaViewModel consultaModel);
+        public void EditarProntuario(Guid id, ConsultaViewModel consultaModel);
 
         public List<Consulta> ListarTodos();
         public List<Consulta> ListarPorMedico(Guid IdMedico);
         public List<Consulta> ListarPorPaciente(Guid IdPaciente);
-        
+
     }
 }

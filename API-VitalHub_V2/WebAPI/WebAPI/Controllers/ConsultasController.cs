@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -74,11 +75,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("Status")]
-        public IActionResult EditarStatus(Consulta consulta)
+        public IActionResult EditarStatus(Guid id, ConsultaViewModel consultaModel)
         {
             try
             {
-                consultaRepository.EditarStatus(consulta);
+                consultaRepository.EditarStatus(id, consultaModel);
                 return Ok();
 
             }
@@ -90,11 +91,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("Prontuario")]
-        public IActionResult EditarProntuario(Consulta consulta)
+        public IActionResult EditarProntuario(Guid id, ConsultaViewModel consultaModel)
         {
             try
             {
-                consultaRepository.EditarProntuario(consulta);
+                consultaRepository.EditarProntuario(id, consultaModel);
                 return Ok();
 
             }

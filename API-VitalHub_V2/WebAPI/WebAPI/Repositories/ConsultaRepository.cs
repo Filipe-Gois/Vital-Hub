@@ -24,67 +24,64 @@ namespace WebAPI.Repositories
             ctx.SaveChanges();
 
 
+        }
 
 
 
+        public void EditarProntuario(Guid id, ConsultaViewModel consultaModel)
+        {
+            Consulta buscada = ctx.Consultas.Find(id)!;
 
-            public void EditarProntuario(Consulta consulta)
-            {
-                Consulta buscada = ctx.Consultas.Find(consulta.Id)!;
+            buscada.Descricao = consultaModel.Descricao;
+            buscada.Diagnostico = consultaModel.Diagnostico;
+            ctx.Update(buscada);
+            ctx.SaveChanges();
+        }
 
-                buscada.Descricao = consulta.Descricao;
-                buscada.Diagnostico = consulta.Diagnostico;
-                ctx.Update(buscada);
-                ctx.SaveChanges();
-            }
 
-            public void EditarProntuario(ConsultaViewModel consultaModel)
-            {
-                throw new NotImplementedException();
-            }
 
-            public void EditarStatus(Consulta consulta)
-            {
-                Consulta buscada = ctx.Consultas.Find(consulta.Id);
+        public void EditarStatus(Guid id, ConsultaViewModel consultaModel)
+        {
+            Consulta buscada = ctx.Consultas.Find(id)!;
 
-                buscada.SituacaoId = consulta.SituacaoId;
-                ctx.Update(buscada);
-                ctx.SaveChanges();
-            }
+            buscada.SituacaoId = consultaModel.SituacaoId;
+            ctx.Update(buscada);
+            ctx.SaveChanges();
+        }
 
-            public void EditarStatus(ConsultaViewModel consultaModel)
-            {
-                throw new NotImplementedException();
-            }
+        public void EditarStatus(ConsultaViewModel consultaModel)
+        {
+            throw new NotImplementedException();
+        }
 
-            public List<Consulta> ListarPorMedico(Guid IdMedico)
-            {
-                List<Consulta> listaConsultas = ctx.Consultas
-                    .Include(x => x.Paciente!.IdNavigation)
-                    .Include(x => x.Situacao)
-                    .Include(x => x.Prioridade)
-                    .Where(x => x.MedicoClinica != null && x.MedicoClinica.MedicoId == IdMedico)
-                    .ToList();
+        public List<Consulta> ListarPorMedico(Guid IdMedico)
+        {
+            List<Consulta> listaConsultas = ctx.Consultas
+                .Include(x => x.Paciente!.IdNavigation)
+                .Include(x => x.Situacao)
+                .Include(x => x.Prioridade)
+                .Where(x => x.MedicoClinica != null && x.MedicoClinica.MedicoId == IdMedico)
+                .ToList();
 
-                return listaConsultas;
+            return listaConsultas;
 
-            }
+        }
 
-            public List<Consulta> ListarPorPaciente(Guid IdPaciente)
-            {
-                List<Consulta> listaConsultas = ctx.Consultas
-                    .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
-                    .Include(x => x.Situacao)
-                    .Include(x => x.Prioridade)
-                    .Where(x => x.PacienteId != null && x.PacienteId == IdPaciente)
-                    .ToList();
+        public List<Consulta> ListarPorPaciente(Guid IdPaciente)
+        {
+            List<Consulta> listaConsultas = ctx.Consultas
+                .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
+                .Include(x => x.Situacao)
+                .Include(x => x.Prioridade)
+                .Where(x => x.PacienteId != null && x.PacienteId == IdPaciente)
+                .ToList();
 
-                return listaConsultas;
-            }
+            return listaConsultas;
+        }
 
-            public List<Consulta> ListarTodos()
-            {
-                return ctx.Consultas.ToList();
-            }
+        public List<Consulta> ListarTodos()
+        {
+            return ctx.Consultas.ToList();
         }
     }
+}
