@@ -44,3 +44,5 @@ export const hourDbToView = (hour) => {
 
   return hour;
 };
+
+export const crmDbToView = (crm) => {};

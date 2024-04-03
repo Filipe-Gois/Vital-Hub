@@ -38,6 +38,7 @@ export const CardConsulta = ({
         </TextCreateAccount1>
 
         <AgeAndType
+          crm={dados.medicoClinica.medico.crm}
           prioridade={dados.prioridade.prioridade}
           age={dados.age}
           profileData={profileData}
@@ -89,16 +90,14 @@ export const CardConsulta = ({
   );
 };
 
-const AgeAndType = ({ prioridade, age = "", profileData = {} }) => {
+const AgeAndType = ({ prioridade, age = "22", profileData = {}, crm = "" }) => {
   return (
     <AgeAndTypeBox>
-      {profileData.role !== "Paciente" && (
-        <>
-          <ParagraphRegular>{age} anos</ParagraphRegular>
-          <Point />
-        </>
-      )}
+      <ParagraphRegular>
+        {profileData.role !== "Paciente" ? age + " anos" : crm}
+      </ParagraphRegular>
 
+      <Point />
       <ParagraphSemiBold>
         {prioridade === 0 ? "Rotina" : prioridade === 1 ? "Exame" : "Urgência"}
       </ParagraphSemiBold>
