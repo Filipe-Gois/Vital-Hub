@@ -28,6 +28,8 @@ import { LabelStyle } from "../Label/style";
 import { Theme } from "../../themes";
 
 export const ModalComponent = ({
+  consulta,
+  roleUsuario,
   visible,
   setShowModalCancel,
   title = "",
@@ -51,12 +53,10 @@ export const ModalComponent = ({
     }
   };
 
-  // const HandleModal = () => {
-  //   if (navigation) {
-  //     navigation.navigate(setNavigation);
-  //   }
-  //   onPressNotification;
-  // };
+  const handlePress = (rota) => {
+    navigation.replace(rota, { clinicaId: consulta.medicoClinica.clinicaId });
+  };
+
   return (
     <ModalStyle
       visible={visible}

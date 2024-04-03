@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   FormBox,
@@ -11,28 +11,48 @@ import ClinicAddress from "../../components/ClinicAddress";
 import { ButtonSecondary } from "../../components/Button/style";
 import { TextCreateAccount2 } from "../../components/Paragraph/style";
 import MapaGps from "../../components/MapaGps";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import { apiFilipe, clinicaResource } from "../../Services/Service";
 
-const ClinicAddressScreen = ({ navigation }) => {
-  const [clinic, setClinic] = useState({
-    id: "1",
-    name: "Clínica Natureh",
-    city: "São Paulo",
-    state: "SP",
-    street: "Rua Vicenso Silva, 987",
-    bairro: "Moema-SP",
-    number: "578",
-  });
+const ClinicAddressScreen = ({ navigation, route }) => {
+  const [clinic, setClinic] = useState({});
+
+  const getClinic = async () => {
+    try {
+      const response = await apiFilipe.get(
+        clinicaResource + `/BuscarPorId?id=${route?.params.clinicaId}`
+      );
+      console.log(response.data);
+      setClinic(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (clinic === null || clinic === undefined || !clinic) {
+      getClinic();
+      console.log(clinic);
+    }
+
+    return (cleanUp = () => {});
+  }, [clinic]);
   return (
     <Container>
       <MainContent>
-        <MapaGps />
+        {clinic !== null ? (
+          <>
+            <MapaGps />
 
-        <ClinicAddress dados={clinic} />
+            <ClinicAddress dados={clinic} />
 
-        <ButtonSecondary onPress={() => navigation.goBack()}>
-          <TextCreateAccount2>Voltar</TextCreateAccount2>
-        </ButtonSecondary>
+            <ButtonSecondary onPress={() => navigation.goBack()}>
+              <TextCreateAccount2>Voltar</TextCreateAccount2>
+            </ButtonSecondary>
+          </>
+        ) : (
+          <ActivityIndicator />
+        )}
       </MainContent>
     </Container>
   );

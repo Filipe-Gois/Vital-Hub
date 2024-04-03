@@ -94,7 +94,7 @@ const AgeAndType = ({ prioridade, age = "22", profileData = {}, crm = "" }) => {
   return (
     <AgeAndTypeBox>
       <ParagraphRegular>
-        {profileData.role !== "Paciente" ? age + " anos" : crm}
+        {profileData.role !== "Paciente" ? age + " anos" : "crm: " + crm}
       </ParagraphRegular>
 
       <Point />

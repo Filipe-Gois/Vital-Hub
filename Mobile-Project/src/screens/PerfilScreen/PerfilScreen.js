@@ -1,4 +1,4 @@
-import { BannerUserComponent } from "../../components/BannerUser";
+  import { BannerUserComponent } from "../../components/BannerUser";
 import {
   Container,
   FormBox,

@@ -31,7 +31,7 @@ import {
   TextCreateAccount2,
 } from "../../components/Paragraph/style.js";
 import { useContext, useState } from "react";
-import api, { loginResource } from "../../Services/Service.js";
+import { apiFilipe, loginResource } from "../../Services/Service.js";
 import { ActivityIndicator, Alert, TouchableHighlight } from "react-native";
 import os from "react-native-os";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -46,12 +46,13 @@ import { ButtonAsync } from "../../components/Button/index.js";
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ email: "f@f.com", senha: "12345" });
+
   // const { userData, setUserData } = useContext(AuthContext);
 
   const Login = async () => {
     setLoading(loading); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
     try {
-      const response = await api.post(loginResource, user);
+      const response = await apiFilipe.post(loginResource, user);
 
       await AsyncStorage.setItem("token", JSON.stringify(response.data));
 

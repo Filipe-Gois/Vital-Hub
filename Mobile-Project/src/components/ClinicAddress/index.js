@@ -6,14 +6,12 @@ import Label from "../Label";
 import { ClinicAddressStyle } from "./style";
 import { Theme } from "../../themes";
 
-const ClinicAddress = ({ dados = [] }) => {
+const ClinicAddress = ({ dados = {} }) => {
   return (
     <ClinicAddressStyle>
       <FormBox gap={"8px"}>
-        <Title>{dados.name}</Title>
-        <ParagraphSemiBold>
-          {dados.city}, {dados.state}
-        </ParagraphSemiBold>
+        <Title>{dados && dados.nomeFantasia}</Title>
+        <ParagraphSemiBold>{dados && dados.endereco.cidade}</ParagraphSemiBold>
 
         <InputBox margin={"12px 0 0 0"} gap={"20px"}>
           <Label
@@ -22,7 +20,7 @@ const ClinicAddress = ({ dados = [] }) => {
             border="none"
             backGround={Theme.colors.v2LightWhite}
             titulo="Endereço"
-            placeholder={dados.street}
+            placeholder={dados && dados.endereco.logradouro}
           />
 
           <InputBox fieldFlexDirection={"row"} justifyContent={"space-between"}>
@@ -33,7 +31,7 @@ const ClinicAddress = ({ dados = [] }) => {
               border="none"
               backGround={Theme.colors.v2LightWhite}
               titulo="Número"
-              placeholder={dados.number}
+              placeholder={dados && dados.endereco.numero}
             />
             <Label
               textColor={Theme.colors.grayV1}
@@ -42,7 +40,7 @@ const ClinicAddress = ({ dados = [] }) => {
               border="none"
               backGround={Theme.colors.v2LightWhite}
               titulo="Bairro"
-              placeholder={dados.bairro}
+              // placeholder={dados && dados.bairro}
             />
           </InputBox>
         </InputBox>

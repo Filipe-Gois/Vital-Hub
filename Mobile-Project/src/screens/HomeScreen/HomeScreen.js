@@ -24,7 +24,8 @@ import { WelComeImage } from "../../components/ImageProfile";
 import { HandleCallNotification } from "../../components/Notification/Notification";
 import { Alert, Text } from "react-native";
 import { userDecodeToken } from "../../Utils/Auth";
-import api, {
+import {
+  apiFilipe,
   medicosResource,
   pacientesResource,
 } from "../../Services/Service";
@@ -32,113 +33,16 @@ import api, {
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState("");
 
+  //pega o id da consulta ao clicar no card
+  const [consultaSelecionada, setConsultaSelecionada] = useState(null);
+
   const [dataConsulta, setDataConsulta] = useState("");
 
   const url = profile.role === "Paciente" ? pacientesResource : medicosResource;
 
   const [statusLista, setStatusLista] = useState("Pendente");
   const [agendarConsulta, setAgendarConsulta] = useState(false);
-  const [consultas, setConsultas] = useState([
-    // {
-    //   id: "1",
-    //   name: "Dr. Claudio",
-    //   type: "Rotina",
-    //   age: "22",
-    //   horario: "14:00",
-    //   srcImage: Doctor,
-    //   situacao: "Pendente",
-    // },
-    // {
-    //   id: "2",
-    //   name: "Richard Kosta",
-    //   type: "Urgência",
-    //   age: "28",
-    //   horario: "15:00",
-    //   srcImage: User,
-    //   situacao: "Cancelada",
-    // },
-    // {
-    //   id: "3",
-    //   name: "Niccole Sarga",
-    //   type: "Rotina",
-    //   age: "22",
-    //   horario: "14:00",
-    //   srcImage: Nicole,
-    //   situacao: "Pendente",
-    // },
-    // {
-    //   id: "4",
-    //   name: "Richard Kosta",
-    //   type: "Urgência",
-    //   age: "28",
-    //   horario: "15:00",
-    //   srcImage: User,
-    //   situacao: "Cancelada",
-    // },
-    // {
-    //   id: "5",
-    //   name: "Niccole Sarga",
-    //   type: "Rotina",
-    //   age: "22",
-    //   horario: "14:00",
-    //   srcImage: Nicole,
-    //   situacao: "Pendente",
-    // },
-    // {
-    //   id: "6",
-    //   name: "Richard Kosta",
-    //   type: "Urgência",
-    //   age: "28",
-    //   horario: "15:00",
-    //   srcImage: User,
-    //   situacao: "Cancelada",
-    // },
-    // {
-    //   id: "7",
-    //   name: "Niccole Sarga",
-    //   type: "Rotina",
-    //   age: "22",
-    //   horario: "14:00",
-    //   srcImage: Nicole,
-    //   situacao: "Realizada",
-    // },
-    // {
-    //   id: "8",
-    //   name: "Richard Kosta",
-    //   type: "Urgência",
-    //   age: "28",
-    //   horario: "15:00",
-    //   srcImage: User,
-    //   situacao: "Cancelada",
-    // },
-    // {
-    //   id: "9",
-    //   name: "Richard Kosta",
-    //   type: "Urgência",
-    //   age: "28",
-    //   horario: "15:00",
-    //   srcImage: User,
-    //   situacao: "Pendente",
-    // },
-    // {
-    //   id: "10",
-    //   name: "Fefe",
-    //   type: "Urgência",
-    //   age: "28",
-    //   horario: "15:00",
-    //   srcImage: User,
-    //   situacao: "Pendente",
-    // },
-    // {
-    //   id: "11",
-    //   name: "Fefe",
-    //   type: "Urgência",
-    //   age: "28",
-    //   horario: "15:00",
-    //   srcImage: User,
-    //   situacao: "Pendente",
-    // },
-  ]);
+  const [consultas, setConsultas] = useState([]);
 
   //state para a exibição dos modais
   const [showModalCancel, setShowModalCancel] = useState(false);
@@ -151,9 +55,19 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  const mostrarModal = (modal, consulta) => {
+    setConsultaSelecionada(consulta);
+    if (modal === "cancelar") {
+      setShowModalCancel(true);
+    } else if (modal === "prontuario") {
+      setShowModalAppointment(true);
+    } else {
+    }
+  };
+
   const listarConsultas = async () => {
     try {
-      const response = await api.get(
+      const response = await apiFilipe.get(
         url + `/BuscarPorData?data=${dataConsulta}&id=${profile.id}`
       );
 
@@ -166,11 +80,11 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     fetchUserName();
     return (cleanUp = () => {});
-  }, []);
+  }, [consultaSelecionada]);
 
   useEffect(() => {
     listarConsultas();
-  }, [dataConsulta]);
+  }, [dataConsulta, consultaSelecionada]);
 
   return (
     <Container>
@@ -223,9 +137,11 @@ const HomeScreen = ({ navigation }) => {
                   <CardConsulta
                     profileData={profile}
                     onPress={
-                      profile.role === "Paciente"
-                        ? () => setShowModalAppointment(true)
-                        : null
+                      profile.role === "Paciente" &&
+                      (() => {
+                        setShowModalAppointment(true);
+                        setConsultaSelecionada(item);
+                      })
                     }
                     onPressCancel={() => setShowModalCancel(true)}
                     onPressAppointment={
@@ -281,11 +197,9 @@ const HomeScreen = ({ navigation }) => {
               textButton2={"Cancelar"}
               cancel={false}
               HandleModal={() =>
-                navigation.navigate(
-                  profile.role === "Paciente"
-                    ? "ClinicAddress"
-                    : "MedicalRecord"
-                )
+                navigation.navigate("ClinicAddress", {
+                  clinicaId: consultaSelecionada.medicoClinica.clinicaId,
+                })
               }
             />
           </ContainerBoxStyle>
