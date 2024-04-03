@@ -48,7 +48,11 @@ public partial class VitalContext : DbContext
 
     //conexão com o pc de casa Filipe
     //=> optionsBuilder.UseSqlServer("Data Source=FilipeDesktop\\SQLEXPRESS; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Xtringer28700; TrustServerCertificate=true");
-    //=> optionsBuilder.UseSqlServer(IpFunctions.GetIpv4() == "192.168.15.61" ? "Data Source=FilipeDesktop\\SQLEXPRESS; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Xtringer28700; TrustServerCertificate=true" : "Data Source=NOTE16-SALA19; initial catalog=VitalHub_G2T_V2; User Id = sa; Pwd = Senai@134; TrustServerCertificate=true");
+
+
+    //conexão com o pc de gabriel de luca
+    //=> optionsBuilder.UseSqlServer("Data Source=NOTE21-S21\\SQLEXPRESS; initial catalog=VitalHub_G2T; User Id = sa; Pwd = Senai@134; TrustServerCertificate=true");
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

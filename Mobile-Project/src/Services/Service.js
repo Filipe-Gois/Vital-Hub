@@ -9,13 +9,24 @@ const ipFilipePcDoSenai = "172.16.39.113";
 
 const apiPortFilipePcDoSenai = "4466";
 
-const localApiUrlFilipePcDoSenai = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
+const localApiUrlFilipe = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
 
+//rota da api externa para conferir o cep
 const externalApiCep = `https://api.brasilaberto.com/v1/zipcode`;
+
+//configurações da api de Gabriel de Luca no senai
+
+const portaApiGabriel = "4466";
+
+//declarar o ip da Máquina
+const ipGabriel = "172.16.39.101";
+
+// definir end point padrão
+
+const apiUrlLocalGabriel = `http://${ipGabriel}:${portaApiGabriel}/api`;
 
 //rotas da api
 
-//Login - post
 export const loginResource = `/Login`;
 
 export const consultasResource = `/Consultas`;
@@ -28,12 +39,17 @@ export const usuarioResource = `/Usuario`;
 
 export const clinicaResource = `/Clinica`;
 
-const api = axios.create({
-  baseURL: localApiUrlFilipePcDoSenai,
+//api de filipe góis
+export const apiFilipe = axios.create({
+  baseURL: localApiUrlFilipe,
 });
 
+//api de gabriel de luca
+export const apiGabriel = axios.create({
+  baseURL: apiUrlLocalGabriel,
+});
+
+//api responsavel por retornar as informações de endereço ao informar um cep
 export const apiCep = axios.create({
   baseURL: externalApiCep,
 });
-
-export default api;
