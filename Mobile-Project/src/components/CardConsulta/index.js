@@ -38,7 +38,7 @@ export const CardConsulta = ({
         </TextCreateAccount1>
 
         <AgeAndType
-          crm={dados.medico.crm}
+          crm={dados.medicoClinica.medico.crm}
           prioridade={dados.prioridade.prioridade}
           age={dados.age}
           profileData={profileData}
