@@ -11,7 +11,6 @@ const apiPortFilipePcDoSenai = "4466";
 
 const localApiUrlFilipe = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
 
-<<<<<<< HEAD
 //------------------------
 
 
@@ -20,14 +19,10 @@ const localApiUrlFilipe = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}
 //declarar o ip da Máquina 
 const ip = " 172.16.39.101"
 
-// definir end point padrão 
-
-const apiUrlLocal = `http://${ip}:${portaapi}/api`
 
 
-=======
+
 //rota da api externa para conferir o cep
->>>>>>> 2021bff579531a95baa31acc2b89d88d2eb3ea6f
 const externalApiCep = `https://api.brasilaberto.com/v1/zipcode`;
 
 //configurações da api de Gabriel de Luca no senai

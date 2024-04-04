@@ -21,7 +21,7 @@ import { useState } from "react";
 import { hourDbToView } from "../../Utils/stringFunctions";
 
 export const CardConsulta = ({
-  dados = [],
+  dados = {},
   onPressCancel,
   onPressAppointment,
   onPress,
@@ -34,11 +34,11 @@ export const CardConsulta = ({
 
       <InfoTextBox>
         <TextCreateAccount1>
-          {dados.medicoClinica.medico.idNavigation.nome}
+          {/* {dados.medicoClinica.medico.idNavigation.nome} */}
         </TextCreateAccount1>
 
         <AgeAndType
-          crm={dados.medicoClinica.medico.crm}
+          // crm={dados.medicoClinica.medico.crm}
           prioridade={dados.prioridade.prioridade}
           age={dados.age}
           profileData={profileData}
