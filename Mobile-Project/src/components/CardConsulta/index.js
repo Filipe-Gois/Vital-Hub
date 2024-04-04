@@ -21,7 +21,7 @@ import { useState } from "react";
 import { hourDbToView } from "../../Utils/stringFunctions";
 
 export const CardConsulta = ({
-  dados = [],
+  dados = {},
   onPressCancel,
   onPressAppointment,
   onPress,
@@ -90,7 +90,7 @@ export const CardConsulta = ({
   );
 };
 
-const AgeAndType = ({ prioridade, age = "22", profileData = {}, crm = "" }) => {
+const AgeAndType = ({ prioridade, age = "", profileData = {}, crm = "" }) => {
   return (
     <AgeAndTypeBox>
       <ParagraphRegular>

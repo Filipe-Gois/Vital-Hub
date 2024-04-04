@@ -26,6 +26,7 @@ import { Alert, Text } from "react-native";
 import { userDecodeToken } from "../../Utils/Auth";
 import {
   apiFilipe,
+  consultasResource,
   medicosResource,
   pacientesResource,
 } from "../../Services/Service";
@@ -62,6 +63,18 @@ const HomeScreen = ({ navigation }) => {
     } else if (modal === "prontuario") {
       setShowModalAppointment(true);
     } else {
+    }
+  };
+
+  const handleCancelarConsulta = async (id) => {
+    try {
+      const response = await apiFilipe.delete(consultasResource + `?id=${id}`);
+
+      if (response.status === 204) {
+        listarConsultas();
+      }
+    } catch (error) {
+      console.log("Erro ao desmarcar consulta!", error);
     }
   };
 
@@ -143,10 +156,16 @@ const HomeScreen = ({ navigation }) => {
                         setConsultaSelecionada(item);
                       })
                     }
-                    onPressCancel={() => setShowModalCancel(true)}
+                    onPressCancel={() => {
+                      setShowModalCancel(true);
+                      setConsultaSelecionada(item);
+                    }}
                     onPressAppointment={
                       profile !== "Paciente"
-                        ? () => setShowModalAppointment(true)
+                        ? () => {
+                            setShowModalAppointment(true);
+                            setConsultaSelecionada(item);
+                          }
                         : () => navigation.navigate("ViewMedicalRecord")
                     }
                     dados={item}
@@ -166,14 +185,15 @@ const HomeScreen = ({ navigation }) => {
               texto1={
                 "Ao cancelar essa consulta, abrirá uma possível disponibilidade no seu horário, deseja mesmo cancelar essa consulta?"
               }
-              textButton1={"Confirmar"}
-              textButton2={"Cancelar"}
+              textButton1={"Cancelar consulta"}
+              textButton2={"Voltar"}
               // goBack={true}
               HandleModal={() => {
+                handleCancelarConsulta(consultaSelecionada.id);
                 setShowModalCancel(false);
                 HandleCallNotification({
                   body: "Notificação recebida!",
-                  title: "Bem-vindo ao Senai!",
+                  title: "Consulta desmarcada com sucesso!",
                 });
               }}
             />
@@ -181,12 +201,21 @@ const HomeScreen = ({ navigation }) => {
             <ModalComponent
               visible={showModalAppointment}
               setShowModalCancel={setShowModalAppointment}
-              srcImage={profile === "Paciente" ? DoctorBanner : Nicole}
-              title={profile === "Paciente" ? "Dr. Claudio" : "Niccole Sarga"}
-              texto1={profile === "Paciente" ? "Cliníco geral" : "22 anos"}
+              srcImage={profile.role === "Paciente" ? DoctorBanner : Nicole}
+              title={
+                profile.role === "Paciente" && consultaSelecionada
+                  ? consultaSelecionada.medicoClinica.medico.idNavigation.nome
+                  : "Niccole Sarga"
+              }
+              texto1={
+                profile.role === "Paciente" && consultaSelecionada
+                  ? consultaSelecionada.medicoClinica.medico.especialidade
+                      .especialidade1
+                  : ""
+              }
               texto2={
-                profile.role === "Paciente"
-                  ? "CRM-15286"
+                profile.role === "Paciente" && consultaSelecionada
+                  ? "crm: " + consultaSelecionada.medicoClinica.medico.crm
                   : "niccole.sarga@gmail.com"
               }
               textButton1={

@@ -90,6 +90,21 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                consultaRepository.CancelarConsulta(id);
+                return StatusCode(204);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPut("Prontuario")]
         public IActionResult EditarProntuario(Guid id, ConsultaViewModel consultaModel)
         {

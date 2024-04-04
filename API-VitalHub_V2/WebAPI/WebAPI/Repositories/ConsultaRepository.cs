@@ -15,7 +15,7 @@ namespace WebAPI.Repositories
 
         public Consulta BuscarPorId(Guid id)
         {
-            return ctx.Consultas.Find(id);
+            return ctx.Consultas.Find(id)!;
         }
 
         public void Cadastrar(Consulta consulta)
@@ -25,8 +25,17 @@ namespace WebAPI.Repositories
 
         }
 
+        public void CancelarConsulta(Guid idConsulta)
+        {
+            Consulta consultaBuscada = ctx.Consultas.Find(idConsulta)!;
 
+            if (consultaBuscada != null)
+            {
+                ctx.Consultas.Remove(consultaBuscada);
+            }
 
+            ctx.SaveChanges();
+        }
 
         public void EditarProntuario(Guid id, ConsultaViewModel consultaModel)
         {

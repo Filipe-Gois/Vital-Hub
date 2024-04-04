@@ -1,4 +1,4 @@
-  import { BannerUserComponent } from "../../components/BannerUser";
+import { BannerUserComponent } from "../../components/BannerUser";
 import {
   Container,
   FormBox,
@@ -16,7 +16,7 @@ import { ParagraphSemiBold } from "../../components/Paragraph/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
 import { userDecodeToken } from "../../Utils/Auth";
-import api, { pacientesResource } from "../../Services/Service";
+import { apiFilipe, pacientesResource } from "../../Services/Service";
 import {
   cepMasked,
   cpfMasked,
@@ -74,7 +74,7 @@ export const PerfilScreen = ({ navigation }) => {
   //traz os dados pessoais do usuario Ex: cpf, logradouro, etc
   const getUserInfo = async () => {
     try {
-      const response = await api.get(
+      const response = await apiFilipe.get(
         `${pacientesResource}/BuscarPorId?id=${userGlobalData.id}`
       );
 
@@ -111,7 +111,7 @@ export const PerfilScreen = ({ navigation }) => {
         return;
       }
 
-      const response = await api.put(
+      const response = await apiFilipe.put(
         pacientesResource + `/AtualizarPerfil?id=${userGlobalData.id}`,
         {
           // rg: unMask(dadosPessoaisDoUsuario.rg),

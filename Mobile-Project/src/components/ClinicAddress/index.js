@@ -10,8 +10,10 @@ const ClinicAddress = ({ dados = {} }) => {
   return (
     <ClinicAddressStyle>
       <FormBox gap={"8px"}>
-        <Title>{dados && dados.nomeFantasia}</Title>
-        <ParagraphSemiBold>{dados && dados.endereco.cidade}</ParagraphSemiBold>
+        {/* <Title>{dados.nomeFantasia && dados.nomeFantasia}</Title> */}
+        <ParagraphSemiBold>
+          {/* {dados.endereco.cidade && dados.endereco.cidade} */}
+        </ParagraphSemiBold>
 
         <InputBox margin={"12px 0 0 0"} gap={"20px"}>
           <Label
@@ -20,7 +22,8 @@ const ClinicAddress = ({ dados = {} }) => {
             border="none"
             backGround={Theme.colors.v2LightWhite}
             titulo="Endereço"
-            placeholder={dados && dados.endereco.logradouro}
+            // placeholder={dados.endereco.logradouro && dados.endereco.logradouro}
+            // fieldValue={dados.endereco.logradouro && dados.endereco.logradouro}
           />
 
           <InputBox fieldFlexDirection={"row"} justifyContent={"space-between"}>
@@ -31,7 +34,8 @@ const ClinicAddress = ({ dados = {} }) => {
               border="none"
               backGround={Theme.colors.v2LightWhite}
               titulo="Número"
-              placeholder={dados && dados.endereco.numero}
+              // placeholder={dados && dados.endereco.numero}
+              // fieldValue={dados.endereco.numero && dados.endereco.numero}
             />
             <Label
               textColor={Theme.colors.grayV1}
@@ -41,6 +45,7 @@ const ClinicAddress = ({ dados = {} }) => {
               backGround={Theme.colors.v2LightWhite}
               titulo="Bairro"
               // placeholder={dados && dados.bairro}
+              // fieldValue={}
             />
           </InputBox>
         </InputBox>

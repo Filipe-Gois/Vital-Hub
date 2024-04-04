@@ -20,7 +20,7 @@ const ClinicAddressScreen = ({ navigation, route }) => {
   const getClinic = async () => {
     try {
       const response = await apiFilipe.get(
-        clinicaResource + `/BuscarPorId?id=${route?.params.clinicaId}`
+        clinicaResource + `/BuscarPorId?id=${route.params.clinicaId}`
       );
       console.log(response.data);
       setClinic(response.data);
@@ -30,9 +30,10 @@ const ClinicAddressScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    console.log(route.params.clinicaId);
     if (clinic === null || clinic === undefined || !clinic) {
       getClinic();
-      console.log(clinic);
+      
     }
 
     return (cleanUp = () => {});
