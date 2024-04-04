@@ -68,7 +68,7 @@ const HomeScreen = ({ navigation }) => {
 
   const handleCancelarConsulta = async (id) => {
     try {
-      const response = await apiFilipe.delete(consultasResource + `?id=${id}`);
+      const response = await apiFilipe.put(consultasResource + `?id=${id}`);
 
       if (response.status === 204) {
         listarConsultas();

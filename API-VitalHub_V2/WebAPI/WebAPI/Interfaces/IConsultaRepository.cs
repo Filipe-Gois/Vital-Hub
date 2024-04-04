@@ -11,7 +11,7 @@ namespace WebAPI.Interfaces
         public Consulta BuscarPorId(Guid id);
 
 
-        //Guid idUsuario talvez precise colocar como parametro junto com o idConsulta no metodo de cancelar consulta
+        //Guid idUsuario talvez precise colocar como parametro junto com o idConsulta no metodo de cancelar consulta || , ConsultaViewModel consultaCancelada
         public void CancelarConsulta(Guid idConsulta);
 
         public void EditarStatus(Guid id, ConsultaViewModel consultaModel);

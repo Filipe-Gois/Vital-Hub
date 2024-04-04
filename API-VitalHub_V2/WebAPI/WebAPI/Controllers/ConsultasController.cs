@@ -90,8 +90,8 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult Delete(Guid id)
+        [HttpPut("CancelarConsulta")]
+        public IActionResult CancelarConsulta(Guid id)
         {
             try
             {

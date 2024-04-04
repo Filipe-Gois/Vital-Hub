@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using System.Diagnostics;
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
@@ -25,16 +26,28 @@ namespace WebAPI.Repositories
 
         }
 
+
+
         public void CancelarConsulta(Guid idConsulta)
         {
-            Consulta consultaBuscada = ctx.Consultas.Find(idConsulta)!;
+
+            Consulta consultaBuscada = ctx.Consultas.Include(c => c.Situacao).FirstOrDefault(c => c.Id == idConsulta)!;
 
             if (consultaBuscada != null)
             {
-                ctx.Consultas.Remove(consultaBuscada);
+                if (consultaBuscada.Situacao!.Situacao == "Pendente")
+                {
+
+                    consultaBuscada.Situacao!.Situacao = "Cancelada";
+                    ctx.Consultas.Update(consultaBuscada);
+
+                    ctx.SaveChanges();
+                }
+
             }
 
-            ctx.SaveChanges();
+
+
         }
 
         public void EditarProntuario(Guid id, ConsultaViewModel consultaModel)
