@@ -1,5 +1,9 @@
 import { Alert, Text, TextInput } from "react-native";
-import api, { loginResource, pacientesResource } from "../../Services/Service";
+import api, {
+  apiFilipe,
+  loginResource,
+  pacientesResource,
+} from "../../Services/Service";
 import { Button, ButtonSecondary } from "../../components/Button/style";
 import { ButtonTitle } from "../../components/ButtonTitle/style";
 import {
@@ -23,32 +27,36 @@ const CreateAccountScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(false);
   const [confirmPassword, setconfirmPassword] = useState("");
   const [user, setUser] = useState({
-    rg: "449574398",
-    cpf: "45459168481",
-    dataNascimento: "2007-01-14",
-    cep: "77001213",
-    logradouro: "Plano Diretor Norte",
-    numero: "104",
     nome: "",
     email: "",
     senha: "",
-    cidade: "São Paulo",
-    idTipoUsuario: "4EFFCFEE-7AA2-434B-A5ED-A264974317BF",
+
+    // idTipoUsuario: "4EFFCFEE-7AA2-434B-A5ED-A264974317BF",
     //banco de casa
 
-    // "3107729F-08DE-46ED-A7CD-3715B384D25D",
+    idTipoUsuario: "3107729F-08DE-46ED-A7CD-3715B384D25D",
     //banco do senai
-
-    foto: "12321312312",
   });
   const HandleSubmit = async () => {
     try {
-      if (user.senha !== confirmPassword) {
-        console.log("OPS!", "As senhas devem ser iguais!");
+      if (
+        user.email.trim() === "" ||
+        user.nome.trim() === "" ||
+        user.senha.trim() === ""
+      ) {
+        Alert.alert("Erro!", "Preencha todos os campos!");
         return;
       }
 
-      const responseCreateAccount = await api.post(pacientesResource, user);
+      if (user.senha !== confirmPassword) {
+        Alert.alert("Erro!", "OPS!", "As senhas devem ser iguais!");
+        return;
+      }
+
+      const responseCreateAccount = await apiFilipe.post(
+        pacientesResource,
+        user
+      );
 
       if (responseCreateAccount.status !== 200) {
         console.log("Erro ao criar conta.");
@@ -57,7 +65,7 @@ const CreateAccountScreen = ({ navigation }) => {
 
       //essa parte é responsável por logar o usuário na conta que acabou de ser criada
 
-      const responseLogin = await api.post(loginResource, user);
+      const responseLogin = await apiFilipe.post(loginResource, user);
 
       console.log("Token: ", responseLogin.data);
 
@@ -65,7 +73,7 @@ const CreateAccountScreen = ({ navigation }) => {
 
       navigation.replace("Main");
     } catch (error) {
-      console.log(error);
+      Alert.alert("OPS!", "Já existe um usuário com esse Email!");
     }
   };
 
@@ -110,6 +118,8 @@ const CreateAccountScreen = ({ navigation }) => {
                 fieldValue={confirmPassword}
                 placeholder={"Confirmar Senha"}
               />
+
+              {/*
 
               <Input
                 // keyType={"visible-password"}
@@ -156,7 +166,7 @@ const CreateAccountScreen = ({ navigation }) => {
                 onChangeText={(txt) => setUser({ ...user, numero: txt })}
                 fieldValue={user.numero}
                 placeholder={"Número"}
-              />
+              /> */}
             </InputBox>
 
             <Button onPress={() => HandleSubmit()}>

@@ -8,6 +8,8 @@ export const cepMasked = (data) => mask(unMask(data), ["99999-999"]);
 
 export const cpfMasked = (data) => mask(unMask(data), ["999.999.999-99"]);
 
+export const rgMasked = (rg) => mask(unMask(rg), ["99.999.999-9"]);
+
 export const dateMasked = (data) => mask(unMask(data), ["99/99/9999"]);
 //formato DD/MM/AAAA
 

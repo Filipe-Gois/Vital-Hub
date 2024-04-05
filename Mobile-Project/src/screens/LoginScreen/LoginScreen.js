@@ -45,7 +45,8 @@ import { ButtonAsync } from "../../components/Button/index.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({ email: "f@f.com", senha: "12345" });
+  const [user, setUser] = useState({ email: "fabio@f.com", senha: "12345" });
+  // const [user, setUser] = useState({ email: "f@f.com", senha: "12345" });
 
   // const { userData, setUserData } = useContext(AuthContext);
 
@@ -58,7 +59,8 @@ const LoginScreen = ({ navigation }) => {
 
       navigation.replace("Main");
     } catch (error) {
-      console.log(error);
+      Alert.alert("Erro");
+      setLoading(!loading);
     }
     setLoading(!loading); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
   };

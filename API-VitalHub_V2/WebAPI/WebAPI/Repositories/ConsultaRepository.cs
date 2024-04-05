@@ -31,18 +31,21 @@ namespace WebAPI.Repositories
         public void CancelarConsulta(Guid idConsulta)
         {
 
+            string Cancelar = "Cancelada";
+
+            SituacaoConsulta situacaoCancelada = ctx.Situacoes.FirstOrDefault(s => s.Situacao == Cancelar)!;
+
             Consulta consultaBuscada = ctx.Consultas.Include(c => c.Situacao).FirstOrDefault(c => c.Id == idConsulta)!;
 
-            if (consultaBuscada != null)
+            if (consultaBuscada != null && situacaoCancelada != null && consultaBuscada.Situacao!.Situacao == "Pendente")
             {
-                if (consultaBuscada.Situacao!.Situacao == "Pendente")
-                {
 
-                    consultaBuscada.Situacao!.Situacao = "Cancelada";
-                    ctx.Consultas.Update(consultaBuscada);
 
-                    ctx.SaveChanges();
-                }
+                consultaBuscada.Situacao = situacaoCancelada;
+                ctx.Consultas.Update(consultaBuscada);
+
+                ctx.SaveChanges();
+
 
             }
 

@@ -64,15 +64,15 @@ namespace WebAPI.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPut]
-        public IActionResult AtualizarPerfil(MedicoViewModel medico)
+
+        [HttpPut("AtualizarPerfil")]
+        public IActionResult AtualizarPerfil(Guid Id, MedicoViewModel medico)
         {
             try
             {
                 Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+                return StatusCode(204, _medicoRepository.AtualizarPerfil(Id, medico));
 
             }
             catch (Exception e)

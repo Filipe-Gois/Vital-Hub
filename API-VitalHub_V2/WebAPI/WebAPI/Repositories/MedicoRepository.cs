@@ -16,7 +16,7 @@ namespace WebAPI.Repositories
         public Medico AtualizarPerfil(Guid Id, MedicoViewModel medico)
         {
 
-            Medico medicoBuscado = ctx.Medicos.FirstOrDefault(x => x.Id == Id)!;
+            Medico medicoBuscado = ctx.Medicos.Include(x => x.Endereco).Include(x => x.IdNavigation).FirstOrDefault(x => x.Id == Id)!;
 
 
             if (medicoBuscado == null) return null!;
@@ -51,6 +51,7 @@ namespace WebAPI.Repositories
             //fazer logica para trazer medico e dados de seu usuario
             Medico medicoBuscado = ctx.Medicos.
                 Include(m => m.Endereco)
+                .Include(m => m.Especialidade)
                 .Include(m => m.IdNavigation).
 
                 FirstOrDefault(m => m.Id == Id)!;

@@ -16,7 +16,11 @@ import { ParagraphSemiBold } from "../../components/Paragraph/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
 import { userDecodeToken } from "../../Utils/Auth";
-import { apiFilipe, pacientesResource } from "../../Services/Service";
+import {
+  apiFilipe,
+  medicosResource,
+  pacientesResource,
+} from "../../Services/Service";
 import {
   cepMasked,
   cpfMasked,
@@ -24,6 +28,7 @@ import {
   dateMasked,
   dateViewToDb,
   getLocation,
+  rgMasked,
 } from "../../Utils/stringFunctions";
 import { Alert, Text, TouchableOpacity } from "react-native";
 import { ButtonAsync } from "../../components/Button";
@@ -46,7 +51,11 @@ export const PerfilScreen = ({ navigation }) => {
 
   const [cidade, setCidade] = useState("");
 
-  const [cep, setCep] = useState("");
+  const [cep, setCep] = useState("03736170");
+
+  const [crm, setCrm] = useState("");
+
+  const [especialidadeMedico, setEspecialidadeMedico] = useState("");
 
   const [enderecoLocalizado, setEnderecoLocalizado] = useState({
     street: "",
@@ -60,7 +69,12 @@ export const PerfilScreen = ({ navigation }) => {
 
   const [cpf, setCpf] = useState("");
 
+  const [rg, setRg] = useState("");
+
   const [loading, setLoading] = useState(false);
+
+  const url =
+    userGlobalData.role === "Paciente" ? pacientesResource : medicosResource;
 
   //pega as propriedades do token
   const fetchProfileData = async () => {
@@ -75,16 +89,23 @@ export const PerfilScreen = ({ navigation }) => {
   const getUserInfo = async () => {
     try {
       const response = await apiFilipe.get(
-        `${pacientesResource}/BuscarPorId?id=${userGlobalData.id}`
+        `${url}/BuscarPorId?id=${userGlobalData.id}`
       );
 
       setDadosPessoaisDoUsuario(response.data);
 
-      setDataNascimento(response.data.dataNascimento);
       setLogradouro(response.data.endereco.logradouro);
       setCidade(response.data.endereco.cidade);
       setCep(response.data.endereco.cep);
-      setCpf(response.data.cpf);
+
+      if (userGlobalData.role === "Paciente") {
+        setDataNascimento(response.data.dataNascimento);
+        setCpf(response.data.cpf);
+        setRg(response.data.rg);
+      } else {
+        setCrm(response.data.crm);
+        setEspecialidadeMedico(response.data.especialidade.especialidade1);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -93,26 +114,27 @@ export const PerfilScreen = ({ navigation }) => {
   const handleUpdate = async () => {
     setLoading(true);
     try {
-      if (
-        cpf === undefined ||
-        dataNascimento === undefined ||
-        cep === undefined ||
-        cidade.trim() === "" ||
-        cpf.trim() === "" ||
-        dataNascimento.trim() === "" ||
-        cep.trim() === "" ||
-        cidade.trim() === ""
-      ) {
-        Alert.alert(
-          "Atenção",
-          "Todos os campos devem ser preenchidos corretamente!"
-        );
-        setLoading(false);
-        return;
-      }
+      // if (
+      //   cpf === undefined ||
+      //   dataNascimento === undefined ||
+      //   cep === undefined ||
+      //   cidade.trim() === "" ||
+      //   cpf.trim() === "" ||
+      //   dataNascimento.trim() === "" ||
+      //   cep.trim() === "" ||
+      //   cidade.trim() === ""
+      // ) {
+      //   Alert.alert(
+      //     "Atenção",
+      //     "Todos os campos devem ser preenchidos corretamente!"
+      //   );
+      //   setLoading(false);
+      //   return;
+      // }
 
       const response = await apiFilipe.put(
-        pacientesResource + `/AtualizarPerfil?id=${userGlobalData.id}`,
+        `${url}/AtualizarPerfil?id=${userGlobalData.id}`,
+
         {
           // rg: unMask(dadosPessoaisDoUsuario.rg),
           cpf: unMask(cpf),
@@ -124,7 +146,7 @@ export const PerfilScreen = ({ navigation }) => {
           // nome: userGlobalData.nome,
           // email: userGlobalData.email,
           // senha: "12345",
-
+          rg: unMask(rg),
           foto: "fefe123.png",
         }
       );
@@ -179,50 +201,132 @@ export const PerfilScreen = ({ navigation }) => {
             name={userGlobalData.name}
             isAge={false}
             email={userGlobalData.email}
+            isUser={userGlobalData.role === "Medico" ? false : true}
+            crm={crm}
           />
 
           <FormBox>
-            <Label
-              // autoFocus={false}
-              pointerEvents={!editUserInfo ? "none" : "auto"}
-              onChangeText={(txt) =>
-                // setDadosPessoaisDoUsuario({
-                //   ...dadosPessoaisDoUsuario,
-                //   dataNascimento: txt,
-                // })
-                setDataNascimento(dateDbToView(txt))
-              }
-              fieldValue={
-                // dadosPessoaisDoUsuario.dataNascimento &&
-                // dateDbToView(dadosPessoaisDoUsuario.dataNascimento)
-                dataNascimento && dateDbToView(dataNascimento)
-              }
-              editable={false}
-              placeholderTextColor={Theme.colors.grayV1}
-              titulo="Data de nascimento:"
-              placeholder={"Ex: 14/01/2000"}
-              border="none"
-              backGround={Theme.colors.v2LightWhite}
-            />
-
-            {userGlobalData.role === "Paciente" && (
+            {userGlobalData.role !== "Medico" && (
               <Label
-                pointerEvents={!editUserInfo ? "none" : "auto"}
-                onChangeText={(txt) => setCpf(cpfMasked(txt))}
-                fieldValue={
-                  // dadosPessoaisDoUsuario.cpf &&
-                  cpf && cpfMasked(cpf)
+                // autoFocus={false}
+                pointerEvents={
+                  !editUserInfo || userGlobalData.role !== "Paciente"
+                    ? "none"
+                    : "auto"
                 }
-                editable={editUserInfo}
+                textColor={
+                  userGlobalData.role === "Paciente" && editUserInfo
+                    ? Theme.colors.primary
+                    : Theme.colors.grayV1
+                }
+                onChangeText={
+                  userGlobalData.role === "Paciente" &&
+                  ((txt) =>
+                    // setDadosPessoaisDoUsuario({
+                    //   ...dadosPessoaisDoUsuario,
+                    //   dataNascimento: txt,
+                    // })
+                    setDataNascimento(dateDbToView(txt)))
+                }
+                fieldValue={
+                  // dadosPessoaisDoUsuario.dataNascimento &&
+                  // dateDbToView(dadosPessoaisDoUsuario.dataNascimento)
+                  userGlobalData.role === "Paciente"
+                    ? dataNascimento && dateDbToView(dataNascimento)
+                    : crm
+                }
+                editable={false}
                 placeholderTextColor={Theme.colors.grayV1}
-                titulo="CPF"
-                placeholder={"999.999.999-99"}
-                border="none"
+                titulo={
+                  userGlobalData.role === "Paciente"
+                    ? "Data de nascimento:"
+                    : "CRM:"
+                }
+                placeholder={
+                  userGlobalData.role === "Paciente"
+                    ? "Ex: 14/01/2000"
+                    : "Ex: 99999"
+                }
+                border={
+                  userGlobalData.role === "Paciente" && editUserInfo
+                    ? Theme.colors.primary
+                    : "none"
+                }
                 backGround={Theme.colors.v2LightWhite}
               />
             )}
 
+            {userGlobalData.role !== "Medico" && (
+              <Label
+                pointerEvents={
+                  !editUserInfo || userGlobalData.role !== "Paciente"
+                    ? "none"
+                    : "auto"
+                }
+                textColor={
+                  userGlobalData.role === "Paciente" && editUserInfo
+                    ? Theme.colors.primary
+                    : Theme.colors.grayV1
+                }
+                onChangeText={
+                  userGlobalData.role === "Paciente" &&
+                  ((txt) => setRg(rgMasked(txt)))
+                }
+                fieldValue={rg && rgMasked(rg)}
+                editable={editUserInfo}
+                placeholderTextColor={Theme.colors.grayV1}
+                titulo={"RG: "}
+                placeholder={"99.999.999-9"}
+                border={
+                  userGlobalData.role === "Paciente" && editUserInfo
+                    ? Theme.colors.primary
+                    : "none"
+                }
+                backGround={Theme.colors.v2LightWhite}
+              />
+            )}
             <Label
+              pointerEvents={
+                !editUserInfo || userGlobalData.role !== "Paciente"
+                  ? "none"
+                  : "auto"
+              }
+              textColor={
+                userGlobalData.role === "Paciente" && editUserInfo
+                  ? Theme.colors.primary
+                  : Theme.colors.grayV1
+              }
+              onChangeText={
+                userGlobalData.role === "Paciente" &&
+                ((txt) => setCpf(cpfMasked(txt)))
+              }
+              fieldValue={
+                userGlobalData.role === "Paciente"
+                  ? cpf && cpfMasked(cpf)
+                  : especialidadeMedico
+              }
+              editable={editUserInfo}
+              placeholderTextColor={Theme.colors.grayV1}
+              titulo={
+                userGlobalData.role === "Paciente" ? "CPF:" : "Especialidade:"
+              }
+              placeholder={
+                userGlobalData.role === "Paciente"
+                  ? "Ex: 999.999.999-99"
+                  : "Ex: Pediatra"
+              }
+              border={
+                userGlobalData.role === "Paciente" && editUserInfo
+                  ? Theme.colors.primary
+                  : "none"
+              }
+              backGround={Theme.colors.v2LightWhite}
+            />
+
+            <Label
+              textColor={
+                editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
+              }
               pointerEvents={"none"}
               onChangeText={(txt) =>
                 // setDadosPessoaisDoUsuario({
@@ -239,10 +343,12 @@ export const PerfilScreen = ({ navigation }) => {
                   : logradouro && logradouro
               }
               editable={editUserInfo}
-              placeholderTextColor={Theme.colors.grayV1}
+              placeholderTextColor={
+                editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
+              }
               titulo="Endereço"
               placeholder={"Rua Niterói, 180."}
-              border="none"
+              border={editUserInfo ? Theme.colors.primary : "none"}
               backGround={Theme.colors.v2LightWhite}
             />
 
@@ -251,6 +357,9 @@ export const PerfilScreen = ({ navigation }) => {
               fieldJustifyContent="space-between"
             >
               <Label
+                textColor={
+                  editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
+                }
                 onEndEditing={() => {
                   getCidadeELogradouro();
                   enderecoLocalizado.zipcode &&
@@ -258,19 +367,24 @@ export const PerfilScreen = ({ navigation }) => {
                 }}
                 pointerEvents={!editUserInfo ? "none" : "auto"}
                 onChangeText={(txt) => setCep(cepMasked(txt))}
-                fieldValue={cep ? cepMasked(cep) : null}
+                fieldValue={cep && cepMasked(cep)}
                 editable={editUserInfo}
-                placeholderTextColor={Theme.colors.grayV1}
+                placeholderTextColor={
+                  editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
+                }
                 widthLabel={"45%"}
                 fieldWidth={"100"}
                 fieldMaxWidth={100}
                 titulo="Cep"
                 placeholder={"Ex: 99999-999"}
-                border="none"
+                border={editUserInfo ? Theme.colors.primary : "none"}
                 backGround={Theme.colors.v2LightWhite}
               />
 
               <Label
+                textColor={
+                  editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
+                }
                 pointerEvents={"none"}
                 onChangeText={(txt) => {
                   // setDadosPessoaisDoUsuario({
@@ -290,13 +404,15 @@ export const PerfilScreen = ({ navigation }) => {
                     ? enderecoLocalizado.city
                     : cidade && cidade
                 }
-                placeholderTextColor={Theme.colors.grayV1}
+                placeholderTextColor={
+                  editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
+                }
                 widthLabel={"45%"}
                 fieldWidth={"100"}
                 fieldMaxWidth={100}
                 titulo="Cidade"
                 placeholder={"Cidade"}
-                border="none"
+                border={editUserInfo ? Theme.colors.primary : "none"}
                 backGround={Theme.colors.v2LightWhite}
               />
             </ContainerInputBox>
