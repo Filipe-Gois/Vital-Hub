@@ -26,6 +26,7 @@ namespace WebAPI.Repositories
             if (pacienteBuscado != null)
             {
                 pacienteBuscado.DataNascimento = paciente.DataNascimento;
+                pacienteBuscado.Rg = paciente.Rg;
                 pacienteBuscado.Cpf = paciente.Cpf;
 
 

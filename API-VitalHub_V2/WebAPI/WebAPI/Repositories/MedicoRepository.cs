@@ -13,36 +13,49 @@ namespace WebAPI.Repositories
     {
         VitalContext ctx = new VitalContext();
 
-        public Medico AtualizarPerfil(Guid Id, MedicoViewModel medico)
+        public void AtualizarPerfil(Guid Id, MedicoViewModel medico)
         {
 
             Medico medicoBuscado = ctx.Medicos.Include(x => x.Endereco).Include(x => x.IdNavigation).FirstOrDefault(x => x.Id == Id)!;
 
 
-            if (medicoBuscado == null) return null!;
+            if (medicoBuscado != null)
+            {
+                if (medicoBuscado.IdNavigation != null)
+                {
+                    medicoBuscado.IdNavigation.Foto = medico.Foto;
 
-            if (medico.Foto != null)
-                medicoBuscado.IdNavigation.Foto = medico.Foto;
+                }
 
-            if (medico.EspecialidadeId != null)
-                medicoBuscado.EspecialidadeId = medico.EspecialidadeId;
 
-            if (medico.Crm != null)
-                medicoBuscado.Crm = medico.Crm;
 
-            if (medico.Logradouro != null)
-                medicoBuscado.Endereco!.Logradouro = medico.Logradouro;
+                //medicoBuscado.EspecialidadeId = medico.EspecialidadeId;
 
-            if (medico.Numero != null)
-                medicoBuscado.Endereco!.Numero = medico.Numero;
 
-            if (medico.Cep != null)
-                medicoBuscado.Endereco!.Cep = medico.Cep;
+                //medicoBuscado.Crm = medico.Crm;
 
-            ctx.Medicos.Update(medicoBuscado);
-            ctx.SaveChanges();
+                if (medicoBuscado.Endereco != null)
+                {
 
-            return medicoBuscado;
+                    medicoBuscado.Endereco!.Logradouro = medico.Logradouro;
+                    medicoBuscado.Endereco.Cidade = medico.Cidade;
+
+
+                    medicoBuscado.Endereco!.Numero = medico.Numero;
+
+
+                    medicoBuscado.Endereco!.Cep = medico.Cep;
+                }
+
+
+
+                ctx.Medicos.Update(medicoBuscado);
+                ctx.SaveChanges();
+
+
+            }
+
+
 
         }
 

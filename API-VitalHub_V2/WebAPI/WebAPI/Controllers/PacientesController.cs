@@ -153,7 +153,14 @@ namespace WebAPI.Controllers
             try
             {
 
-                return Ok(pacienteRepository.BuscarPorData(data, id));
+                List<Consulta> buscadas = pacienteRepository.BuscarPorData(data, id);
+
+                if (buscadas.Count != 0)
+                {
+                    return StatusCode(200, buscadas);
+                }
+
+                return StatusCode(404, "Nenhuma consulta para esse dia.");
             }
             catch (Exception e)
             {

@@ -114,39 +114,42 @@ export const PerfilScreen = ({ navigation }) => {
   const handleUpdate = async () => {
     setLoading(true);
     try {
-      // if (
-      //   cpf === undefined ||
-      //   dataNascimento === undefined ||
-      //   cep === undefined ||
-      //   cidade.trim() === "" ||
-      //   cpf.trim() === "" ||
-      //   dataNascimento.trim() === "" ||
-      //   cep.trim() === "" ||
-      //   cidade.trim() === ""
-      // ) {
-      //   Alert.alert(
-      //     "Atenção",
-      //     "Todos os campos devem ser preenchidos corretamente!"
-      //   );
-      //   setLoading(false);
-      //   return;
-      // }
+      if (userGlobalData.role === "Paciente") {
+        if (
+          cpf === undefined ||
+          dataNascimento === undefined ||
+          cep === undefined ||
+          rg === undefined ||
+          // cidade.trim() === "" ||
+          cpf.trim() === "" ||
+          dataNascimento.trim() === "" ||
+          cep.trim() === "" ||
+          rg.trim() === ""
+        ) {
+          Alert.alert(
+            "Atenção",
+            "Todos os campos devem ser preenchidos corretamente!"
+          );
+          setLoading(false);
+          return;
+        }
+      }
 
       const response = await apiFilipe.put(
         `${url}/AtualizarPerfil?id=${userGlobalData.id}`,
 
         {
-          // rg: unMask(dadosPessoaisDoUsuario.rg),
-          cpf: unMask(cpf),
-          dataNascimento: dateViewToDb(dataNascimento),
+          //Endereço
           cep: enderecoLocalizado.zipcode,
           logradouro: enderecoLocalizado.street,
-          // numero: dadosPessoaisDoUsuario.endereco.numero,
           cidade: enderecoLocalizado.city,
-          // nome: userGlobalData.nome,
-          // email: userGlobalData.email,
-          // senha: "12345",
+
+          //paciente:
+
           rg: unMask(rg),
+          cpf: unMask(cpf),
+          dataNascimento: dateViewToDb(dataNascimento),
+
           foto: "fefe123.png",
         }
       );
@@ -168,6 +171,7 @@ export const PerfilScreen = ({ navigation }) => {
   const editActionAbort = () => {
     setEditUserInfo(false);
     getUserInfo();
+    setEnderecoLocalizado({});
   };
 
   const getCidadeELogradouro = async () => {
@@ -177,6 +181,7 @@ export const PerfilScreen = ({ navigation }) => {
       if (enderecoApi) {
         console.log("enderecoApi:", enderecoApi);
         setEnderecoLocalizado(enderecoApi);
+        // setCep(enderecoApi.zipcode);
       }
     } catch (error) {
       console.log(error);
@@ -190,7 +195,7 @@ export const PerfilScreen = ({ navigation }) => {
     }
 
     return (cleanUp = () => {});
-  }, [userGlobalData.id, enderecoLocalizado.zipcode]);
+  }, [userGlobalData.id]);
 
   return (
     <Container>
@@ -288,6 +293,7 @@ export const PerfilScreen = ({ navigation }) => {
                 />
               </>
             )}
+
             <Label
               pointerEvents={
                 !editUserInfo || userGlobalData.role !== "Paciente"
@@ -365,8 +371,12 @@ export const PerfilScreen = ({ navigation }) => {
                 }
                 onEndEditing={() => {
                   getCidadeELogradouro();
-                  enderecoLocalizado.zipcode &&
-                    setCep(enderecoLocalizado.zipcode);
+
+                  setCep(
+                    enderecoLocalizado.zipcode
+                      ? enderecoLocalizado.zipcode
+                      : cep
+                  );
                 }}
                 pointerEvents={!editUserInfo ? "none" : "auto"}
                 onChangeText={(txt) => setCep(cepMasked(txt))}
@@ -389,9 +399,7 @@ export const PerfilScreen = ({ navigation }) => {
               />
 
               <Label
-                textColor={
-                  editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
-                }
+                textColor={Theme.colors.grayV1}
                 pointerEvents={"none"}
                 onChangeText={(txt) => {
                   // setDadosPessoaisDoUsuario({

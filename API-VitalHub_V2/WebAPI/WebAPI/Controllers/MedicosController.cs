@@ -40,7 +40,16 @@ namespace WebAPI.Controllers
         {
             try
             {
-                return StatusCode(200, _medicoRepository.BuscarPorData(data, id));
+                List<Consulta> buscadas = _medicoRepository.BuscarPorData(data, id);
+
+                if (buscadas.Count != 0)
+                {
+                    return StatusCode(200, buscadas);
+                }
+
+                return StatusCode(404, "Nenhuma consulta para esse dia.");
+
+
             }
             catch (Exception e)
             {
@@ -70,9 +79,11 @@ namespace WebAPI.Controllers
         {
             try
             {
-                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+                //Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-                return StatusCode(204, _medicoRepository.AtualizarPerfil(Id, medico));
+                _medicoRepository.AtualizarPerfil(Id, medico);
+
+                return StatusCode(204);
 
             }
             catch (Exception e)

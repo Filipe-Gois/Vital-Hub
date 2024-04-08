@@ -56,16 +56,6 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const mostrarModal = (modal, consulta) => {
-    setConsultaSelecionada(consulta);
-    if (modal === "cancelar") {
-      setShowModalCancel(true);
-    } else if (modal === "prontuario") {
-      setShowModalAppointment(true);
-    } else {
-    }
-  };
-
   const handleCancelarConsulta = async (id) => {
     try {
       const response = await apiFilipe.put(
@@ -76,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
         listarConsultas();
       }
     } catch (error) {
-      console.log("Erro ao desmarcar consulta!", error);
+      Alert.alert("Erro!", "Erro ao desmarcar consulta.");
     }
   };
 
@@ -87,9 +77,7 @@ const HomeScreen = ({ navigation }) => {
       );
 
       setConsultas(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
