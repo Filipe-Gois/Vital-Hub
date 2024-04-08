@@ -2,8 +2,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System.Reflection;
+using WebAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHostedService<ConsultaRepository>();
 
 // Add services to the container.
 builder.Services

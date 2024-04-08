@@ -15,12 +15,12 @@ import { LeftArrowAOrXComponent } from "../../components/LeftArrowAOrX";
 const RecoverPasswordScreen = ({ navigation }) => {
   return (
     <Container>
-      <MainContent>
+      <MainContent fieldMargin={"50px 0 90px 0"} fieldWidth={"90%"}>
         <LeftArrowAOrXComponent navigation={navigation} />
 
         <LogoComponent />
 
-        <FormBox>
+        <FormBox fieldWidth={"100%"}>
           <Title>Recuperar senha</Title>
           <Paragraph>
             Digite abaixo seu email cadastrado que enviaremos um link para

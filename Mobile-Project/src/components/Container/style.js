@@ -25,9 +25,9 @@ export const MainContentScroll = styled.ScrollView`
 
 export const MainContent = styled.View`
   background-color: ${Theme.colors.lightWhite};
-  width: 100%;
+  width: ${(props) => (props.fieldWidth ? props.fieldWidth : "100%")};
   height: 100%;
-  margin: 0 0 90px 0;
+  margin: ${(props) => (props.fieldMargin ? props.fieldMargin : "0 0 90px 0")};
   align-items: center;
   background-color: ${Theme.colors.lightWhite};
 `;
@@ -37,12 +37,11 @@ export const ContainerText = styled(MainContent)`
 `;
 
 export const FormBox = styled.View`
-  width: 90%;
+  width: ${(props) => (props.fieldWidth ? props.fieldWidth : "90%")};
   max-height: 100%;
   align-items: center;
   gap: ${(props) => (props.gap ? props.gap : "20px")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
-
 `;
 
 export const InputBox = styled(FormBox)`

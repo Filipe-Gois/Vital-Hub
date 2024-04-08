@@ -13,7 +13,7 @@ namespace WebAPI.Repositories
             return ctx.Clinicas
                 .Select(c => new Clinica
                 {
-                    Id = id,
+                    Id = c.Id,
                     NomeFantasia = c.NomeFantasia,
                     Endereco = c.Endereco
                 })
@@ -47,7 +47,7 @@ namespace WebAPI.Repositories
                     NomeFantasia = c.NomeFantasia,
                     Endereco = c.Endereco
                 })
-                
+
                .Where(c => c.Endereco!.Cidade == cidade)
                 .ToList();
         }

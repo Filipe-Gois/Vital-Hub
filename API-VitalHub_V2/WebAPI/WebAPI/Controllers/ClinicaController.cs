@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -32,10 +33,32 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("Cadastrar")]
-        public IActionResult Post(Clinica clinica)
+        public IActionResult Post(ClinicaViewModel clinicaModel)
         {
             try
             {
+
+                Clinica clinica = new Clinica();
+
+
+                clinica.NomeFantasia = clinicaModel.NomeFantasia;
+                clinica.Cnpj = clinicaModel.Cnpj;
+                clinica.RazaoSocial = clinicaModel.RazaoSocial;
+                clinica.Email = clinicaModel.Email;
+
+                clinica.Endereco = new Endereco();
+
+                clinica.Endereco.Cep = clinicaModel.Cep;
+                clinica.Endereco.Logradouro = clinicaModel.Logradouro;
+                clinica.Endereco.Numero = clinicaModel.Numero;
+                clinica.Endereco.Latitude = clinicaModel.Latitude;
+                clinica.Endereco.Longitude = clinicaModel.Longitude;
+                clinica.Endereco.Cidade = clinicaModel.Cidade;
+
+
+
+
+
                 clinicaRepository.Cadastrar(clinica);
                 return StatusCode(201);
 

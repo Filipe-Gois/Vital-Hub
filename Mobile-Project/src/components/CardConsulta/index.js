@@ -18,7 +18,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Nicole from "../../assets/nicole-sarga.png";
 import { ButtonSecondary } from "../Button/style";
 import { useState } from "react";
-import { hourDbToView } from "../../Utils/stringFunctions";
+import {
+  calcularIdadeDoUsuario,
+  hourDbToView,
+} from "../../Utils/stringFunctions";
 
 export const CardConsulta = ({
   dados = {},
@@ -27,20 +30,25 @@ export const CardConsulta = ({
   onPress,
   profileData = {},
 }) => {
-  const [profile, setProfile] = useState("Paciente");
   return (
     <CardConsultaStyle onPress={onPress}>
       <WelComeImage widthImage="26%" heigthImage="100%" src={Nicole} />
 
       <InfoTextBox>
         <TextCreateAccount1>
-          {dados.medicoClinica.medico.idNavigation.nome}
+          {profileData.role === "Paciente"
+            ? dados.medicoClinica.medico.idNavigation.nome
+            : dados.paciente.idNavigation.nome}
         </TextCreateAccount1>
 
         <AgeAndType
-          crm={dados.medicoClinica.medico.crm}
+          // crm={dados.medicoClinica.medico.crm}
+          ageOrCrm={
+            profileData.role === "Paciente"
+              ? dados.medicoClinica.medico.crm
+              : calcularIdadeDoUsuario(dados.paciente.dataNascimento)
+          }
           prioridade={dados.prioridade.prioridade}
-          age={dados.age}
           profileData={profileData}
         />
         <Hour
@@ -90,11 +98,18 @@ export const CardConsulta = ({
   );
 };
 
-const AgeAndType = ({ prioridade, age = "", profileData = {}, crm = "" }) => {
+const AgeAndType = ({
+  prioridade,
+  ageOrCrm = "",
+  profileData = {},
+  crm = "",
+}) => {
   return (
     <AgeAndTypeBox>
       <ParagraphRegular>
-        {profileData.role !== "Paciente" ? age + " anos" : "crm: " + crm}
+        {profileData.role !== "Paciente"
+          ? ageOrCrm + " anos"
+          : "crm: " + ageOrCrm}
       </ParagraphRegular>
 
       <Point />

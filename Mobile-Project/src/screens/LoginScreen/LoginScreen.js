@@ -45,7 +45,7 @@ import { ButtonAsync } from "../../components/Button/index.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({ email: "fabio@f.com", senha: "12345" });
+  const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
   // const [user, setUser] = useState({ email: "f@f.com", senha: "12345" });
 
   // const { userData, setUserData } = useContext(AuthContext);

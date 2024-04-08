@@ -162,9 +162,10 @@ export const ModalAgendarConsulta = ({
           />
 
           <Button
-            onPress={() =>
-              goBack ? navigation.goBack() : navigation.navigate(setNavigation)
-            }
+            onPress={() => {
+              setShowModalCancel(false);
+              goBack ? navigation.goBack() : navigation.navigate(setNavigation);
+            }}
             padding={"0"}
           >
             <ButtonTitle>{textButton1}</ButtonTitle>

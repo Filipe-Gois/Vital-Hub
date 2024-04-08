@@ -15,13 +15,14 @@ import { ActivityIndicator, View } from "react-native";
 import { apiFilipe, clinicaResource } from "../../Services/Service";
 
 const ClinicAddressScreen = ({ navigation, route }) => {
-  const [clinic, setClinic] = useState();
+  const [clinic, setClinic] = useState(null);
 
   const getClinic = async () => {
     try {
       const response = await apiFilipe.get(
         clinicaResource + `/BuscarPorId?id=${route.params.clinicaId}`
       );
+      console.log(route.params.clinicaId)
 
       setClinic(response.data);
     } catch (error) {
@@ -30,16 +31,18 @@ const ClinicAddressScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    getClinic();
-
+    if (!clinic) {
+      getClinic();
+    }
     return (cleanUp = () => {});
-  }, [clinic]);
+  }, [clinic?.id]);
   return (
     <Container>
       <MainContent>
         {clinic !== null ? (
           <>
-            <MapaGps />
+            <MapaGps finalPosition={clinic.endereco} />
+            
 
             <ClinicAddress dados={clinic} />
 

@@ -22,12 +22,12 @@ namespace WebAPI.Controllers
 
         //[Authorize]
         [HttpGet("ConsultasPacienteLogado")]
-        public IActionResult BuscarConsultasPaciente()
+        public IActionResult BuscarConsultasPaciente(Guid idUsuario)
         {
             try
             {
 
-                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+                //Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
                 List<Consulta> consultas = consultaRepository.ListarPorPaciente(idUsuario);
                 return Ok(consultas);
@@ -59,10 +59,36 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("Cadastrar")]
-        public IActionResult Cadastrar(Consulta consulta)
+        public IActionResult Cadastrar(ConsultaViewModel consultaModel)
         {
             try
             {
+                Consulta consulta = new Consulta();
+
+                consulta.DataConsulta = consultaModel.DataConsulta;
+                consulta.Descricao = consultaModel.Descricao;
+                consulta.Diagnostico = consultaModel.Diagnostico;
+
+
+                consulta.Receita = new Receita();
+
+                consulta.Receita.Medicamento = consultaModel.Medicamento;
+                consulta.Receita.Observacoes = consultaModel.Observacoes;
+
+
+
+
+
+                consulta.PacienteId = consultaModel.PacienteId;
+                consulta.MedicoClinicaId = consultaModel.MedicoClinicaId;
+
+                consulta.PrioridadeId = consultaModel.PrioridadeId;
+
+
+
+
+
+
                 consultaRepository.Cadastrar(consulta);
                 return StatusCode(201);
 
@@ -74,21 +100,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("Status")]
-        public IActionResult EditarStatus(Guid id, ConsultaViewModel consultaModel)
-        {
-            try
-            {
-                consultaRepository.EditarStatus(id, consultaModel);
-                return Ok();
 
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
 
         [HttpPut("CancelarConsulta")]
         public IActionResult CancelarConsulta(Guid id)

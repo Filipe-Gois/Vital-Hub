@@ -38,7 +38,33 @@ export const dateDbToView = (date) => {
 
 export const dateViewToDb = (date) => date.split("/").reverse().join("-");
 
-export const calcularIdadeDoUsuario = (nascimento) => {};
+// melhorar essa lógica de data
+export const calcularIdadeDoUsuario = (dataNascimento) => {
+
+
+  // Cria uma nova instância de Date com a data de nascimento
+  const dataNasc = new Date(dataNascimento);
+
+  // Obtém a data atual e a diferença em milissegundos
+  const agora = new Date();
+  const diferencaEmMilissegundos = agora - dataNasc;
+
+  // Calcula a idade em anos
+  let idade = Math.floor(
+    diferencaEmMilissegundos / (1000 * 60 * 60 * 24 * 365.25)
+  );
+
+  // Ajusta a idade se a data atual for anterior ao aniversário do usuário no ano atual
+  if (
+    agora.getMonth() < dataNasc.getMonth() ||
+    (agora.getMonth() === dataNasc.getMonth() &&
+      agora.getDate() < dataNasc.getDate())
+  ) {
+    idade--;
+  }
+
+  return idade;
+};
 
 export const hourDbToView = (hour) => {
   hour = hour.substr(11, 16);

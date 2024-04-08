@@ -13,7 +13,7 @@ import { Theme } from "../../themes";
 import ClinicCard from "../../components/ClinicCard";
 import { FlatListStyle } from "../../components/FlatList/style";
 import axios from "axios";
-import api, { clinicaResource } from "../../Services/Service";
+import api, { apiFilipe, clinicaResource } from "../../Services/Service";
 
 const SelectClinicScreen = ({ navigation }) => {
   const [clinics, setClinics] = useState([]);
@@ -22,7 +22,7 @@ const SelectClinicScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchClinics = async () => {
       try {
-        const response = await api.get(clinicaResource + "/ListarTodas");
+        const response = await apiFilipe.get(clinicaResource + "/ListarTodas");
         setClinics(response.data);
       } catch (error) {
         console.error("Erro ao carregar as Clinicas:", error);

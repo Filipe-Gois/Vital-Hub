@@ -227,11 +227,12 @@ const HomeScreen = ({ navigation }) => {
               }
               textButton2={"Cancelar"}
               cancel={false}
-              HandleModal={() =>
+              HandleModal={() => {
                 navigation.navigate("ClinicAddress", {
                   clinicaId: consultaSelecionada.medicoClinica.clinicaId,
-                })
-              }
+                });
+                setShowModalAppointment(false);
+              }}
             />
           </ContainerBoxStyle>
         </MainContent>

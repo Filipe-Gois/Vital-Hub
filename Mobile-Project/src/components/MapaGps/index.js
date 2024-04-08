@@ -14,13 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import MapViewDirections from "react-native-maps-directions";
 import { MapsKey } from "../../Utils/MapsKey";
 
-const MapaGps = () => {
-  const [finalPosition, setFinalPosition] = useState({
-    latitude: -23.5068153,
-    longitude: -46.5159653,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-  });
+const MapaGps = ({ finalPosition = {} }) => {
   const [initialPosition, setInitialPosition] = useState(null);
 
   const mapReference = useRef(null);
