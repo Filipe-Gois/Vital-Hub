@@ -140,9 +140,11 @@ export const PerfilScreen = ({ navigation }) => {
 
         {
           //Endereço
-          cep: enderecoLocalizado.zipcode,
-          logradouro: enderecoLocalizado.street,
-          cidade: enderecoLocalizado.city,
+          cep: enderecoLocalizado.zipcode ? enderecoLocalizado.zipcode : cep,
+          logradouro: enderecoLocalizado.street
+            ? enderecoLocalizado.street
+            : logradouro,
+          cidade: enderecoLocalizado.city ? enderecoLocalizado.city : cidade,
 
           //paciente:
 
@@ -225,13 +227,7 @@ export const PerfilScreen = ({ navigation }) => {
                       ? Theme.colors.primary
                       : Theme.colors.grayV1
                   }
-                  onChangeText={(txt) =>
-                    // setDadosPessoaisDoUsuario({
-                    //   ...dadosPessoaisDoUsuario,
-                    //   dataNascimento: txt,
-                    // })
-                    setDataNascimento(dateDbToView(txt))
-                  }
+                  onChangeText={(txt) => setDataNascimento(dateDbToView(txt))}
                   fieldValue={
                     // dadosPessoaisDoUsuario.dataNascimento &&
                     // dateDbToView(dadosPessoaisDoUsuario.dataNascimento)
@@ -305,10 +301,7 @@ export const PerfilScreen = ({ navigation }) => {
                   ? Theme.colors.primary
                   : Theme.colors.grayV1
               }
-              onChangeText={
-                userGlobalData.role === "Paciente" &&
-                ((txt) => setCpf(cpfMasked(txt)))
-              }
+              onChangeText={(txt) => setCpf(cpfMasked(txt))}
               fieldValue={
                 userGlobalData.role === "Paciente"
                   ? cpf && cpfMasked(cpf)
@@ -340,10 +333,6 @@ export const PerfilScreen = ({ navigation }) => {
               textColor={Theme.colors.grayV1}
               pointerEvents={"none"}
               onChangeText={(txt) =>
-                // setDadosPessoaisDoUsuario({
-                //   ...dadosPessoaisDoUsuario.endereco,
-                //   logradouro: txt,
-                // })
                 setLogradouro(
                   enderecoLocalizado.street ? enderecoLocalizado.street : txt
                 )
