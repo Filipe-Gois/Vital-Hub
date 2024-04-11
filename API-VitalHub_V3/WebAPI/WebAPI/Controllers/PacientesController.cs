@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.Utils.BlobStorage;
 using WebAPI.Utils.Maill;
 using WebAPI.ViewModels;
 
@@ -46,35 +47,89 @@ namespace WebAPI.Controllers
             return Ok(pacienteRepository.BuscarPorId(id));
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Post(PacienteViewModel pacienteModel)
+        //{
+        //    Usuario user = new Usuario();
+
+        //    user.Nome = pacienteModel.Nome;
+        //    user.Email = pacienteModel.Email;
+        //    user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
+        //    user.Foto = pacienteModel.Foto;
+        //    user.Senha = pacienteModel.Senha;
+
+        //    user.Paciente = new Paciente();
+
+        //    user.Paciente.DataNascimento = pacienteModel.DataNascimento;
+        //    user.Paciente.Rg = pacienteModel.Rg;
+        //    user.Paciente.Cpf = pacienteModel.Cpf;
+
+        //    user.Paciente.Endereco = new Endereco();
+
+        //    user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
+        //    user.Paciente.Endereco.Numero = pacienteModel.Numero;
+        //    user.Paciente.Endereco.Cep = pacienteModel.Cep;
+        //    user.Paciente.Endereco.Cidade = pacienteModel.Cidade;
+
+        //    pacienteRepository.Cadastrar(user);
+
+        //    await _emailSendingService.SendWelcomeEmail(user.Email!, user.Nome!);
+
+        //    return Ok();
+        //}
+
+
         [HttpPost]
-        public async Task<IActionResult> Post(PacienteViewModel pacienteModel)
+        public async Task<IActionResult> Post([FromForm] PacienteViewModel pacienteModel)
         {
-            Usuario user = new Usuario();
+            try
+            {
+                //objeto a ser cadastrado
+                Usuario user = new Usuario();
 
-            user.Nome = pacienteModel.Nome;
-            user.Email = pacienteModel.Email;
-            user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
-            user.Foto = pacienteModel.Foto;
-            user.Senha = pacienteModel.Senha;
+                //recebe os valores e preenche as propriedades específicas
+                user.Nome = pacienteModel.Nome;
+                user.Email = pacienteModel.Email;
+                user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
 
-            user.Paciente = new Paciente();
 
-            user.Paciente.DataNascimento = pacienteModel.DataNascimento;
-            user.Paciente.Rg = pacienteModel.Rg;
-            user.Paciente.Cpf = pacienteModel.Cpf;
 
-            user.Paciente.Endereco = new Endereco();
+                //define o nome do container do blob
+                var containerName = "containervitalhubfilipegoisg2";
 
-            user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
-            user.Paciente.Endereco.Numero = pacienteModel.Numero;
-            user.Paciente.Endereco.Cep = pacienteModel.Cep;
-            user.Paciente.Endereco.Cidade = pacienteModel.Cidade;
+                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
-            pacienteRepository.Cadastrar(user);
+                //aqui vamos chamar o metodo de upload de imagem
+                user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo!, connectionString, containerName);
 
-            await _emailSendingService.SendWelcomeEmail(user.Email!, user.Nome!);
 
-            return Ok();
+
+                user.Senha = pacienteModel.Senha;
+
+                user.Paciente = new Paciente();
+
+                user.Paciente.DataNascimento = pacienteModel.DataNascimento;
+                user.Paciente.Rg = pacienteModel.Rg;
+                user.Paciente.Cpf = pacienteModel.Cpf;
+
+                user.Paciente.Endereco = new Endereco();
+
+                user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
+                user.Paciente.Endereco.Numero = pacienteModel.Numero;
+                user.Paciente.Endereco.Cep = pacienteModel.Cep;
+                user.Paciente.Endereco.Cidade = pacienteModel.Cidade;
+
+                pacienteRepository.Cadastrar(user);
+
+                await _emailSendingService.SendWelcomeEmail(user.Email!, user.Nome!);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpGet("BuscarPorData")]
