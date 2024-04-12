@@ -17,8 +17,6 @@ namespace WebAPI.Interfaces
         /// <summary>
         /// Método responsável por verificar periodicamente se a data da consulta já passou. Caso tenha passado, alterar a situação para "Realizada"
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="consultaModel"></param>
         public void AtualizarStatus();
         public void EditarProntuario(Guid id, ConsultaViewModel consultaModel);
 

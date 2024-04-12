@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.Utils.BlobStorage;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
@@ -47,28 +48,52 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public IActionResult Post(MedicoViewModel medicoModel)
+        public async Task<IActionResult> Post([FromForm] MedicoViewModel medicoModel)
         {
-            Usuario user = new Usuario();
-            user.Nome = medicoModel.Nome;
-            user.Email = medicoModel.Email;
-            user.TipoUsuarioId = medicoModel.IdTipoUsuario;
-            user.Foto = medicoModel.Foto;
-            user.Senha = medicoModel.Senha;
+            try
+            {
+                //define o nome do container do blob
+                var containerName = "containervitalhubfilipegoisg2";
 
-            user.Medico = new Medico();
-            user.Medico.Crm = medicoModel.Crm;
-            user.Medico.EspecialidadeId = medicoModel.EspecialidadeId;
+                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
 
-            user.Medico.Endereco = new Endereco();
-            user.Medico.Endereco.Logradouro = medicoModel.Logradouro;
-            user.Medico.Endereco.Numero = medicoModel.Numero;
-            user.Medico.Endereco.Cep = medicoModel.Cep;
 
-            _medicoRepository.Cadastrar(user);
+                Usuario user = new Usuario();
+                user.Nome = medicoModel.Nome;
+                user.Email = medicoModel.Email;
+                user.TipoUsuarioId = medicoModel.IdTipoUsuario;
+                user.Senha = medicoModel.Senha;
 
-            return Ok();
+
+
+                //aqui vamos chamar o metodo de upload de imagem
+                user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo!, connectionString, containerName);
+
+
+
+
+
+                user.Medico = new Medico();
+                user.Medico.Crm = medicoModel.Crm;
+                user.Medico.EspecialidadeId = medicoModel.EspecialidadeId;
+
+
+                user.Medico.Endereco = new Endereco();
+                user.Medico.Endereco.Logradouro = medicoModel.Logradouro;
+                user.Medico.Endereco.Numero = medicoModel.Numero;
+                user.Medico.Endereco.Cep = medicoModel.Cep;
+
+                _medicoRepository.Cadastrar(user);
+
+                return StatusCode(200);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpGet("BuscarPorIdClinica")]
