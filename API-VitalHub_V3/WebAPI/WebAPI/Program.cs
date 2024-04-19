@@ -10,6 +10,8 @@ using WebAPI.Utils.OCR;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHostedService<ConsultaRepository>();
+
 // Add services to the container.
 builder.Services
     .AddControllers()

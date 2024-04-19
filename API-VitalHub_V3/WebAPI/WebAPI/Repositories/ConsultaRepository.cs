@@ -7,8 +7,9 @@ using WebAPI.Interfaces;
 
 namespace WebAPI.Repositories
 {
-    public class ConsultaRepository : IConsultaRepository
+    public class ConsultaRepository : IConsultaRepository, IHostedService, IDisposable
     {
+        private Timer? _timer;
 
         public VitalContext ctx = new VitalContext();
 
@@ -39,7 +40,59 @@ namespace WebAPI.Repositories
 
         public void AtualizarStatus()
         {
-            throw new NotImplementedException();
+            string Realizada = "Realizada";
+            string Pendente = "Pendente";
+            SituacaoConsulta SituacaoRealizada = ctx.Situacoes.FirstOrDefault(x => x.Situacao == Realizada)!;
+
+
+            List<Consulta> consultasASeremAtualizadas = ctx.Consultas.Include(x => x.Situacao).Where(x => x.Situacao!.Situacao == Pendente && x.DataConsulta < DateTime.Now).ToList();
+
+
+
+
+            if (consultasASeremAtualizadas.Count != 0 && SituacaoRealizada != null)
+            {
+                foreach (var item in consultasASeremAtualizadas)
+                {
+                    item.Situacao = SituacaoRealizada;
+
+                    ctx.Update(item);
+                }
+
+
+                ctx.SaveChanges();
+
+            }
+        }
+
+        /// <summary>
+        /// Esses 3 métodos rodam o método de atualizar status da consulta periodicamente
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            _timer = new Timer
+            (
+                callback => AtualizarStatus(),
+                null,
+                //quanto tempo vai demorar até efetuar o primeiro disparo
+                TimeSpan.FromSeconds(5),
+                //os disparos ocorrerão a cada 12 horas
+                TimeSpan.FromMinutes(10)
+            );
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+
+            return Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            _timer?.Dispose();
         }
 
         public Consulta BuscarPorId(Guid id)
