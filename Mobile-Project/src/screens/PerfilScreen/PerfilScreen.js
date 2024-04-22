@@ -442,7 +442,7 @@ export const PerfilScreen = ({ navigation }) => {
                 navigation.replace("Login");
               }}
             >
-              <ButtonTitle>Sair do app</ButtonTitle>
+              <ButtonTitle>Sair</ButtonTitle>
             </ButtonGray>
           </FormBox>
         </MainContent>

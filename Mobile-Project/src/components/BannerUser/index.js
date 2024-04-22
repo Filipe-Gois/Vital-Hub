@@ -30,7 +30,7 @@ export const BannerUserComponent = ({
 
         <AgeAndEmailBox>
           {isUser ? (
-            isAge && <Paragraph>{age}</Paragraph>
+            isAge && <Paragraph>{age} anos</Paragraph>
           ) : (
             <Paragraph>{specialty}</Paragraph>
           )}

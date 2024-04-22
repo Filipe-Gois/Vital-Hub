@@ -7,7 +7,7 @@ const Label = ({
   placeholder,
   fieldValue,
   onChangeText,
-  keyType,
+  keyboardType,
   maxLength,
   onEndEditing,
   fieldWidth = 100,
@@ -27,6 +27,7 @@ const Label = ({
   pointerEvents,
   autoFocus,
   refInput,
+  autoCorrect,
 }) => {
   return (
     <LabelStyle
@@ -37,6 +38,7 @@ const Label = ({
       {isTitulo && <ParagraphSemiBold>{titulo}</ParagraphSemiBold>}
 
       <Input
+        autoCorrect={autoCorrect}
         ref={refInput}
         autoFocus={autoFocus}
         editable={editable}
@@ -45,7 +47,7 @@ const Label = ({
         placeholder={placeholder}
         fieldValue={fieldValue}
         onChangeText={onChangeText}
-        keyType={keyType}
+        keyboardType={keyboardType}
         maxLength={maxLength}
         onEndEditing={onEndEditing}
         fieldWidth={fieldWidth}

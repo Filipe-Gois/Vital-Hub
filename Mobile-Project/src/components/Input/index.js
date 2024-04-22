@@ -12,7 +12,7 @@ export const Input = React.forwardRef((props, ref) => {
     placeholder,
     fieldValue,
     onChangeText,
-    keyType,
+    keyboardType,
     maxLength,
     onEndEditing,
     fieldWidth = 100,
@@ -27,11 +27,13 @@ export const Input = React.forwardRef((props, ref) => {
     fieldMinHeight,
     secureTextEntry = false,
     autoFocus,
+    autoCorrect,
   } = props;
 
   return (
     <InputStyle
       ref={ref}
+      autoCorrect={autoCorrect}
       secureTextEntry={secureTextEntry}
       fieldMinHeight={fieldMinHeight}
       fieldWidth={fieldWidth}
@@ -41,7 +43,7 @@ export const Input = React.forwardRef((props, ref) => {
       placeholder={placeholder}
       value={fieldValue}
       onChangeText={onChangeText}
-      keyboardType={keyType}
+      keyboardType={keyboardType}
       maxLength={maxLength}
       onEndEditing={onEndEditing}
       border={border}
@@ -60,7 +62,7 @@ export const InputCheckEmail = ({
   placeholder,
   fieldValue,
   onChangeText,
-  keyType,
+  keyboardType,
   maxLength,
   onEndEditing,
   fieldWidth = 100,
@@ -78,7 +80,7 @@ export const InputCheckEmail = ({
       placeholder={placeholder}
       fieldValue={fieldValue}
       onChangeText={onChangeText}
-      keyType={keyType}
+      keyboardType={keyboardType}
       maxLength={maxLength}
       onEndEditing={onEndEditing}
       border={border}

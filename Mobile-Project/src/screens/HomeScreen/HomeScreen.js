@@ -30,6 +30,7 @@ import {
   medicosResource,
   pacientesResource,
 } from "../../Services/Service";
+import { calcularIdadeDoUsuario } from "../../Utils/stringFunctions";
 
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState("");
@@ -151,12 +152,43 @@ const HomeScreen = ({ navigation }) => {
                       setConsultaSelecionada(item);
                     }}
                     onPressAppointment={
-                      profile !== "Paciente"
+                      profile !== "Paciente" &&
+                      item.situacao.situacao === "Pendente"
                         ? () => {
                             setShowModalAppointment(true);
                             setConsultaSelecionada(item);
                           }
-                        : () => navigation.navigate("ViewMedicalRecord")
+                        : () =>
+                            navigation.navigate("ViewMedicalRecord", {
+                              consulta: {
+                                idConsulta: item.id,
+                                descricao: item.descricao,
+                                diagnostico: item.diagnostico,
+                                nome:
+                                  profile.role !== "Medico"
+                                    ? item.medicoClinica.medico.idNavigation
+                                        .nome
+                                    : item.paciente.idNavigation.nome,
+
+                                medico: {
+                                  idMedico: item.medicoClinica.medico.id,
+
+                                  crm: item.medicoClinica.medico.crm,
+                                  especialidade:
+                                    item.medicoClinica.medico.especialidade
+                                      .especialidade1,
+                                },
+
+                                paciente: {
+                                  idPaciente: item.paciente.id,
+
+                                  email: item.paciente.idNavigation.email,
+                                  idade: calcularIdadeDoUsuario(
+                                    item.paciente.dataNascimento
+                                  ),
+                                },
+                              },
+                            })
                     }
                     dados={item}
                     statusLista={item.situacao}

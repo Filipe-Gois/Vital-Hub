@@ -19,6 +19,7 @@ namespace WebAPI.Interfaces
         public List<Consulta> ListarTodos();
         public List<Consulta> ListarPorMedico(Guid IdMedico);
         public List<Consulta> ListarPorPaciente(Guid IdPaciente);
+        public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid id);
         public void CancelarConsulta(Guid idConsulta);
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace WebAPI.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <param name="consultaModel"></param>
-        
+
 
     }
 }

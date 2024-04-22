@@ -1,4 +1,5 @@
 ﻿using WebAPI.Domains;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Interfaces
 {
@@ -7,5 +8,6 @@ namespace WebAPI.Interfaces
         public void Cadastrar(Exame exame);
 
         public List<Exame> BuscarPorIdConsulta(Guid idConsulta);
+        public void AtualizarExame(Guid idConsulta, ConsultaViewModel consultaViewModel);
     }
 }

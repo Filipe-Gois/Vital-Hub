@@ -217,5 +217,10 @@ namespace WebAPI.Repositories
         {
             return ctx.Consultas.ToList();
         }
+
+        public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

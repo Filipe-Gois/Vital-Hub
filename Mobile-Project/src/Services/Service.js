@@ -31,6 +31,8 @@ export const loginResource = `/Login`;
 
 export const consultasResource = `/Consultas`;
 
+export const examesResource = `/Exame`;
+
 export const pacientesResource = `/Pacientes`;
 
 export const medicosResource = `/Medicos`;
