@@ -67,6 +67,7 @@ namespace WebAPI.Repositories
                      .Include(x => x.Paciente!.IdNavigation)
                      .Include(x => x.MedicoClinica!.Medico)
                      .Include(x => x.MedicoClinica!.Medico!.Especialidade)
+                     .Include(x => x.Receita)
                      // diferença em dias entre a Data da Consulta e a dataConsulta é igual a 0.
                      .Where(x => x.MedicoClinica!.MedicoId == idMedico && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)
                      .ToList();
@@ -84,6 +85,7 @@ namespace WebAPI.Repositories
             {
                 Medico medicoBuscado = ctx.Medicos
                     .Include(m => m.IdNavigation)
+                    .Include(x => x.Especialidade)
                     .Include(m => m.Endereco)
                     .FirstOrDefault(m => m.Id == Id)!;
 

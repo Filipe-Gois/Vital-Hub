@@ -76,6 +76,8 @@ export const PerfilScreen = ({ navigation }) => {
   const url =
     userGlobalData.role === "Paciente" ? pacientesResource : medicosResource;
 
+  const [showCamera, setShowCamera] = useState(false);
+
   //pega as propriedades do token
   const fetchProfileData = async () => {
     const userInfo = await userDecodeToken();
@@ -210,6 +212,9 @@ export const PerfilScreen = ({ navigation }) => {
             email={userGlobalData.email}
             isUser={userGlobalData.role === "Medico" ? false : true}
             crm={crm}
+            isProfile={true}
+            showCamera={showCamera}
+            setShowCamera={setShowCamera}
           />
 
           <FormBox>

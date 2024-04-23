@@ -53,6 +53,23 @@ namespace WebAPI.Controllers
             }
 
         }
+
+
+        [HttpPut("AtualizarProntuario")]
+        public IActionResult Put(Guid idConsulta, ConsultaViewModel consulta)
+        {
+            try
+            {
+                _exameRepository.AtualizarExame(idConsulta, consulta);
+                return StatusCode(204);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpGet("BuscarPorIdConsulta")]
         public IActionResult GetByIdConsult(Guid idConsulta)
         {

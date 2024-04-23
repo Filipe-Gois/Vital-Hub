@@ -17,5 +17,6 @@
         public string? Descricao { get; set; }
 
         public string? Diagnostico { get; set; }
+        public string? Prescricao { get; set; }
     }
 }

@@ -20,7 +20,7 @@ import {
 import { ButtonAqua, ButtonAsync } from "../../components/Button";
 import CameraComponent from "../../components/CameraComponent/CameraComponent";
 import { userDecodeToken } from "../../Utils/Auth";
-import { TextInput } from "react-native";
+import { Alert, TextInput } from "react-native";
 import { apiFilipe, examesResource } from "../../Services/Service";
 
 const ViewMRScreen = ({ navigation, route }) => {
@@ -37,6 +37,10 @@ const ViewMRScreen = ({ navigation, route }) => {
 
   const [prontuario, setProntuario] = useState(null);
 
+  const [diagnostico, setDiagnostico] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [prescricao, setPrescricao] = useState("");
+
   //pega as propriedades do token
   const fetchProfileData = async () => {
     const userInfo = await userDecodeToken();
@@ -50,14 +54,22 @@ const ViewMRScreen = ({ navigation, route }) => {
 
   const handleUpdate = async () => {
     try {
-      const response = await apiFilipe.put(examesResource, {
-        descricao: "",
-        consultaId: prontuario.consulta.idConsulta,
-      });
-      
+      const response = await apiFilipe.put(
+        examesResource +
+          `/AtualizarProntuario?idConsulta=${prontuario.consulta.idConsulta}`,
+        {
+          descricao,
+          diagnostico,
+          prescricao,
+        }
+      );
+      if (response.status === 204) {
+        Alert.alert("Sucesso", "Prontuário atualizado!");
+      }
     } catch (error) {
       console.log(error);
     }
+    setEditUserInfo(false);
   };
 
   const showUpdateForm = () => {
@@ -71,10 +83,13 @@ const ViewMRScreen = ({ navigation, route }) => {
   useEffect(() => {
     fetchProfileData();
 
-    if (!prontuario) {
+    if (!prontuario || diagnostico || descricao) {
       setProntuario(route.params);
+      setDiagnostico(route.params.consulta.diagnostico);
+      setDescricao(route.params.consulta.descricao);
+      setPrescricao(route.params.consulta.prescricao);
     }
-    console.log(route.params);
+    console.log(route.params.consulta.diagnostico);
 
     return (cleanUp = () => {});
   }, [route.params]);
@@ -119,10 +134,12 @@ const ViewMRScreen = ({ navigation, route }) => {
               }
               placeholderTextColor={Theme.colors.grayV2}
               titulo="Descrição da consulta"
-              fieldValue={prontuario ? prontuario.consulta.descricao : ""}
+              fieldValue={descricao}
+              onChangeText={(txt) => setDescricao(txt)}
               placeholder={"Descrição da consulta"}
               fieldHeight={121}
             />
+
             <Label
               autoCorrect={false}
               pointerEvents={
@@ -147,7 +164,8 @@ const ViewMRScreen = ({ navigation, route }) => {
               }
               placeholderTextColor={Theme.colors.grayV2}
               titulo="Diagnóstico do paciente"
-              fieldValue={prontuario ? prontuario.consulta.diagnostico : ""}
+              fieldValue={diagnostico}
+              onChangeText={(txt) => setDiagnostico(txt)}
               placeholder={"Diagnóstico"}
             />
             <Label
@@ -174,9 +192,8 @@ const ViewMRScreen = ({ navigation, route }) => {
               }
               placeholderTextColor={Theme.colors.grayV2}
               titulo="Prescrição médica"
-              //   fieldValue={
-              //     "Medicamento: Advil Dosagem: 50 mg Frequência: 3 vezes ao dia Duração: 3 dias"
-              //   }
+              onChangeText={(txt) => setPrescricao(txt)}
+              fieldValue={prescricao}
               placeholder={"Prescrição médica"}
               fieldHeight={121}
             />

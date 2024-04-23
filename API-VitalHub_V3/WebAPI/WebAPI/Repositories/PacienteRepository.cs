@@ -63,6 +63,7 @@ namespace WebAPI.Repositories
                  .Include(x => x.MedicoClinica!.Medico!.Especialidade)
                  .Include(x => x.Paciente)
                  .Include(x => x.Paciente!.IdNavigation)
+                 .Include(x => x.Receita)
 
                  // diferença em dias entre a Data da Consulta e a dataConsulta é igual a 0.
                  .Where(x => x.PacienteId == idPaciente && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)

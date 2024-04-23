@@ -23,7 +23,7 @@
     "expo-font": "~11.10.2",
     "expo-linear-gradient": "~12.7.1",
     "expo-location": "~16.5.5",
-    "expo-media-library": "~15.9.1",
+    "expo-media-library": "~15.9.2",
     "expo-notifications": "~0.27.6",
     "expo-status-bar": "~1.11.1",
     "expo-updates": "~0.24.11",
@@ -39,7 +39,8 @@
     "react-native-picker-select": "^9.0.1",
     "react-native-reanimated": "^3.7.1",
     "remask": "^1.2.2",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "expo-image-picker": "~14.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -141,11 +141,12 @@ const HomeScreen = ({ navigation }) => {
                   <CardConsulta
                     profileData={profile}
                     onPress={
-                      profile.role === "Paciente" &&
-                      (() => {
-                        setShowModalAppointment(true);
-                        setConsultaSelecionada(item);
-                      })
+                      profile.role === "Paciente"
+                        ? () => {
+                            setShowModalAppointment(true);
+                            setConsultaSelecionada(item);
+                          }
+                        : null
                     }
                     onPressCancel={() => {
                       setShowModalCancel(true);
@@ -164,6 +165,7 @@ const HomeScreen = ({ navigation }) => {
                                 idConsulta: item.id,
                                 descricao: item.descricao,
                                 diagnostico: item.diagnostico,
+                                prescricao: item.receita.medicamento,
                                 nome:
                                   profile.role !== "Medico"
                                     ? item.medicoClinica.medico.idNavigation

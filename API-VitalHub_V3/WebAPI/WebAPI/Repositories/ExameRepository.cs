@@ -1,4 +1,5 @@
-﻿using WebAPI.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels;
@@ -11,9 +12,16 @@ namespace WebAPI.Repositories
 
         public void AtualizarExame(Guid idConsulta, ConsultaViewModel consultaViewModel)
         {
-            Consulta consultaBuscada = ctx.Consultas.FirstOrDefault(c => c.Id == idConsulta)! ?? throw new Exception("Consulta não encontrada"); //mesma coisa do if (consultaBuscada == null)
+            Consulta consultaBuscada = ctx.Consultas.Include(x => x.Receita).FirstOrDefault(c => c.Id == idConsulta)! ?? throw new Exception("Consulta não encontrada"); //mesma coisa do if (consultaBuscada == null)
 
-            consultaBuscada
+            consultaBuscada.Descricao = consultaViewModel.Descricao;
+            consultaBuscada.Diagnostico = consultaViewModel.Diagnostico;
+            consultaBuscada.Receita!.Medicamento = consultaViewModel.Prescricao;
+
+
+            ctx.Consultas.Update(consultaBuscada);
+            ctx.SaveChanges();
+
         }
 
         public List<Exame> BuscarPorIdConsulta(Guid idConsulta)

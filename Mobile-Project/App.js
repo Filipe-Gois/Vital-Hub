@@ -34,23 +34,32 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext, userDecodeToken } from "./src/Utils/Auth";
 import AuthProvider from "./src/Context/AuthProvider";
 
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
+
 const App = () => {
   // const [userData, setUserData] = useState({});
 
+  const requestGaleriaPermissions = async () => {
+    await MediaLibrary.requestPermissionsAsync();
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+  };
+
   const Stack = createNativeStackNavigator();
 
-  // useEffect(() => {
-  //   async () => {
-  //     const token = await AsyncStorage.getItem("token");
-  //     setUserData(token === null ? {} : JSON.parse(token));
+  useEffect(() => {
+    // async () => {
+    //   const token = await AsyncStorage.getItem("token");
+    //   setUserData(token === null ? {} : JSON.parse(token));
 
-  //     if (!token) {
-  //       return null;
-  //     }
-  //   };
+    //   if (!token) {
+    //     return null;
+    //   }
+    // };
+    requestGaleriaPermissions();
 
-  //   return (cleanUp = () => {});
-  // }, []);
+    return (cleanUp = () => {});
+  }, []);
 
   let [fontsLoaded, fontError] = useFonts({
     MontserratAlternates_500Medium,
