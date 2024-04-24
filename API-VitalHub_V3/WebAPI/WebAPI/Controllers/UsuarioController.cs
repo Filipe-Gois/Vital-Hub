@@ -35,6 +35,21 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpPut("AlterarFoto")]
+        public IActionResult Put(Guid id, [FromForm] string novaUrlFoto)
+        {
+            try
+            {
+                usuarioRepository.AtualizarFoto(id, novaUrlFoto);
+                return StatusCode(204);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {

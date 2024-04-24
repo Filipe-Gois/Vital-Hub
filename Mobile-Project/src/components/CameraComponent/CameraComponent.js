@@ -13,11 +13,20 @@ import {
   CameraTypeSwitchButton,
   CameraTypeSwitchText,
   CapturePhotoButton,
+  LastPhoto,
+  CameraStyle,
   CloseCameraButton,
 } from "./style";
 
 // import do modal
-import { Modal } from "react-native";
+import {
+  Image,
+  Modal,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // import do react
 import { useEffect, useRef, useState } from "react";
@@ -26,9 +35,12 @@ import { LeftArrowAOrXCameraComponent } from "../LeftArrowAOrX";
 
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
+import { apiFilipe } from "../../Services/Service";
 
 const CameraComponent = ({
   visible,
+  // setShowCameraInfoModal,
+  // visibleInfo,
   setShowCameraModal,
   setUriCameraCapture,
   navigation,
@@ -47,20 +59,50 @@ const CameraComponent = ({
   };
   const HandleClose = () => setShowCameraModal(false);
 
+  const UploadPhoto = async () => {
+    await MediaLibrary.createAssetAsync(photo)
+      .then(() => {
+        alert("Foto salva com sucesso");
+      })
+      .catch((error) => {
+        alert("Não foi possível processar a foto");
+      });
+  };
+
+  const clearPhoto = () => {
+    setPhoto(null);
+
+    setOpenModal(false);
+  };
+
   const CapturePhoto = async () => {
     if (cameraReference) {
       const photo = await cameraReference.current.takePictureAsync();
       setPhoto(photo.uri);
-      setOpenModal(openModal);
+      console.log(photo.uri);
+      setOpenModal(true);
+    }
+  };
 
-      console.log(photo);
+  const selectImageGallery = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        setPhoto(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const getLatestPhoto = async () => {
     try {
       //busca as fotos da galeria e ordena em ordem decrescente
-      const assets = await MediaLibrary.getAssetsAsync({
+      const { assets } = await MediaLibrary.getAssetsAsync({
         sortBy: [[MediaLibrary.SortBy.creationTime, false]],
         //indica que só quer o primeiro ícone
         first: 1,
@@ -75,11 +117,6 @@ const CameraComponent = ({
   };
 
   useEffect(() => {
-    async () => {
-      const { status: cameraStatus } =
-        await Camera.requestCameraPermissionsAsync();
-    };
-
     //verificar se tem a necessidade de mostrar a galeria
 
     if (getMediaLibrary) {
@@ -90,50 +127,132 @@ const CameraComponent = ({
   }, [visible]);
 
   return (
-    <CameraModalStyle visible={visible}>
-      <CameraModalContent>
-        <CameraComponentStyle
-          ref={cameraReference}
-          ratio="16:9"
-          type={tipoCamera}
-        >
-          <CameraFlip>
-            {/* <CloseCameraButton> */}
+    <CameraStyle visible={visible}>
+      <CameraComponentStyle
+        ref={cameraReference}
+        ratio="16:9"
+        type={tipoCamera}
+      >
+        <CameraFlip>
+          <CloseCameraButton>
             <LeftArrowAOrXCameraComponent
               navigation={navigation}
               isLefArrow={false}
               onPress={() => HandleClose()}
             />
-            {/* </CloseCameraButton> */}
+          </CloseCameraButton>
 
-            <CapturePhotoButton onPress={() => CapturePhoto()}>
-              <FontAwesome
-                name="camera"
-                size={23}
-                color={Theme.colors.primary}
-              />
-            </CapturePhotoButton>
+          <CapturePhotoButton onPress={() => CapturePhoto()}>
+            <FontAwesome name="camera" size={23} color={Theme.colors.primary} />
+          </CapturePhotoButton>
 
-            <CameraTypeSwitchButton
-              onPress={() =>
-                setTipoCamera(
-                  tipoCamera === CameraType.back
-                    ? CameraType.front
-                    : CameraType.back
-                )
-              }
+          <CameraTypeSwitchButton
+            onPress={() =>
+              setTipoCamera(
+                tipoCamera === CameraType.back
+                  ? CameraType.front
+                  : CameraType.back
+              )
+            }
+          >
+            <FontAwesome6
+              name="arrows-rotate"
+              size={23}
+              color={Theme.colors.whiteColor}
+            />
+          </CameraTypeSwitchButton>
+
+          {lastPhoto !== null && (
+            <TouchableHighlight onPress={() => selectImageGallery()}>
+              <LastPhoto source={{ uri: lastPhoto }} />
+            </TouchableHighlight>
+          )}
+        </CameraFlip>
+      </CameraComponentStyle>
+
+      <CameraModalStyle
+        animationType="slide"
+        transparent={false}
+        visible={openModal}
+      >
+        <CameraModalContent>
+          {/* ARRUMAR ISSO DEPOIS */}
+
+          <View style={{ margin: 10, flexDirection: "row", gap: 20 }}>
+            <TouchableOpacity
+              style={styles.btnClear}
+              onPress={() => clearPhoto()}
             >
-              <FontAwesome6
-                name="arrows-rotate"
-                size={23}
-                color={Theme.colors.whiteColor}
-              />
-            </CameraTypeSwitchButton>
-          </CameraFlip>
-        </CameraComponentStyle>
-      </CameraModalContent>
-    </CameraModalStyle>
+              <FontAwesome name="trash" size={35} color="#ff0000" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.btnUpload}
+              onPress={() => UploadPhoto()}
+            >
+              <FontAwesome name="upload" size={35} color="#121212" />
+            </TouchableOpacity>
+          </View>
+          <Image
+            style={{ width: "100%", height: 500, borderRadius: 15 }}
+            source={{ uri: photo }}
+          />
+        </CameraModalContent>
+      </CameraModalStyle>
+    </CameraStyle>
   );
 };
 
 export default CameraComponent;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+    height: "80%",
+    width: "100%",
+  },
+  viewFlip: {
+    flex: 1,
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  btnFlip: {
+    padding: 20,
+  },
+  txtFlip: {
+    fontSize: 20,
+    color: "#fff",
+    marginBottom: 20,
+  },
+  btnCapture: {
+    padding: 20,
+    margin: 20,
+    borderRadius: 10,
+    backgroundColor: "#121212",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnClear: {
+    padding: 20,
+    backgroundColor: "transparent",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnUpload: {
+    padding: 20,
+    backgroundColor: "transparent",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

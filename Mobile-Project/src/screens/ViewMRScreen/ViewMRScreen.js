@@ -21,7 +21,11 @@ import { ButtonAqua, ButtonAsync } from "../../components/Button";
 import CameraComponent from "../../components/CameraComponent/CameraComponent";
 import { userDecodeToken } from "../../Utils/Auth";
 import { Alert, TextInput } from "react-native";
-import { apiFilipe, examesResource } from "../../Services/Service";
+import {
+  apiFilipe,
+  consultasResource,
+  examesResource,
+} from "../../Services/Service";
 
 const ViewMRScreen = ({ navigation, route }) => {
   const [cameraConfigs, setCameraConfigs] = useState({
@@ -63,8 +67,10 @@ const ViewMRScreen = ({ navigation, route }) => {
           prescricao,
         }
       );
+      console.log(response.status);
       if (response.status === 204) {
         Alert.alert("Sucesso", "Prontuário atualizado!");
+        getConsulta();
       }
     } catch (error) {
       console.log(error);
@@ -80,6 +86,22 @@ const ViewMRScreen = ({ navigation, route }) => {
     setEditUserInfo(false);
   };
 
+  const getConsulta = async () => {
+    try {
+      const response = await apiFilipe.get(
+        consultasResource + `/BuscarPorId?id=${prontuario.consulta.idConsulta}`
+      );
+
+      console.log(response.data);
+
+      setDescricao(response.data.descricao);
+      setDiagnostico(response.data.diagnostico);
+      setPrescricao(response.data.receita.medicamento);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchProfileData();
 
@@ -89,7 +111,6 @@ const ViewMRScreen = ({ navigation, route }) => {
       setDescricao(route.params.consulta.descricao);
       setPrescricao(route.params.consulta.prescricao);
     }
-    console.log(route.params.consulta.diagnostico);
 
     return (cleanUp = () => {});
   }, [route.params]);

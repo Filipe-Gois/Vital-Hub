@@ -36,6 +36,7 @@ import AuthProvider from "./src/Context/AuthProvider";
 
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
+import { Camera } from "expo-camera";
 
 const App = () => {
   // const [userData, setUserData] = useState({});
@@ -56,6 +57,10 @@ const App = () => {
     //     return null;
     //   }
     // };
+    async () => {
+      const { status: cameraStatus } =
+        await Camera.requestCameraPermissionsAsync();
+    };
     requestGaleriaPermissions();
 
     return (cleanUp = () => {});

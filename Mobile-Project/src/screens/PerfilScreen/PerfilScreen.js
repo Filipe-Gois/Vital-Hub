@@ -20,6 +20,7 @@ import {
   apiFilipe,
   medicosResource,
   pacientesResource,
+  usuarioResource,
 } from "../../Services/Service";
 import {
   cepMasked,
@@ -77,6 +78,8 @@ export const PerfilScreen = ({ navigation }) => {
     userGlobalData.role === "Paciente" ? pacientesResource : medicosResource;
 
   const [showCamera, setShowCamera] = useState(false);
+
+  const [uriPhoto, setUriPhoto] = useState(null);
 
   //pega as propriedades do token
   const fetchProfileData = async () => {
@@ -192,14 +195,42 @@ export const PerfilScreen = ({ navigation }) => {
     }
   };
 
+  const alterarFotoPerfil = async () => {
+    const formData = new FormData();
+
+    formData.append("Arquivo", {
+      uri: uriPhoto,
+      name: `image.${uriPhoto.split("."[1])}`,
+      type: `image/${uriPhoto.split("."[1])}`,
+    });
+    try {
+      const response = await apiFilipe.put(
+        usuarioResource + `/AlterarFoto?id=${userGlobalData.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchProfileData();
     if (userGlobalData.id) {
       getUserInfo();
     }
 
+    if (uriPhoto !== null) {
+      alterarFotoPerfil();
+    }
+
     return (cleanUp = () => {});
-  }, [userGlobalData.id]);
+  }, [userGlobalData.id, uriPhoto]);
 
   return (
     <Container>

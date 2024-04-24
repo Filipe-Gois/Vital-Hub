@@ -26,6 +26,8 @@ export const BannerUserComponent = ({
   isProfile = false,
   showCamera,
   setShowCamera,
+  showCameraInfo,
+  setShowCameraInfo,
 }) => {
   return (
     <>
@@ -68,6 +70,7 @@ export const BannerUserComponent = ({
           //   showCameraModal,
           // })}
           setShowCameraModal={setShowCamera}
+          
         />
       )}
     </>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Camera } from "expo-camera";
 import { Theme } from "../../themes";
 
-export const CameraStyle = styled.View`
+export const CameraStyle = styled.Modal`
   flex: 1;
 `;
 
@@ -12,7 +12,10 @@ export const CameraModalStyle = styled.Modal`
 `;
 
 export const CameraModalContent = styled.View`
-  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+
 `;
 
 export const CameraComponentStyle = styled(Camera)`
@@ -26,6 +29,7 @@ export const CameraComponentStyle = styled(Camera)`
 export const CameraFlip = styled.View`
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   width: 100%;
   /* background-color: red; */
   margin: 0 0 50px 0;
@@ -50,4 +54,13 @@ export const CapturePhotoButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const CloseCameraButton = styled.TouchableOpacity``;
+export const CloseCameraButton = styled.TouchableOpacity`
+  width: auto;
+  height: auto;
+`;
+
+export const LastPhoto = styled.Image`
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+`;
