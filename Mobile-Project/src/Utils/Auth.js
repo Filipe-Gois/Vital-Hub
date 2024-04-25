@@ -38,5 +38,6 @@ export const userDecodeToken2 = (theToken) => {
     userId: decoded.jti,
     nome: decoded.name,
     token: theToken,
+    // foto: fotoUsuario,
   };
 };

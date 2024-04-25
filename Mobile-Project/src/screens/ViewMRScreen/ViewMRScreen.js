@@ -28,10 +28,10 @@ import {
 } from "../../Services/Service";
 
 const ViewMRScreen = ({ navigation, route }) => {
-  const [cameraConfigs, setCameraConfigs] = useState({
-    showCameraModal: false,
-    uriCameraCapture: "",
-  });
+  // const [cameraConfigs, setCameraConfigs] = useState({
+  //   showCameraModal: false,
+  //   uriCameraCapture: "",
+  // });
 
   const [userGlobalData, setUserGlobalData] = useState({});
   const [showCamera, setShowCamera] = useState(false);
@@ -44,6 +44,8 @@ const ViewMRScreen = ({ navigation, route }) => {
   const [diagnostico, setDiagnostico] = useState("");
   const [descricao, setDescricao] = useState("");
   const [prescricao, setPrescricao] = useState("");
+
+  const [uriCameraCapture, setUriCameraCapture] = useState();
 
   //pega as propriedades do token
   const fetchProfileData = async () => {
@@ -84,6 +86,31 @@ const ViewMRScreen = ({ navigation, route }) => {
 
   const editActionAbort = () => {
     setEditUserInfo(false);
+  };
+
+  const inserirExame = async () => {
+    const formData = new FormData();
+
+    formData.append("ConsultaId", prontuario.consulta.idConsulta);
+    formData.append("Imagem", {
+      uri: uriCameraCapture,
+      name: `image.${uriCameraCapture.split("."[1].pop())}`,
+      type: `image/${uriCameraCapture.split("."[1].pop())}`,
+    });
+    try {
+      const response = await apiFilipe.post(
+        `${examesResource}/Cadastrar` + formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setPrescricao(descricao + "\n" + response.data.descricao);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getConsulta = async () => {
@@ -298,6 +325,7 @@ const ViewMRScreen = ({ navigation, route }) => {
         </MainContent>
 
         <CameraComponent
+          getMediaLibrary={true}
           visible={showCamera}
           // setShowCameraModal={setCameraConfigs({
           //   ...cameraConfigs,

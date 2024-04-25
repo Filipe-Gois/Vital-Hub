@@ -79,7 +79,7 @@ const CameraComponent = ({
     if (cameraReference) {
       const photo = await cameraReference.current.takePictureAsync();
       setPhoto(photo.uri);
-      console.log(photo.uri);
+
       setOpenModal(true);
     }
   };
@@ -108,16 +108,26 @@ const CameraComponent = ({
         first: 1,
       });
 
-      console.log(assets[0].uri);
-
       if (assets.length > 0) {
         setLastPhoto(assets[0].uri);
       }
     } catch (error) {}
   };
 
+  const requestGaleriaPermissions = async () => {
+    await MediaLibrary.requestPermissionsAsync();
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+  };
+
   useEffect(() => {
     //verificar se tem a necessidade de mostrar a galeria
+
+    async () => {
+      const { status: cameraStatus } =
+        await Camera.requestCameraPermissionsAsync();
+    };
+
+    requestGaleriaPermissions;
 
     if (getMediaLibrary) {
       getLatestPhoto();
