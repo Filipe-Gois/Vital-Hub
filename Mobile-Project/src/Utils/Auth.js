@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { encode, decode } from "base-64";
 import { createContext, useContext } from "react";
+import { apiFilipe, usuarioResource } from "../Services/Service";
 
 export const UserContext = createContext(null);
 
@@ -22,12 +23,25 @@ export const userDecodeToken = async () => {
 
   const decoded = jwtDecode(token);
 
+  const getFotoUri = async (idUsuario) => {
+    try {
+      const response = await apiFilipe.get(
+        `${usuarioResource}/BuscarPorId?id=${idUsuario}`
+      );
+
+      return response.data.foto;
+    } catch (error) {
+      console.log("Erro ao buscar foto:", error);
+    }
+  };
+
   return {
     email: decoded.email,
     id: decoded.jti,
     name: decoded.name,
     role: decoded.role,
     token: token,
+    foto: await getFotoUri(decoded.jti),
   };
 };
 

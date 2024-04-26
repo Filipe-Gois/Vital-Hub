@@ -146,7 +146,7 @@ const ViewMRScreen = ({ navigation, route }) => {
       <MainContentScroll>
         <MainContent>
           <BannerUserComponent
-            src={DoctorImage}
+            src={prontuario ? prontuario.consulta.foto : null}
             name={prontuario ? prontuario.consulta.nome : ""}
             isUser={userGlobalData.role !== "Paciente"}
             specialty={

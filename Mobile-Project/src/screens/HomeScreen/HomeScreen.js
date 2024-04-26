@@ -94,10 +94,7 @@ const HomeScreen = ({ navigation }) => {
     <Container>
       <MainContentScroll>
         <MainContent>
-          <Header
-            src={UserImage}
-            viewProfile={() => navigation.navigate("Perfil")}
-          />
+          <Header viewProfile={() => navigation.navigate("Perfil")} />
 
           <CalendarList setDataConsulta={setDataConsulta} />
           <ButtonBox
@@ -146,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
                             setShowModalAppointment(true);
                             setConsultaSelecionada(item);
                           }
-                        : null
+                        : console.log(item)
                     }
                     onPressCancel={() => {
                       setShowModalCancel(true);
@@ -166,6 +163,11 @@ const HomeScreen = ({ navigation }) => {
                                 descricao: item.descricao,
                                 diagnostico: item.diagnostico,
                                 prescricao: item.receita.medicamento,
+                                foto:
+                                  profile.role === "Medico"
+                                    ? item.paciente.idNavigation.foto
+                                    : item.medicoClinica.medico.idNavigation
+                                        .foto,
                                 nome:
                                   profile.role !== "Medico"
                                     ? item.medicoClinica.medico.idNavigation
@@ -174,6 +176,8 @@ const HomeScreen = ({ navigation }) => {
 
                                 medico: {
                                   idMedico: item.medicoClinica.medico.id,
+                                  // fotoMedico:
+                                  //   item.medicoClinica.medico.idNavigation.foto,
 
                                   crm: item.medicoClinica.medico.crm,
                                   especialidade:
@@ -183,7 +187,7 @@ const HomeScreen = ({ navigation }) => {
 
                                 paciente: {
                                   idPaciente: item.paciente.id,
-
+                                  // fotoPaciente: item.paciente.idNavigation.foto,
                                   email: item.paciente.idNavigation.email,
                                   idade: calcularIdadeDoUsuario(
                                     item.paciente.dataNascimento

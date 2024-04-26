@@ -20,6 +20,7 @@ import {
 
 // import do modal
 import {
+  Alert,
   Image,
   Modal,
   StyleSheet,
@@ -60,13 +61,14 @@ const CameraComponent = ({
   const HandleClose = () => setShowCameraModal(false);
 
   const UploadPhoto = async () => {
-    await MediaLibrary.createAssetAsync(photo)
-      .then(() => {
-        alert("Foto salva com sucesso");
-      })
-      .catch((error) => {
-        alert("Não foi possível processar a foto");
-      });
+    try {
+      await MediaLibrary.createAssetAsync(photo);
+      alert("Foto salva com sucesso");
+      await SendPhotoForm();
+      setOpenModal(false);
+    } catch (error) {
+      alert("Não foi possível processar a foto");
+    }
   };
 
   const clearPhoto = () => {
@@ -93,6 +95,12 @@ const CameraComponent = ({
 
       if (!result.canceled) {
         setPhoto(result.assets[0].uri);
+
+        await setUriCameraCapture(result.assets[0].uri);
+
+        await SendPhotoForm();
+
+        Alert.alert("Sucesso", "Foto salva com sucesso!");
       }
     } catch (error) {
       console.log(error);

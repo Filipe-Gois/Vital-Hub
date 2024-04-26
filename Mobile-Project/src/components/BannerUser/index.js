@@ -28,11 +28,13 @@ export const BannerUserComponent = ({
   setShowCamera,
   showCameraInfo,
   setShowCameraInfo,
+  setUriCameraCapture,
+  uriCameraCapture
 }) => {
   return (
     <>
       <ContainerBannerUser>
-        <ImageProfileStyle source={src} />
+        <ImageProfileStyle source={{ uri: src }} />
 
         <UserInfoBox>
           <Title>
@@ -65,12 +67,12 @@ export const BannerUserComponent = ({
         <CameraComponent
           getMediaLibrary={true}
           visible={showCamera}
+          setUriCameraCapture={setUriCameraCapture}
           // setShowCameraModal={setCameraConfigs({
           //   ...cameraConfigs,
           //   showCameraModal,
           // })}
           setShowCameraModal={setShowCamera}
-          
         />
       )}
     </>

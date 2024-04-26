@@ -47,6 +47,7 @@ export const PerfilScreen = ({ navigation }) => {
   );
 
   const [dataNascimento, setDataNascimento] = useState("");
+  const [userFoto, setUserFoto] = useState("");
 
   const [logradouro, setLogradouro] = useState("");
 
@@ -98,6 +99,8 @@ export const PerfilScreen = ({ navigation }) => {
       );
 
       setDadosPessoaisDoUsuario(response.data);
+
+      setUserFoto(response.data.idNavigation.foto);
 
       setLogradouro(response.data.endereco.logradouro);
       setCidade(response.data.endereco.cidade);
@@ -156,8 +159,6 @@ export const PerfilScreen = ({ navigation }) => {
           rg: unMask(rg),
           cpf: unMask(cpf),
           dataNascimento: dateViewToDb(dataNascimento),
-
-          foto: "fefe123.png",
         }
       );
       getUserInfo();
@@ -195,17 +196,18 @@ export const PerfilScreen = ({ navigation }) => {
     }
   };
 
+  //A FOTO ESTÁ VINDO COM .EXP, TRATAR ISSO!!!!!!
   const alterarFotoPerfil = async () => {
     const formData = new FormData();
 
     formData.append("Arquivo", {
       uri: uriPhoto,
-      name: `image.${uriPhoto.split("."[1])}`,
-      type: `image/${uriPhoto.split("."[1])}`,
+      name: `image.${uriPhoto.split(".")[1]}`,
+      type: `image/${uriPhoto.split(".")[1]}`,
     });
     try {
-      const response = await apiFilipe.put(
-        usuarioResource + `/AlterarFoto?id=${userGlobalData.id}`,
+      await apiFilipe.put(
+        `${usuarioResource}/AlterarFotoPerfil?id=${userGlobalData.id}`,
         formData,
         {
           headers: {
@@ -213,9 +215,8 @@ export const PerfilScreen = ({ navigation }) => {
           },
         }
       );
-      console.log(response.data);
     } catch (error) {
-      console.log(error);
+      console.log("Erro:", error);
     }
   };
 
@@ -228,8 +229,6 @@ export const PerfilScreen = ({ navigation }) => {
     if (uriPhoto !== null) {
       alterarFotoPerfil();
     }
-
-    return (cleanUp = () => {});
   }, [userGlobalData.id, uriPhoto]);
 
   return (
@@ -237,7 +236,7 @@ export const PerfilScreen = ({ navigation }) => {
       <MainContentScroll>
         <MainContent>
           <BannerUserComponent
-            src={UserImage}
+            src={userFoto ? userFoto : null}
             name={userGlobalData.name}
             isAge={false}
             email={userGlobalData.email}
@@ -246,6 +245,7 @@ export const PerfilScreen = ({ navigation }) => {
             isProfile={true}
             showCamera={showCamera}
             setShowCamera={setShowCamera}
+            setUriCameraCapture={setUriPhoto}
           />
 
           <FormBox>

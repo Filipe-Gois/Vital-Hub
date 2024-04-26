@@ -8,7 +8,7 @@ import { userDecodeToken } from "../../Utils/Auth";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const Header = ({ src = "", viewProfile }) => {
+export const Header = ({ viewProfile }) => {
   const [user, setUser] = useState({});
 
   const fetchUserName = async () => {
@@ -16,6 +16,8 @@ export const Header = ({ src = "", viewProfile }) => {
     if (userInfo) {
       setUser(userInfo);
     }
+
+
   };
 
   useEffect(() => {
@@ -31,7 +33,11 @@ export const Header = ({ src = "", viewProfile }) => {
         end={{ x: 1, y: 0 }} // Fim no canto inferior direito
       >
         <HeaderContentBox>
-          <WelCome viewProfile={viewProfile} src={src} name={user.name} />
+          <WelCome
+            viewProfile={viewProfile}
+            uri={user.foto ? user.foto : null}
+            name={user.name}
+          />
           <MaterialIcons name="notifications" size={25} color="white" />
         </HeaderContentBox>
       </LinearGradient>
