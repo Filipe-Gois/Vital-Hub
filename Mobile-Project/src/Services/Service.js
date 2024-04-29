@@ -17,7 +17,7 @@ const localApiUrlFilipe = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}
 ////configurações da api de gabriel de luca no senai
 
 //declarar o ip da Máquina 
-const ip = " 172.16.39.101"
+const ip = "172.16.39.101"
 
 
 
@@ -55,7 +55,7 @@ export const apiFilipe = axios.create({
   baseURL: localApiUrlFilipe,
 });
 
-//api de gabriel de luca
+//api de gabriel de lucca
 export const apiGabriel = axios.create({
   baseURL: apiUrlLocalGabriel,
 });
