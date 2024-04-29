@@ -47,8 +47,8 @@ namespace WebAPI.Repositories
                     NomeFantasia = c.NomeFantasia,
                     Endereco = c.Endereco
                 })
-                
-               .Where(c => c.Endereco!.Cidade == cidade)
+
+               .Where(c => c.Endereco!.Cidade!.ToLower() == cidade.ToLower())
                 .ToList();
         }
     }

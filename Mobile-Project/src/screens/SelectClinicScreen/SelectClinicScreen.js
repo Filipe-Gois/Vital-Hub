@@ -15,22 +15,39 @@ import { FlatListStyle } from "../../components/FlatList/style";
 import axios from "axios";
 import api, { apiFilipe, clinicaResource } from "../../Services/Service";
 
-const SelectClinicScreen = ({ navigation }) => {
+const SelectClinicScreen = ({ navigation, route }) => {
   const [clinics, setClinics] = useState([]);
-  const [selectedClinic, setSelectedClinic] = useState();
+  const [selectedClinic, setSelectedClinic] = useState({
+    clinicaId: "",
+    clinicaLabel: "",
+  });
+
+  const handleContinue = async () => {
+    navigation.navigate("SelectDoctor", {
+      agendamento: {
+        ...route.params,
+        ...selectedClinic,
+      },
+    });
+  };
+
+  const fetchClinics = async () => {
+    try {
+      console.log(route.params.localizacao);
+      const response = await apiFilipe.get(
+        `${clinicaResource}/BuscarPorCidade?cidade=${route.params.localizacao}`
+      );
+      setClinics(response.data);
+    } catch (error) {
+      console.log("Erro ao carregar as Clinicas:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchClinics = async () => {
-      try {
-        const response = await apiFilipe.get(clinicaResource + "/ListarTodas");
-        setClinics(response.data);
-      } catch (error) {
-        console.error("Erro ao carregar as Clinicas:", error);
-      }
-    };
+    console.log(route.params);
 
     fetchClinics();
-  }, []);
+  }, [route]);
 
   return (
     <Container>
@@ -49,19 +66,22 @@ const SelectClinicScreen = ({ navigation }) => {
                 <ClinicCard
                   key={item.id}
                   //ao clicar no card da clinica, o id é capturado e passado p variavel que o armazenará
-                  onPress={() => setSelectedClinic(item.id)}
+                  onPress={() => {
+                    setSelectedClinic({
+                      clinicaId: item.id,
+                      clinicaLabel: item.nomeFantasia,
+                    });
+                    console.log(selectedClinic);
+                  }}
                   //se o id armazenado no state "selectedClinic" for identico ao id do item atual do FlatList, será aplicada a borda, senão, seguirá para o proximo item, e por aí vai :)
-                  clickButton={selectedClinic === item.id}
+                  clickButton={selectedClinic.clinicaId === item.id}
                   dados={item}
                 />
               )}
               keyExtractor={(item) => item.id}
             />
 
-            <Button
-              onPress={() => navigation.navigate("SelectDoctor")}
-              padding={"0"}
-            >
+            <Button onPress={() => handleContinue()} padding={"0"}>
               <ButtonTitle>Continuar</ButtonTitle>
             </Button>
 

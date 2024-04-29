@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, View } from "react-native";
+import { Alert, Modal, View } from "react-native";
 import { Title } from "../Title/style";
 import {
   Paragraph,
@@ -107,7 +107,39 @@ export const ModalAgendarConsulta = ({
   goBack = false,
   ...rest
 }) => {
-  const [statusList, setStatusList] = useState();
+  const [agendamento, setAgendamento] = useState({
+    prioridadeId: "",
+    prioridadeLabel: "",
+    localizacao: "",
+  });
+
+  const niveisPrioridade = {
+    rotina: {
+      prioridadeId: "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
+      prioridadeLabel: "Rotina",
+    },
+    exame: {
+      prioridadeId: "76C4AAC2-E570-4985-97EA-F9BC5ECD280C",
+      prioridadeLabel: "Exame",
+    },
+    urgencia: {
+      prioridadeId: "790307E0-E8E9-443A-8E57-A5BA87934EEC",
+      prioridadeLabel: "Urgência",
+    },
+  };
+
+  const handleContinue = async () => {
+    if (
+      (agendamento.prioridadeId !== "" && agendamento.localizacao !== "") ||
+      agendamento.localizacao !== undefined
+    ) {
+      await setShowModalCancel(false);
+      navigation.navigate("SelectClinic", agendamento);
+      setAgendamento({});
+    } else {
+      Alert.alert("Insira todos os dados!");
+    }
+  };
   return (
     <ModalStyle
       visible={visible}
@@ -123,33 +155,76 @@ export const ModalAgendarConsulta = ({
           <LabelStyle>
             <ParagraphSemiBold>Qual o nível da consulta</ParagraphSemiBold>
 
+            {/* <ButtonTitleModal>{agendamento}</ButtonTitleModal> */}
+
             <ButtonBox fieldFlexDirection={"row"}>
               <ButtonBorderCyan
-                clickButton={statusList === "Rotina"}
-                onPress={() => setStatusList("Rotina")}
+                clickButton={
+                  agendamento.prioridadeId === niveisPrioridade.rotina.prioridadeId
+                }
+                onPress={() =>
+                  setAgendamento({
+                    ...agendamento,
+                    prioridadeId: niveisPrioridade.rotina.prioridadeId,
+                    prioridadeLabel: niveisPrioridade.rotina.prioridadeLabel,
+                  })
+                }
                 fieldWidth={"30%"}
               >
-                <ButtonTitleModal clickButton={statusList === "Rotina"}>
+                <ButtonTitleModal
+                  clickButton={
+                    agendamento.prioridadeId ===
+                    niveisPrioridade.rotina.prioridadeId
+                  }
+                >
                   Rotina
                 </ButtonTitleModal>
               </ButtonBorderCyan>
 
               <ButtonBorderCyan
-                clickButton={statusList === "Exame"}
-                onPress={() => setStatusList("Exame")}
+                clickButton={
+                  agendamento.prioridadeId ===
+                  niveisPrioridade.exame.prioridadeId
+                }
+                onPress={() =>
+                  setAgendamento({
+                    ...agendamento,
+                    prioridadeId: niveisPrioridade.exame.prioridadeId,
+                    prioridadeLabel: niveisPrioridade.exame.prioridadeLabel,
+                  })
+                }
                 fieldWidth={"30%"}
               >
-                <ButtonTitleModal clickButton={statusList === "Exame"}>
+                <ButtonTitleModal
+                  clickButton={
+                    agendamento.prioridadeId ===
+                    niveisPrioridade.exame.prioridadeId
+                  }
+                >
                   Exame
                 </ButtonTitleModal>
               </ButtonBorderCyan>
 
               <ButtonBorderCyan
-                clickButton={statusList === "Urgencia"}
-                onPress={() => setStatusList("Urgencia")}
+                clickButton={
+                  agendamento.prioridadeId ===
+                  niveisPrioridade.urgencia.prioridadeId
+                }
+                onPress={() =>
+                  setAgendamento({
+                    ...agendamento,
+                    prioridadeId: niveisPrioridade.urgencia.prioridadeId,
+                    prioridadeLabel: niveisPrioridade.urgencia.prioridadeLabel,
+                  })
+                }
                 fieldWidth={"29%"}
               >
-                <ButtonTitleModal clickButton={statusList === "Urgencia"}>
+                <ButtonTitleModal
+                  clickButton={
+                    agendamento.prioridadeId ===
+                    niveisPrioridade.urgencia.prioridadeId
+                  }
+                >
                   Urgência
                 </ButtonTitleModal>
               </ButtonBorderCyan>
@@ -157,14 +232,17 @@ export const ModalAgendarConsulta = ({
           </LabelStyle>
 
           <Label
+            fieldValue={agendamento ? agendamento.localizacao : null}
             titulo="Informe a localização desejada"
             placeholder={"Informe a localização"}
+            onChangeText={(txt) => {
+              setAgendamento({ ...agendamento, localizacao: txt });
+            }}
           />
 
           <Button
             onPress={() => {
-              setShowModalCancel(false);
-              goBack ? navigation.goBack() : navigation.navigate(setNavigation);
+              goBack ? navigation.goBack() : handleContinue();
             }}
             padding={"0"}
           >

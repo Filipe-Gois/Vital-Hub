@@ -101,12 +101,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("Prontuario")]
-        public IActionResult UpdateMedicalRecord(ProntuarioViewModel prontuarioviewModel)
+        [HttpPut("EditarProntuario")]
+        public IActionResult UpdateMedicalRecord(Guid idConsulta, ProntuarioViewModel prontuarioviewModel)
         {
             try
             {
-                Consulta consulta = consultaRepository.BuscarPorId(prontuarioviewModel.ConsultaId);
+                Consulta consulta = consultaRepository.BuscarPorId(idConsulta);
 
                 consulta.Descricao = prontuarioviewModel.Descricao;
 
@@ -127,7 +127,7 @@ namespace WebAPI.Controllers
                     consulta.Receita = receita;
                 }
 
-                consultaRepository.EditarProntuario(consulta);
+                consultaRepository.EditarProntuario(idConsulta, prontuarioviewModel);
 
                 return Ok();
             }

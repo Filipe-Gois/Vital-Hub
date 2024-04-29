@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 
-const CalendarMaximized = () => {
-  const [selected, setSelected] = useState("");
+const CalendarMaximized = ({ setSelected, selected }) => {
+  // const [selected, setSelected] = useState("");
 
   const currentDate = new Date();
   const startingDate = new Date(

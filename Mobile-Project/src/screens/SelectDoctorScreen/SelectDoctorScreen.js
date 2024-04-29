@@ -17,15 +17,19 @@ import DoctorRodrigo from "../../assets/doctorRodrigo.png";
 import DoctorCard from "../../components/DoctorCard";
 import api, { apiFilipe, medicosResource } from "../../Services/Service";
 
-const SelectDoctorScreen = ({ navigation }) => {
-  const [selectedDoctor, setSelectedDoctor] = useState();
+const SelectDoctorScreen = ({ navigation, route }) => {
+  const [selectedDoctor, setSelectedDoctor] = useState({
+    idMedico: "",
+    medicoNome: "",
+    medicoEspecialidade: "",
+  });
   const [doctors, setDoctors] = useState([]);
-
-
 
   const getDoctors = async () => {
     try {
-      const response = await apiFilipe.get(medicosResource);
+      const response = await apiFilipe.get(
+        `${medicosResource}/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`
+      );
 
       setDoctors(response.data);
     } catch (error) {
@@ -33,11 +37,19 @@ const SelectDoctorScreen = ({ navigation }) => {
     }
   };
 
+  const handleContinue = async () => {
+    navigation.navigate("SelectDate", {
+      ...route.params,
+      ...selectedDoctor,
+    });
+  };
+
   useEffect(() => {
     getDoctors();
+    console.log(route.params);
 
     return (cleanUp = () => {});
-  }, []);
+  }, [route]);
 
   return (
     <Container>
@@ -52,18 +64,22 @@ const SelectDoctorScreen = ({ navigation }) => {
               scrollEnabled={false}
               renderItem={({ item }) => (
                 <DoctorCard
-                  clickButton={item.id === selectedDoctor}
-                  onPress={() => setSelectedDoctor(item.id)}
+                  clickButton={item.id === selectedDoctor.idMedico}
+                  onPress={() =>
+                    setSelectedDoctor({
+                      ...selectedDoctor,
+                      idMedico: item.id,
+                      medicoNome: item.idNavigation.nome,
+                      medicoEspecialidade: item.especialidade.especialidade1,
+                    })
+                  }
                   dados={item}
                 />
               )}
               keyExtractor={(item) => item.id}
             />
 
-            <Button
-              onPress={() => navigation.navigate("SelectDate")}
-              padding={"0"}
-            >
+            <Button onPress={() => handleContinue()} padding={"0"}>
               <ButtonTitle>Continuar</ButtonTitle>
             </Button>
 

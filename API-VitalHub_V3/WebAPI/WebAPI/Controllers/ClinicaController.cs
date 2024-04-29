@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -40,6 +41,38 @@ namespace WebAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Post(ClinicaViewModel clinicaModel)
+        {
+            try
+            {
+                Clinica clinica = new()
+                {
+                    NomeFantasia = clinicaModel.NomeFantasia,
+                    Cnpj = clinicaModel.Cnpj,
+                    RazaoSocial = clinicaModel.RazaoSocial,
+                    Email = clinicaModel.Email,
+                    Endereco = new()
+                    {
+                        Cep = clinicaModel.Cep,
+                        Logradouro = clinicaModel.Logradouro,
+                        Numero = clinicaModel.Numero,
+                        Latitude = clinicaModel.Latitude,
+                        Longitude = clinicaModel.Longitude,
+                        Cidade = clinicaModel.Cidade,
+                    }
+
+                };
+                clinicaRepository.Cadastrar(clinica);
+                return StatusCode(201);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
             }
         }
 

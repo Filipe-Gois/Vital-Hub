@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   FormBox,
@@ -17,9 +17,25 @@ import CalendarMaximized from "../../components/CalendarMaximized";
 import { InputSelect } from "../../components/Input";
 import { LabelStyle } from "../../components/Label/style";
 import { ModalConfirmarAgendamento } from "../../components/Modal";
+import { Text } from "react-native";
 
-const SelectDateScreen = ({ navigation }) => {
+const SelectDateScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState(false);
+
+  const [dateSelected, setDateSelected] = useState("");
+  const [horaSelecionada, setHoraSelecionada] = useState("");
+  const [agendamento, setAgendamento] = useState(null);
+
+  const handleContinue = async () => {
+    setShowModal(true);
+  };
+
+  useEffect(() => {
+    console.log("dados finais:");
+    console.log(dateSelected);
+
+    return (cleanUp = () => {});
+  }, [dateSelected]);
   return (
     <Container>
       <MainContentScroll>
@@ -27,17 +43,22 @@ const SelectDateScreen = ({ navigation }) => {
           <FormBox margin={"30px 0 0 0"}>
             <Title>Selecionar clínica</Title>
 
-            <CalendarMaximized />
+            <CalendarMaximized
+              selected={dateSelected}
+              setSelected={setDateSelected}
+            />
+
+            <Text>{dateSelected}</Text>
 
             <LabelStyle>
               <ParagraphSemiBold color={Theme.colors.blackColor}>
                 Selecione um horário disponível
               </ParagraphSemiBold>
 
-              <InputSelect />
+              <InputSelect setHoraSelecionada={setHoraSelecionada} />
             </LabelStyle>
 
-            <Button onPress={() => setShowModal(true)} padding={"0"}>
+            <Button onPress={() => handleContinue()} padding={"0"}>
               <ButtonTitle>Continuar</ButtonTitle>
             </Button>
 

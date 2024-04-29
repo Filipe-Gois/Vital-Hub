@@ -4,6 +4,7 @@ using Microsoft.Identity.Client;
 using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Repositories
 {
@@ -78,7 +79,7 @@ namespace WebAPI.Repositories
                 null,
                 //quanto tempo vai demorar até efetuar o primeiro disparo
                 TimeSpan.FromSeconds(5),
-                //os disparos ocorrerão a cada 12 horas
+                //os disparos ocorrerão a cada 10 minutos
                 TimeSpan.FromMinutes(10)
             );
             return Task.CompletedTask;
@@ -124,23 +125,23 @@ namespace WebAPI.Repositories
 
 
 
-        public void EditarProntuario(Consulta consulta)
+        public void EditarProntuario(Guid idConsulta, ProntuarioViewModel prontuarioviewModel)
         {
             try
             {
-                Consulta buscada = ctx.Consultas.Include(x => x.Receita ).FirstOrDefault(x => x.Id == consulta.Id)!;
+                Consulta buscada = ctx.Consultas.Include(x => x.Receita).FirstOrDefault(x => x.Id == idConsulta)!;
 
-                buscada.Descricao = consulta.Descricao;
-                buscada.Diagnostico = consulta.Diagnostico;
+                buscada.Descricao = prontuarioviewModel.Descricao;
+                buscada.Diagnostico = prontuarioviewModel.Diagnostico;
 
-                if (buscada.ReceitaId != null)
+                if (buscada.Receita != null)
                 {
-                    buscada.Receita = consulta.Receita;
+                    buscada.Receita.Medicamento = prontuarioviewModel.Medicamento;
 
                 }
                 else
                 {
-                    ctx.Receitas.Add(consulta.Receita!);
+                    ctx.Receitas.Add(buscada.Receita!);
                 }
 
                 ctx.Update(buscada);

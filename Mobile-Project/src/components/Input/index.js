@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InputCheckEmailStyle, InputSelectBox, InputStyle } from "./style";
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import moment from "moment";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 // import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -90,32 +91,55 @@ export const InputCheckEmail = ({
   );
 };
 
-export const InputSelect = () => {
+export const InputSelect = ({ setHoraSelecionada }) => {
+  const dataAtual = moment().format("YYYY-MM-DD");
+  const [arrayOptions, setArrayOptions] = useState(null);
+
+  const loadOptions = async () => {
+    //capturar a quantidade de horas q faltam p dar meia noite
+
+    const horasRestantes = moment(dataAtual)
+      .add(24, "hours")
+      .diff(moment(), "hours");
+
+    const options = Array.from({ length: horasRestantes }, (_, index) => {
+      let valor = new Date().getHours() + (index + 1);
+
+      return {
+        label: `${valor}:00`,
+        value: valor,
+      };
+    });
+
+    setArrayOptions(options);
+  };
+
+  useEffect(() => {
+    loadOptions();
+    return (cleanUp = () => {});
+  }, []);
   return (
     <InputSelectBox>
-      <RNPickerSelect
-        style={style}
-        // Icon={() => {
-        // return (
-        // <FontAwesomeIcon icon={faCaretDown} color="#34898F" size={22} />
-        // <FontAwesome name="sort-down" size={22} color="#34898F" />
-        // );
-        // }}
-        placeholder={{
-          label: "Selecionar horário",
-          value: null,
-          color: "#34898F",
-        }}
-        onValueChange={(value) => console.log(value)}
-        items={[
-          { label: "JavaScript", value: "JavaScript" },
-          { label: "TypeScript", value: "TypeScript" },
-          { label: "Python", value: "Python" },
-          { label: "Java", value: "Java" },
-          { label: "C++", value: "C++" },
-          { label: "C", value: "C" },
-        ]}
-      />
+      {arrayOptions ? (
+        <RNPickerSelect
+          style={style}
+          // Icon={() => {
+          // return (
+          // <FontAwesomeIcon icon={faCaretDown} color="#34898F" size={22} />
+          // <FontAwesome name="sort-down" size={22} color="#34898F" />
+          // );
+          // }}
+          placeholder={{
+            label: "Selecionar horário",
+            value: null,
+            color: "#34898F",
+          }}
+          onValueChange={(value) => setHoraSelecionada(value)}
+          items={arrayOptions}
+        />
+      ) : (
+        <ActivityIndicator />
+      )}
     </InputSelectBox>
   );
 };
