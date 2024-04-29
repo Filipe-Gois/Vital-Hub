@@ -19,31 +19,28 @@ namespace WebAPI.Repositories
             {
                 Medico medicoBuscado = ctx.Medicos
                     .Include(x => x.Endereco)
-                    .FirstOrDefault(x => x.Id == Id)!;
-
-
-                if (medicoBuscado == null) return null!;
+                    .Include(x => x.Especialidade)
+                    .FirstOrDefault(x => x.Id == Id)! ?? throw new Exception("Médico não encontrado!");
 
                 //if (medico.Foto != null)
                 //    medicoBuscado.IdNavigation.Foto = medico.Foto;
 
-                if (medico.EspecialidadeId != null)
-                    medicoBuscado.EspecialidadeId = medico.EspecialidadeId;
 
-                if (medico.Crm != null)
-                    medicoBuscado.Crm = medico.Crm;
+                //medicoBuscado.EspecialidadeId = medico.EspecialidadeId;
 
-                if (medico.Logradouro != null)
-                    medicoBuscado.Endereco!.Logradouro = medico.Logradouro;
 
-                if (medico.Numero != null)
-                    medicoBuscado.Endereco!.Numero = medico.Numero;
+                medicoBuscado.Crm = medico.Crm;
 
-                if (medico.Cep != null)
-                    medicoBuscado.Endereco!.Cep = medico.Cep;
+                medicoBuscado.Endereco!.Logradouro = medico.Logradouro;
 
-                if (medico.Cidade != null)
-                    medicoBuscado.Endereco!.Cidade = medico.Cidade;
+
+                medicoBuscado.Endereco!.Numero = medico.Numero;
+
+
+                medicoBuscado.Endereco!.Cep = medico.Cep;
+
+
+                medicoBuscado.Endereco!.Cidade = medico.Cidade;
 
                 ctx.Medicos.Update(medicoBuscado);
                 ctx.SaveChanges();

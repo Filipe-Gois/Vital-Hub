@@ -20,6 +20,23 @@ namespace WebAPI.Controllers
             _medicoRepository = new MedicoRepository();
         }
 
+        [Authorize]
+        [HttpGet("PerfilLogado")]
+        public IActionResult GetLogged()
+        {
+            try
+            {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+
+                return Ok(_medicoRepository.BuscarPorId(idUsuario));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -129,9 +146,11 @@ namespace WebAPI.Controllers
         {
             try
             {
+                //pega o id do médico logado através da context
                 Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+                _medicoRepository.AtualizarPerfil(idUsuario, medico);
 
-                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+                return StatusCode(204);
 
             }
             catch (Exception ex)

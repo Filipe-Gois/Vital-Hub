@@ -9,7 +9,7 @@ const ipFilipePcDoSenai = "172.16.39.113";
 
 const apiPortFilipePcDoSenai = "4466";
 
-const localApiUrlFilipe = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
+const localApiUrlFilipe = `http://${ipFilipePcDeCasa}:${apiPortFilipePcDoSenai}/api`;
 
 //rota da api externa para conferir o cep
 const externalApiCep = `https://api.brasilaberto.com/v1/zipcode`;

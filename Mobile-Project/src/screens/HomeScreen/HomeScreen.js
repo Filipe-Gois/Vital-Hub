@@ -22,7 +22,7 @@ import Stethoscope from "../../components/stethoscope";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { WelComeImage } from "../../components/ImageProfile";
 import { HandleCallNotification } from "../../components/Notification/Notification";
-import { Alert, Text } from "react-native";
+import { Alert, RefreshControl, Text } from "react-native";
 import { userDecodeToken } from "../../Utils/Auth";
 import {
   apiFilipe,
@@ -49,6 +49,8 @@ const HomeScreen = ({ navigation }) => {
   //state para a exibição dos modais
   const [showModalCancel, setShowModalCancel] = useState(false);
   const [showModalAppointment, setShowModalAppointment] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchUserName = async () => {
     const userInfo = await userDecodeToken();
@@ -81,6 +83,17 @@ const HomeScreen = ({ navigation }) => {
     } catch (error) {}
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // setTimeout(() => {
+    //   setRefreshing(false);
+    // }, 2000);
+    listarConsultas();
+    fetchUserName();
+    setRefreshing(false);
+  };
+
   useEffect(() => {
     fetchUserName();
     return (cleanUp = () => {});
@@ -92,9 +105,17 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <MainContentScroll>
+      <MainContentScroll
+        //lógica para scrollar para cima e atualizar página
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <MainContent>
-          <Header viewProfile={() => navigation.navigate("Perfil")} />
+          <Header
+            user={profile}
+            viewProfile={() => navigation.navigate("Perfil")}
+          />
 
           <CalendarList setDataConsulta={setDataConsulta} />
           <ButtonBox
@@ -143,7 +164,7 @@ const HomeScreen = ({ navigation }) => {
                             setShowModalAppointment(true);
                             setConsultaSelecionada(item);
                           }
-                        : console.log(item)
+                        : null
                     }
                     onPressCancel={() => {
                       setShowModalCancel(true);

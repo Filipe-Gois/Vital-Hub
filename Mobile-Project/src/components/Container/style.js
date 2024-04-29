@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Theme } from "../../themes";
+import { ScrollView } from "react-native";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -18,7 +19,7 @@ export const ContainerBoxStyle = styled.View`
   gap: ${(props) => (props.fieldGap ? props.fieldGap : "0")};
 `;
 
-export const MainContentScroll = styled.ScrollView`
+export const MainContentScroll = styled(ScrollView)`
   width: 100%;
   background-color: ${Theme.colors.lightWhite};
 `;

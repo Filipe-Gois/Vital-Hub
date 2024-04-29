@@ -28,24 +28,20 @@ import {
 } from "../../Services/Service";
 
 const ViewMRScreen = ({ navigation, route }) => {
-  // const [cameraConfigs, setCameraConfigs] = useState({
-  //   showCameraModal: false,
-  //   uriCameraCapture: "",
-  // });
-
+  //Dados do usuário
   const [userGlobalData, setUserGlobalData] = useState({});
-  const [showCamera, setShowCamera] = useState(false);
-  const [uriCamera, setUriCamera] = useState();
-  const [editUserInfo, setEditUserInfo] = useState(false);
-  const [loading, setLoading] = useState(false);
 
+  //Prontuário
   const [prontuario, setProntuario] = useState(null);
-
   const [diagnostico, setDiagnostico] = useState("");
   const [descricao, setDescricao] = useState("");
   const [prescricao, setPrescricao] = useState("");
 
-  const [uriCameraCapture, setUriCameraCapture] = useState();
+  //Propriedades da página
+  const [showCamera, setShowCamera] = useState(false);
+  const [editUserInfo, setEditUserInfo] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [uriCameraCapture, setUriCameraCapture] = useState(null);
 
   //pega as propriedades do token
   const fetchProfileData = async () => {
@@ -59,6 +55,7 @@ const ViewMRScreen = ({ navigation, route }) => {
   const removePicture = () => {};
 
   const handleUpdate = async () => {
+    setLoading(true);
     try {
       const response = await apiFilipe.put(
         examesResource +
@@ -69,7 +66,7 @@ const ViewMRScreen = ({ navigation, route }) => {
           prescricao,
         }
       );
-      console.log(response.status);
+
       if (response.status === 204) {
         Alert.alert("Sucesso", "Prontuário atualizado!");
         getConsulta();
@@ -78,6 +75,7 @@ const ViewMRScreen = ({ navigation, route }) => {
       console.log(error);
     }
     setEditUserInfo(false);
+    setLoading(false);
   };
 
   const showUpdateForm = () => {
@@ -94,8 +92,8 @@ const ViewMRScreen = ({ navigation, route }) => {
     formData.append("ConsultaId", prontuario.consulta.idConsulta);
     formData.append("Imagem", {
       uri: uriCameraCapture,
-      name: `image.${uriCameraCapture.split("."[1].pop())}`,
-      type: `image/${uriCameraCapture.split("."[1].pop())}`,
+      name: `image.${uriCameraCapture.split(".")[1].pop()}`,
+      type: `image/${uriCameraCapture.split(".")[1].pop()}`,
     });
     try {
       const response = await apiFilipe.post(
@@ -132,7 +130,7 @@ const ViewMRScreen = ({ navigation, route }) => {
   useEffect(() => {
     fetchProfileData();
 
-    if (!prontuario || diagnostico || descricao) {
+    if (!prontuario || !diagnostico || !descricao) {
       setProntuario(route.params);
       setDiagnostico(route.params.consulta.diagnostico);
       setDescricao(route.params.consulta.descricao);
@@ -331,6 +329,7 @@ const ViewMRScreen = ({ navigation, route }) => {
           //   ...cameraConfigs,
           //   showCameraModal,
           // })}
+          setUriCameraCapture={setUriCameraCapture}
           setShowCameraModal={setShowCamera}
         />
       </MainContentScroll>

@@ -36,29 +36,15 @@ import { ButtonAsync } from "../../components/Button";
 import { unMask, unmask } from "remask";
 
 export const PerfilScreen = ({ navigation }) => {
-  const [editUserInfo, setEditUserInfo] = useState(false);
-
+  //dados do usuario
   const [userGlobalData, setUserGlobalData] = useState({});
-
   const [dadosPessoaisDoUsuario, setDadosPessoaisDoUsuario] = useState({});
-
-  const [editDadosPessoaisDoUsuario, setEditDadosPessoaisDoUsuario] = useState(
-    dadosPessoaisDoUsuario
-  );
-
-  const [dataNascimento, setDataNascimento] = useState("");
   const [userFoto, setUserFoto] = useState("");
 
+  //Endereço
   const [logradouro, setLogradouro] = useState("");
-
   const [cidade, setCidade] = useState("");
-
   const [cep, setCep] = useState("");
-
-  const [crm, setCrm] = useState("");
-
-  const [especialidadeMedico, setEspecialidadeMedico] = useState("");
-
   const [enderecoLocalizado, setEnderecoLocalizado] = useState({
     street: "",
     complement: "",
@@ -69,17 +55,25 @@ export const PerfilScreen = ({ navigation }) => {
     zipcode: "",
   });
 
+  //Dados do médico
+  const [crm, setCrm] = useState("");
+  const [especialidadeMedico, setEspecialidadeMedico] = useState("");
+
+  //Dados do paciente
   const [cpf, setCpf] = useState("");
-
   const [rg, setRg] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
 
-  const [loading, setLoading] = useState(false);
-
+  //Rotas
   const url =
     userGlobalData.role === "Paciente" ? pacientesResource : medicosResource;
 
-  const [showCamera, setShowCamera] = useState(false);
+  //Propriedades da tela
+  const [editUserInfo, setEditUserInfo] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  //Câmera
+  const [showCamera, setShowCamera] = useState(false);
   const [uriPhoto, setUriPhoto] = useState(null);
 
   //pega as propriedades do token
@@ -91,12 +85,17 @@ export const PerfilScreen = ({ navigation }) => {
     }
   };
 
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("token");
+    navigation.replace("Login");
+  };
+
   //traz os dados pessoais do usuario Ex: cpf, logradouro, etc
   const getUserInfo = async () => {
     try {
-      const response = await apiFilipe.get(
-        `${url}/BuscarPorId?id=${userGlobalData.id}`
-      );
+      const response = await apiFilipe.get(`${url}/PerfilLogado`, {
+        headers: { Authorization: `Bearer ${userGlobalData.token}` },
+      });
 
       setDadosPessoaisDoUsuario(response.data);
 
@@ -122,30 +121,8 @@ export const PerfilScreen = ({ navigation }) => {
   const handleUpdate = async () => {
     setLoading(true);
     try {
-      if (userGlobalData.role === "Paciente") {
-        if (
-          cpf === undefined ||
-          dataNascimento === undefined ||
-          cep === undefined ||
-          rg === undefined ||
-          // cidade.trim() === "" ||
-          cpf.trim() === "" ||
-          dataNascimento.trim() === "" ||
-          cep.trim() === "" ||
-          rg.trim() === ""
-        ) {
-          Alert.alert(
-            "Atenção",
-            "Todos os campos devem ser preenchidos corretamente!"
-          );
-          setLoading(false);
-          return;
-        }
-      }
-
-      const response = await apiFilipe.put(
-        `${url}/AtualizarPerfil?id=${userGlobalData.id}`,
-
+      await apiFilipe.put(
+        url,
         {
           //Endereço
           cep: enderecoLocalizado.zipcode ? enderecoLocalizado.zipcode : cep,
@@ -159,13 +136,18 @@ export const PerfilScreen = ({ navigation }) => {
           rg: unMask(rg),
           cpf: unMask(cpf),
           dataNascimento: dateViewToDb(dataNascimento),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userGlobalData.token}`,
+          },
         }
       );
       getUserInfo();
-      console.log(response.status);
+      Alert.alert("Sucesso", "Dados atualizados com sucesso!");
     } catch (error) {
       editActionAbort();
-      console.log(error);
+      Alert.alert("Erro!", "Não foi possível atualizar os dados!");
     }
 
     setEditUserInfo(!editUserInfo);
@@ -187,9 +169,7 @@ export const PerfilScreen = ({ navigation }) => {
       const enderecoApi = await getLocation(cep);
 
       if (enderecoApi) {
-        console.log("enderecoApi:", enderecoApi);
         setEnderecoLocalizado(enderecoApi);
-        // setCep(enderecoApi.zipcode);
       }
     } catch (error) {
       console.log(error);
@@ -215,6 +195,9 @@ export const PerfilScreen = ({ navigation }) => {
           },
         }
       );
+
+      // setUserFoto(uriPhoto)
+      setUriPhoto(null);
     } catch (error) {
       console.log("Erro:", error);
     }
@@ -230,6 +213,11 @@ export const PerfilScreen = ({ navigation }) => {
       alterarFotoPerfil();
     }
   }, [userGlobalData.id, uriPhoto]);
+
+  useEffect(() => {
+    fetchProfileData();
+    return (cleanUp = () => {});
+  }, [uriPhoto]);
 
   return (
     <Container>
@@ -252,7 +240,6 @@ export const PerfilScreen = ({ navigation }) => {
             {userGlobalData.role !== "Medico" && (
               <>
                 <Label
-                  // autoFocus={false}
                   pointerEvents={
                     !editUserInfo || userGlobalData.role !== "Paciente"
                       ? "none"
@@ -265,8 +252,6 @@ export const PerfilScreen = ({ navigation }) => {
                   }
                   onChangeText={(txt) => setDataNascimento(dateDbToView(txt))}
                   fieldValue={
-                    // dadosPessoaisDoUsuario.dataNascimento &&
-                    // dateDbToView(dadosPessoaisDoUsuario.dataNascimento)
                     userGlobalData.role === "Paciente"
                       ? dataNascimento && dateDbToView(dataNascimento)
                       : crm
@@ -427,10 +412,6 @@ export const PerfilScreen = ({ navigation }) => {
                 textColor={Theme.colors.grayV1}
                 pointerEvents={"none"}
                 onChangeText={(txt) => {
-                  // setDadosPessoaisDoUsuario({
-                  //   ...dadosPessoaisDoUsuario.endereco,
-                  //   cidade: txt,
-                  // });
                   setCidade(
                     dadosPessoaisDoUsuario.endereco.cidade
                       ? dadosPessoaisDoUsuario.endereco.cidade
@@ -438,8 +419,6 @@ export const PerfilScreen = ({ navigation }) => {
                   );
                 }}
                 fieldValue={
-                  // dadosPessoaisDoUsuario.endereco &&
-                  // dadosPessoaisDoUsuario.endereco.cidade
                   editUserInfo && enderecoLocalizado.city
                     ? enderecoLocalizado.city
                     : cidade && cidade
@@ -472,12 +451,7 @@ export const PerfilScreen = ({ navigation }) => {
               loading={false}
             />
 
-            <ButtonGray
-              onPress={async () => {
-                await AsyncStorage.removeItem("token");
-                navigation.replace("Login");
-              }}
-            >
+            <ButtonGray onPress={handleLogout}>
               <ButtonTitle>Sair</ButtonTitle>
             </ButtonGray>
           </FormBox>

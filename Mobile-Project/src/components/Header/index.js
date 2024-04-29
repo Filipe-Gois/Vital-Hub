@@ -4,26 +4,7 @@ import { HeaderContentBox, HeaderStyle } from "./style";
 import { MaterialIcons } from "@expo/vector-icons";
 import { WelCome } from "../WelCome";
 
-import { userDecodeToken } from "../../Utils/Auth";
-import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export const Header = ({ viewProfile }) => {
-  const [user, setUser] = useState({});
-
-  const fetchUserName = async () => {
-    const userInfo = await userDecodeToken();
-    if (userInfo) {
-      setUser(userInfo);
-    }
-
-
-  };
-
-  useEffect(() => {
-    fetchUserName();
-  }, []);
-
+export const Header = ({ viewProfile, user }) => {
   return (
     <HeaderStyle onPress={viewProfile}>
       <LinearGradient
@@ -36,7 +17,7 @@ export const Header = ({ viewProfile }) => {
           <WelCome
             viewProfile={viewProfile}
             uri={user.foto ? user.foto : null}
-            name={user.name}
+            name={user.role === "Medico" ? `Dr. ${user.name}` : user.name}
           />
           <MaterialIcons name="notifications" size={25} color="white" />
         </HeaderContentBox>

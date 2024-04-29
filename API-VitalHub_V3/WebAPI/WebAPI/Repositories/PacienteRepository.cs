@@ -18,28 +18,31 @@ namespace WebAPI.Repositories
                 Paciente pacienteBuscado = ctx.Pacientes
                 .Include(x => x.Endereco)
                 .Include(x => x.IdNavigation)
-                .FirstOrDefault(x => x.Id == Id)!;
+                .FirstOrDefault(x => x.Id == Id)! ?? throw new Exception("Paciente não encontrado!");
 
                 //if (paciente.Foto != null)
                 //    pacienteBuscado!.IdNavigation.Foto = paciente.Foto;
 
-                if (paciente.DataNascimento != null)
-                    pacienteBuscado!.DataNascimento = paciente.DataNascimento;
 
-                if (paciente.Cpf != null)
-                    pacienteBuscado!.Cpf = paciente.Cpf;
 
-                if (paciente.Logradouro != null)
-                    pacienteBuscado!.Endereco!.Logradouro = paciente.Logradouro;
+                pacienteBuscado!.DataNascimento = paciente.DataNascimento;
 
-                if (paciente.Numero != null)
-                    pacienteBuscado!.Endereco!.Numero = paciente.Numero;
+                pacienteBuscado.Rg = paciente.Rg;
 
-                if (paciente.Cep != null)
-                    pacienteBuscado!.Endereco!.Cep = paciente.Cep;
 
-                if (paciente.Cidade != null)
-                    pacienteBuscado!.Endereco!.Cidade = paciente.Cidade;
+                pacienteBuscado!.Cpf = paciente.Cpf;
+
+
+                pacienteBuscado!.Endereco!.Logradouro = paciente.Logradouro;
+
+
+                pacienteBuscado!.Endereco!.Numero = paciente.Numero;
+
+
+                pacienteBuscado!.Endereco!.Cep = paciente.Cep;
+
+
+                pacienteBuscado!.Endereco!.Cidade = paciente.Cidade;
 
                 ctx.Pacientes.Update(pacienteBuscado!);
                 ctx.SaveChanges();

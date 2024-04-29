@@ -116,9 +116,9 @@ namespace WebAPI.Repositories
             }
         }
 
-        public void Cadastrar(Consulta clinica)
+        public void Cadastrar(Consulta consulta)
         {
-            ctx.Consultas.Add(clinica);
+            ctx.Consultas.Add(consulta);
             ctx.SaveChanges();
         }
 
@@ -128,7 +128,7 @@ namespace WebAPI.Repositories
         {
             try
             {
-                Consulta buscada = ctx.Consultas.Find(consulta.Id)!;
+                Consulta buscada = ctx.Consultas.Include(x => x.Receita ).FirstOrDefault(x => x.Id == consulta.Id)!;
 
                 buscada.Descricao = consulta.Descricao;
                 buscada.Diagnostico = consulta.Diagnostico;
@@ -140,7 +140,7 @@ namespace WebAPI.Repositories
                 }
                 else
                 {
-                    ctx.Add(consulta.Receita);
+                    ctx.Receitas.Add(consulta.Receita!);
                 }
 
                 ctx.Update(buscada);

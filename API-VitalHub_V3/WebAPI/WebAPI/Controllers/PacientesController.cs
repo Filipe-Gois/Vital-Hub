@@ -24,6 +24,7 @@ namespace WebAPI.Controllers
             _emailSendingService = emailSendingService;
         }
 
+        [Authorize]
         [HttpGet("PerfilLogado")]
         public IActionResult GetLogged()
         {
@@ -145,12 +146,16 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
-        public IActionResult UpdateProfile(Guid idUsuario, PacienteViewModel paciente)
+        public IActionResult UpdateProfile(PacienteViewModel paciente)
         {
             try
             {
-                return Ok(pacienteRepository.AtualizarPerfil(idUsuario, paciente));
+                //pega o id do paciente logado através da context
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(m => m.Type == JwtRegisteredClaimNames.Jti).Value);
+                pacienteRepository.AtualizarPerfil(idUsuario, paciente);
+                return StatusCode(204);
             }
             catch (Exception ex)
             {
