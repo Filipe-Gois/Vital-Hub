@@ -19,7 +19,7 @@ import api, { apiFilipe, medicosResource } from "../../Services/Service";
 
 const SelectDoctorScreen = ({ navigation, route }) => {
   const [selectedDoctor, setSelectedDoctor] = useState({
-    idMedico: "",
+    medicoClinicaId: "",
     medicoNome: "",
     medicoEspecialidade: "",
   });
@@ -28,7 +28,7 @@ const SelectDoctorScreen = ({ navigation, route }) => {
   const getDoctors = async () => {
     try {
       const response = await apiFilipe.get(
-        `${medicosResource}/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`
+        `${medicosResource}/BuscarPorIdClinica?id=${route.params.clinicaId}`
       );
 
       setDoctors(response.data);
@@ -46,7 +46,6 @@ const SelectDoctorScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     getDoctors();
-    console.log(route.params);
 
     return (cleanUp = () => {});
   }, [route]);
@@ -64,11 +63,11 @@ const SelectDoctorScreen = ({ navigation, route }) => {
               scrollEnabled={false}
               renderItem={({ item }) => (
                 <DoctorCard
-                  clickButton={item.id === selectedDoctor.idMedico}
+                  clickButton={item.id === selectedDoctor.medicoClinicaId}
                   onPress={() =>
                     setSelectedDoctor({
                       ...selectedDoctor,
-                      idMedico: item.id,
+                      medicoClinicaId: item.id,
                       medicoNome: item.idNavigation.nome,
                       medicoEspecialidade: item.especialidade.especialidade1,
                     })

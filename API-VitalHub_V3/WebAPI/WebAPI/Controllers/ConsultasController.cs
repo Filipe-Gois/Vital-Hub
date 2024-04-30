@@ -85,14 +85,14 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("Status")]
-        public IActionResult UpdateStatus(Guid idConsulta, string status)
+        [HttpPut("CancelarConsulta")]
+        public IActionResult CancelarConsulta(Guid idConsulta)
         {
             try
             {
-                consultaRepository.EditarStatus(idConsulta, status);
+                consultaRepository.CancelarConsulta(idConsulta);
 
-                return Ok();
+                return StatusCode(204);
 
             }
             catch (Exception ex)

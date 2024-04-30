@@ -1,6 +1,7 @@
 import { mask, unMask } from "remask";
 import { apiCep } from "../Services/Service";
 import { Alert } from "react-native";
+import moment from "moment";
 
 //máscara para input que receber cep
 // export const cepMasked = data => mask(unMask(data), ["99.999.999/9999-99"])
@@ -40,8 +41,6 @@ export const dateViewToDb = (date) => date.split("/").reverse().join("-");
 
 // melhorar essa lógica de data
 export const calcularIdadeDoUsuario = (dataNascimento) => {
-
-
   // Cria uma nova instância de Date com a data de nascimento
   const dataNasc = new Date(dataNascimento);
 
@@ -73,4 +72,11 @@ export const hourDbToView = (hour) => {
   return hour;
 };
 
-export const crmDbToView = (crm) => {};
+export const getDataAtual = () => {
+  const dataAtual = new Date();
+
+  const anoAtual = dataAtual.getFullYear();
+  const mesAtual = dataAtual.getMonth() + 1;
+  const diaAtual = dataAtual.getDate();
+  return `${anoAtual}-${mesAtual}-${diaAtual}`;
+};

@@ -119,8 +119,31 @@ namespace WebAPI.Repositories
 
         public void Cadastrar(Consulta consulta)
         {
+            string Pendente = "Pendente";
+
+            SituacaoConsulta situacaoPendente = ctx.Situacoes.FirstOrDefault(s => s.Situacao == Pendente)!;
+
+            if (consulta.DataConsulta < DateTime.Now)
+            {
+                throw (new Exception("A data da consulta deve ser posterior à data atual."));
+
+
+            }
+
+            if (situacaoPendente == null)
+            {
+                throw (new Exception("Não existe um registro de situação pendente no banco de dados."));
+
+            }
+
+            //já cadastra a consulta com a situação setada em Pendente
+            consulta.Situacao = situacaoPendente;
+
             ctx.Consultas.Add(consulta);
             ctx.SaveChanges();
+
+
+
         }
 
 

@@ -22,7 +22,7 @@ import Stethoscope from "../../components/stethoscope";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { WelComeImage } from "../../components/ImageProfile";
 import { HandleCallNotification } from "../../components/Notification/Notification";
-import { Alert, RefreshControl, Text } from "react-native";
+import { ActivityIndicator, Alert, RefreshControl, Text } from "react-native";
 import { userDecodeToken } from "../../Utils/Auth";
 import {
   apiFilipe,
@@ -30,7 +30,10 @@ import {
   medicosResource,
   pacientesResource,
 } from "../../Services/Service";
-import { calcularIdadeDoUsuario } from "../../Utils/stringFunctions";
+import {
+  calcularIdadeDoUsuario,
+  getDataAtual,
+} from "../../Utils/stringFunctions";
 
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState("");
@@ -38,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
   //pega o id da consulta ao clicar no card
   const [consultaSelecionada, setConsultaSelecionada] = useState(null);
 
-  const [dataConsulta, setDataConsulta] = useState("");
+  const [dataConsulta, setDataConsulta] = useState(getDataAtual());
 
   const url = profile.role === "Paciente" ? pacientesResource : medicosResource;
 
@@ -62,7 +65,7 @@ const HomeScreen = ({ navigation }) => {
   const handleCancelarConsulta = async (id) => {
     try {
       const response = await apiFilipe.put(
-        consultasResource + "/CancelarConsulta" + `?id=${id}`
+        consultasResource + `/CancelarConsulta?idConsulta=${id}`
       );
 
       if (response.status === 204) {
@@ -74,13 +77,18 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const listarConsultas = async () => {
+    setRefreshing(true);
     try {
       const response = await apiFilipe.get(
-        url + `/BuscarPorData?data=${dataConsulta}&id=${profile.id}`
+        `${url}/BuscarPorData?data=${dataConsulta}`,
+        { headers: { Authorization: `Bearer ${profile.token}` } }
       );
 
       setConsultas(response.data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+    setRefreshing(false);
   };
 
   const onRefresh = () => {
@@ -118,6 +126,8 @@ const HomeScreen = ({ navigation }) => {
           />
 
           <CalendarList setDataConsulta={setDataConsulta} />
+
+          <Text>{dataConsulta}</Text>
           <ButtonBox
             fieldFlexDirection={"row"}
             fieldJustifyContent={"space-between"}
@@ -128,7 +138,7 @@ const HomeScreen = ({ navigation }) => {
               onPress={() => setStatusLista("Pendente")}
             >
               <ButtonTextStyle clickButton={statusLista === "Pendente"}>
-                Pendentes
+                Agendadas
               </ButtonTextStyle>
             </ButtonListAppontment>
 
@@ -151,80 +161,83 @@ const HomeScreen = ({ navigation }) => {
             </ButtonListAppontment>
           </ButtonBox>
           <ContainerBoxStyle fieldAlignItems="center" fieldGap={"15px"}>
-            <FlatListStyle
-              data={consultas && consultas}
-              scrollEnabled={false}
-              renderItem={({ item }) =>
-                statusLista === item.situacao.situacao && (
-                  <CardConsulta
-                    profileData={profile}
-                    onPress={
-                      profile.role === "Paciente"
-                        ? () => {
-                            setShowModalAppointment(true);
-                            setConsultaSelecionada(item);
-                          }
-                        : null
-                    }
-                    onPressCancel={() => {
-                      setShowModalCancel(true);
-                      setConsultaSelecionada(item);
-                    }}
-                    onPressAppointment={
-                      profile !== "Paciente" &&
-                      item.situacao.situacao === "Pendente"
-                        ? () => {
-                            setShowModalAppointment(true);
-                            setConsultaSelecionada(item);
-                          }
-                        : () =>
-                            navigation.navigate("ViewMedicalRecord", {
-                              consulta: {
-                                idConsulta: item.id,
-                                descricao: item.descricao,
-                                diagnostico: item.diagnostico,
-                                prescricao: item.receita.medicamento,
-                                foto:
-                                  profile.role === "Medico"
-                                    ? item.paciente.idNavigation.foto
-                                    : item.medicoClinica.medico.idNavigation
-                                        .foto,
-                                nome:
-                                  profile.role !== "Medico"
-                                    ? item.medicoClinica.medico.idNavigation
-                                        .nome
-                                    : item.paciente.idNavigation.nome,
+            {consultas ? (
+              <FlatListStyle
+                data={consultas && consultas}
+                scrollEnabled={false}
+                renderItem={({ item }) =>
+                  statusLista === item.situacao.situacao && (
+                    <CardConsulta
+                      profileData={profile}
+                      onPress={
+                        profile.role === "Paciente"
+                          ? () => {
+                              setShowModalAppointment(true);
+                              setConsultaSelecionada(item);
+                            }
+                          : null
+                      }
+                      onPressCancel={() => {
+                        setShowModalCancel(true);
+                        setConsultaSelecionada(item);
+                      }}
+                      onPressAppointment={
+                        profile !== "Paciente" &&
+                        item.situacao.situacao === "Pendente"
+                          ? () => {
+                              setShowModalAppointment(true);
+                              setConsultaSelecionada(item);
+                            }
+                          : () =>
+                              navigation.navigate("ViewMedicalRecord", {
+                                consulta: {
+                                  idConsulta: item.id,
+                                  descricao: item.descricao,
+                                  diagnostico: item.diagnostico,
+                                  prescricao: item.receita.medicamento,
+                                  foto:
+                                    profile.role === "Medico"
+                                      ? item.paciente.idNavigation.foto
+                                      : item.medicoClinica.medico.idNavigation
+                                          .foto,
+                                  nome:
+                                    profile.role !== "Medico"
+                                      ? item.medicoClinica.medico.idNavigation
+                                          .nome
+                                      : item.paciente.idNavigation.nome,
 
-                                medico: {
-                                  idMedico: item.medicoClinica.medico.id,
-                                  // fotoMedico:
-                                  //   item.medicoClinica.medico.idNavigation.foto,
+                                  medico: {
+                                    idMedico: item.medicoClinica.medico.id,
+                                    // fotoMedico:
+                                    //   item.medicoClinica.medico.idNavigation.foto,
 
-                                  crm: item.medicoClinica.medico.crm,
-                                  especialidade:
-                                    item.medicoClinica.medico.especialidade
-                                      .especialidade1,
+                                    crm: item.medicoClinica.medico.crm,
+                                    especialidade:
+                                      item.medicoClinica.medico.especialidade
+                                        .especialidade1,
+                                  },
+
+                                  paciente: {
+                                    idPaciente: item.paciente.id,
+                                    // fotoPaciente: item.paciente.idNavigation.foto,
+                                    email: item.paciente.idNavigation.email,
+                                    idade: calcularIdadeDoUsuario(
+                                      item.paciente.dataNascimento
+                                    ),
+                                  },
                                 },
-
-                                paciente: {
-                                  idPaciente: item.paciente.id,
-                                  // fotoPaciente: item.paciente.idNavigation.foto,
-                                  email: item.paciente.idNavigation.email,
-                                  idade: calcularIdadeDoUsuario(
-                                    item.paciente.dataNascimento
-                                  ),
-                                },
-                              },
-                            })
-                    }
-                    dados={item}
-                    statusLista={item.situacao}
-                  />
-                )
-              }
-              keyExtractor={(item) => item.id}
-            />
-
+                              })
+                      }
+                      dados={item}
+                      statusLista={item.situacao}
+                    />
+                  )
+                }
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <ActivityIndicator />
+            )}
             {/* modal cancelar */}
 
             <ModalComponent

@@ -27,15 +27,14 @@ const SelectDateScreen = ({ navigation, route }) => {
   const [agendamento, setAgendamento] = useState(null);
 
   const handleContinue = async () => {
+    setAgendamento({
+      ...route.params,
+      dataConsulta: `${dateSelected} ${horaSelecionada}`,
+    });
     setShowModal(true);
   };
 
-  useEffect(() => {
-    console.log("dados finais:");
-    console.log(dateSelected);
 
-    return (cleanUp = () => {});
-  }, [dateSelected]);
   return (
     <Container>
       <MainContentScroll>
@@ -59,7 +58,7 @@ const SelectDateScreen = ({ navigation, route }) => {
             </LabelStyle>
 
             <Button onPress={() => handleContinue()} padding={"0"}>
-              <ButtonTitle>Continuar</ButtonTitle>
+              <ButtonTitle>Confirmar</ButtonTitle>
             </Button>
 
             <ButtonSecondary onPress={() => navigation.goBack()}>
@@ -70,6 +69,7 @@ const SelectDateScreen = ({ navigation, route }) => {
       </MainContentScroll>
 
       <ModalConfirmarAgendamento
+        agendamento={agendamento}
         visible={showModal}
         setShowModalCancel={setShowModal}
         navigation={navigation}

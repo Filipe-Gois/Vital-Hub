@@ -24,16 +24,13 @@ const SelectClinicScreen = ({ navigation, route }) => {
 
   const handleContinue = async () => {
     navigation.navigate("SelectDoctor", {
-      agendamento: {
-        ...route.params,
-        ...selectedClinic,
-      },
+      ...route.params,
+      ...selectedClinic,
     });
   };
 
   const fetchClinics = async () => {
     try {
-      console.log(route.params.localizacao);
       const response = await apiFilipe.get(
         `${clinicaResource}/BuscarPorCidade?cidade=${route.params.localizacao}`
       );
@@ -44,8 +41,6 @@ const SelectClinicScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    console.log(route.params);
-
     fetchClinics();
   }, [route]);
 
@@ -71,7 +66,6 @@ const SelectClinicScreen = ({ navigation, route }) => {
                       clinicaId: item.id,
                       clinicaLabel: item.nomeFantasia,
                     });
-                    console.log(selectedClinic);
                   }}
                   //se o id armazenado no state "selectedClinic" for identico ao id do item atual do FlatList, será aplicada a borda, senão, seguirá para o proximo item, e por aí vai :)
                   clickButton={selectedClinic.clinicaId === item.id}

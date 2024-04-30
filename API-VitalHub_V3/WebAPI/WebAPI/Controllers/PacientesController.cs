@@ -134,11 +134,12 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("BuscarPorData")]
-        public IActionResult GetByDate(DateTime data, Guid id)
+        public IActionResult GetByDate(DateTime data)
         {
             try
             {
-                return Ok(pacienteRepository.BuscarPorData(data, id));
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+                return Ok(pacienteRepository.BuscarPorData(data, idUsuario));
             }
             catch (Exception ex)
             {

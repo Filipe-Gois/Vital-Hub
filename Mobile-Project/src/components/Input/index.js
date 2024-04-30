@@ -107,7 +107,7 @@ export const InputSelect = ({ setHoraSelecionada }) => {
 
       return {
         label: `${valor}:00`,
-        value: valor,
+        value: `${valor}:00`,
       };
     });
 

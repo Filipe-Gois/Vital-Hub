@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Modal, View } from "react-native";
 import { Title } from "../Title/style";
 import {
@@ -26,6 +26,9 @@ import Label from "../Label";
 import { ButtonBox, FormBoxModal } from "../Container/style";
 import { LabelStyle } from "../Label/style";
 import { Theme } from "../../themes";
+import moment from "moment";
+import { apiFilipe, consultasResource } from "../../Services/Service";
+import { userDecodeToken } from "../../Utils/Auth";
 
 export const ModalComponent = ({
   consulta,
@@ -160,7 +163,8 @@ export const ModalAgendarConsulta = ({
             <ButtonBox fieldFlexDirection={"row"}>
               <ButtonBorderCyan
                 clickButton={
-                  agendamento.prioridadeId === niveisPrioridade.rotina.prioridadeId
+                  agendamento.prioridadeId ===
+                  niveisPrioridade.rotina.prioridadeId
                 }
                 onPress={() =>
                   setAgendamento({
@@ -271,8 +275,39 @@ export const ModalConfirmarAgendamento = ({
   navigation,
   setNavigation = "",
   goBack = false,
+  agendamento,
   ...rest
 }) => {
+  const [profile, setProfile] = useState({});
+  const profileLoad = async () => {
+    try {
+      const token = await userDecodeToken();
+
+      if (token) {
+        setProfile(token);
+      }
+    } catch (error) {}
+  };
+  const handleConfirm = async () => {
+    try {
+      const response = await apiFilipe.post(`${consultasResource}/Cadastrar`, {
+        ...agendamento,
+        pacienteId: profile.id,
+        //a situação já é setada como pendente automaticamente na api
+      });
+      Alert.alert("Sucesso", "Consulta agendada!");
+      navigation.replace("Main");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    profileLoad();
+
+    return (cleanUp = () => {});
+  }, []);
+
   return (
     <ModalStyle
       visible={visible}
@@ -291,26 +326,33 @@ export const ModalConfirmarAgendamento = ({
             </Paragraph>
           </TitleBox>
 
-          <ConsultaInfoContent>
-            <ConsultaInfoBox
-              title="Data da consulta"
-              info="1 de Novembro de 2023"
-            />
-            <ConsultaInfoBox
-              title="Médico(a) da consulta"
-              info="Dra Alessandra"
-              doctor={true}
-              especialidade1="Demartologa"
-              especialidade2="Esteticista"
-            />
-            <ConsultaInfoBox title="Local da consulta" info="São Paulo, SP" />
-            <ConsultaInfoBox title="Tipo da consulta" info="Rotina" />
-          </ConsultaInfoContent>
+          {agendamento && (
+            <ConsultaInfoContent>
+              <ConsultaInfoBox
+                title="Data da consulta"
+                info={moment(agendamento.dataConsulta).format(
+                  `DD/MM/YYYY HH:mm`
+                )}
+              />
+              <ConsultaInfoBox
+                title="Médico(a) da consulta"
+                info={agendamento.medicoNome}
+                doctor={true}
+                especialidade1={agendamento.medicoEspecialidade}
+              />
+              <ConsultaInfoBox
+                title="Local da consulta"
+                info={agendamento.localizacao}
+              />
+              <ConsultaInfoBox
+                title="Tipo da consulta"
+                info={agendamento.prioridadeLabel}
+              />
+            </ConsultaInfoContent>
+          )}
 
           <Button
-            onPress={() =>
-              goBack ? navigation.goBack() : navigation.replace(setNavigation)
-            }
+            onPress={() => (goBack ? navigation.goBack() : handleConfirm())}
           >
             <ButtonTitle>Confirmar</ButtonTitle>
           </Button>
@@ -335,11 +377,7 @@ const ConsultaInfoBox = ({
     <ConsultaInfoBoxStyle>
       <ParagraphSemiBold>{title}</ParagraphSemiBold>
       <Paragraph textAlign={"left"}>{info}</Paragraph>
-      {doctor ? (
-        <Paragraph textAlign={"left"}>
-          {especialidade1}, {especialidade2}
-        </Paragraph>
-      ) : null}
+      {doctor && <Paragraph textAlign={"left"}>{especialidade1}</Paragraph>}
     </ConsultaInfoBoxStyle>
   );
 };
