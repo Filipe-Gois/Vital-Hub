@@ -23,22 +23,21 @@ import { Text } from "react-native";
 const CheckEmailScreen = ({ navigation, route }) => {
   const [codigo, setCodigo] = useState('');
   const [focusedInput, setFocusedInput] = useState(0);
-  const inputRefs = [useRef(), useRef(), useRef(), useRef()];
+  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
-  function focusInput(index) {
-    inputRefs[index];
+
+  function focusNextInput(index) {
+    if (index < inputRefs.length - 1) {
+      console.log(inputRefs)
+      inputRefs[index + 1].current.focus()
+    }
   }
-  //   function focusNextInput(index) {
-  //     if (index < inputs.length - 1) {
-  //         Input[index + 1].current.focus()
-  //     }
-  // }
 
-  // function focusPrevInput(index) {P
-  //   if (index > 0) {
-  //       input[index - 1].current.focus()
-  //   }
-  // }
+  function focusPrevInput(index) {
+    if (index > 0) {
+      inputRefs[index - 1].current.focus()
+    }
+  }
 
   function InserirCodigo(event) {
     if (event.nativeEvent.key === "Backspace" && focusedInput > 0) {
@@ -89,18 +88,26 @@ const CheckEmailScreen = ({ navigation, route }) => {
           <InputBoxCheckEmail>
             {[0, 1, 2, 3].map((index) => (
               <InputCheckEmail
+                inputRef={inputRefs[index]}
                 key={index}
                 placeholder={"0"}
                 fieldWidth={18}
                 fieldHeight={62}
                 maxLength={1}
                 value={codigo[index]}
-                onFocus={() => focusInput(index)}
+                // onFocus={() => focusInput(index)}
                 onChangeText={(txt) => {
 
-                  const novoCodigo = [...codigo]
-                  novoCodigo[index] = txt
-                  setCodigo(novoCodigo.join(''))
+                  if(txt == '')
+                  {
+                    focusPrevInput(index)
+                  }else{
+                    const novoCodigo = [...codigo]
+                    novoCodigo[index] = txt
+                    setCodigo(novoCodigo.join(''))
+                    
+                    focusNextInput( index)
+                  }
                 }}
                 onKeyPress={InserirCodigo}
               />

@@ -112,9 +112,10 @@
               "RelativeDocumentMoniker": "WebAPI\\Contexts\\VitalContext.cs",
               "ToolTip": "C:\\Users\\56262631879\\Desktop\\API-VitalHub_V3\\API VitalHub\\WebAPI\\Contexts\\VitalContext.cs",
               "RelativeToolTip": "WebAPI\\Contexts\\VitalContext.cs",
-              "ViewState": "AQIAACsAAAAAAAAAAAAYwC4AAAB4AAAA",
+              "ViewState": "AQIAACkAAAAAAAAAAAAQwC4AAAB4AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-19T19:53:47.45Z"
+              "WhenOpened": "2024-04-19T19:53:47.45Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -136,7 +137,7 @@
               "RelativeDocumentMoniker": "WebAPI\\Properties\\launchSettings.json",
               "ToolTip": "C:\\Users\\56262631879\\Desktop\\API-VitalHub_V3\\API VitalHub\\WebAPI\\Properties\\launchSettings.json",
               "RelativeToolTip": "WebAPI\\Properties\\launchSettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAPAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAgwAoAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-04-19T19:52:51.79Z",
               "EditorCaption": ""

@@ -17,15 +17,20 @@ import { apiGabriel } from "../../Services/Service";
 const RecoverPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
 
-  async function enviarEmail() {
+  const enviarEmail = async () => {
     try {
-      await apiGabriel.post(`/RecuperarSenha?email=${email}`);
-      console.log("Código enviado com sucesso");
+      const response = await apiGabriel.post(`/RecuperarSenha?email=${email}`);
+
+      if(response.data){
+        // Após o envio do email navegar para a próxima tela
+        navigation.navigate('CheckEmail', { emailRecuperacao: email });
+      }
 
     } catch (error) {
       console.log(error);
+    
     }
-  }
+  };
 
   return (
     <Container>
@@ -44,10 +49,9 @@ const RecoverPasswordScreen = ({ navigation }) => {
           <Input
             placeholder={"Usuário ou E-mail"}
             fieldValue={email}
-            onChangeText={txt => { setEmail(txt) }}
-
+            onChangeText={txt => setEmail(txt)}
           />
-          <Button onPress={() => { enviarEmail(), navigation.navigate('CheckEmail', { emailRecuperacao: email }) }}>
+          <Button onPress={enviarEmail}>
             <ButtonTitle>Continuar</ButtonTitle>
           </Button>
 

@@ -58,6 +58,7 @@ export const Input = React.forwardRef((props, ref) => {
 
 export const InputCheckEmail = ({
   placeholder,
+  inputRef,
   fieldValue,
   onChangeText,
   keyType,
@@ -72,6 +73,7 @@ export const InputCheckEmail = ({
 }) => {
   return (
     <InputCheckEmailStyle
+      ref={inputRef}
       fieldWidth={fieldWidth}
       fieldMaxWidth={fieldMaxWidth}
       fieldHeight={fieldHeight}
