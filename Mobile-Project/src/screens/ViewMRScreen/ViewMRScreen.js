@@ -251,13 +251,13 @@ const ViewMRScreen = ({ navigation, route }) => {
                   backGround={Theme.colors.v2LightWhite}
                   placeholderTextColor={Theme.colors.grayV2}
                   titulo="Exames médicos"
-                  //   fieldValue={
-                  //     "Medicamento: Advil Dosagem: 50 mg Frequência: 3 vezes ao dia Duração: 3 dias"
-                  //   }
                   placeholder={"Nenhuma foto informada"}
                   fieldHeight={"100%"}
                   fieldMinHeight={"111px"}
                   fieldTextAlign={"center"}
+                  isImage={true}
+                  uri={uriCameraCapture}
+                  imageExists={uriCameraCapture !== null}
                 />
 
                 <ButtonBox
