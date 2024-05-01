@@ -62,7 +62,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                Consulta consulta = new Consulta();
+                Consulta consulta = new();
 
                 consulta.SituacaoId = consultaViewModel.SituacaoId;
                 consulta.PacienteId = consultaViewModel.PacienteId;

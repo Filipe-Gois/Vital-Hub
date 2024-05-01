@@ -97,6 +97,10 @@ namespace WebAPI.Repositories
         {
             try
             {
+                string paciente = "Paciente";
+                TiposUsuario tipoPaciente = ctx.TiposUsuarios.FirstOrDefault(x => x.TipoUsuario == paciente)! ?? throw new Exception("Não existe um tipo usuário paciente no banco de dados!");
+
+                user.TipoUsuario = tipoPaciente;
                 user.Senha = Criptografia.GerarHash(user.Senha!);
                 ctx.Usuarios.Add(user);
                 ctx.SaveChanges();

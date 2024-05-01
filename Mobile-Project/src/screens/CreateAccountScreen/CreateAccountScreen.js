@@ -30,12 +30,6 @@ const CreateAccountScreen = ({ navigation }) => {
     nome: "",
     email: "",
     senha: "",
-
-    // idTipoUsuario: "4EFFCFEE-7AA2-434B-A5ED-A264974317BF",
-    //banco de casa
-
-    idTipoUsuario: "3107729F-08DE-46ED-A7CD-3715B384D25D",
-    //banco do senai
   });
   const HandleSubmit = async () => {
     try {
@@ -53,6 +47,7 @@ const CreateAccountScreen = ({ navigation }) => {
         return;
       }
 
+      //idTipoUsuario já é setado automaticamente na api
       const responseCreateAccount = await apiFilipe.post(
         pacientesResource,
         user
@@ -67,11 +62,9 @@ const CreateAccountScreen = ({ navigation }) => {
 
       const responseLogin = await apiFilipe.post(loginResource, user);
 
-      console.log("Token: ", responseLogin.data);
-
       await AsyncStorage.setItem("token", JSON.stringify(responseLogin.data));
 
-      navigation.replace("Main");
+      navigation.replace("Perfil");
     } catch (error) {
       Alert.alert("OPS!", "Já existe um usuário com esse Email!");
     }

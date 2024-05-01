@@ -126,18 +126,15 @@ namespace WebAPI.Repositories
             if (consulta.DataConsulta < DateTime.Now)
             {
                 throw (new Exception("A data da consulta deve ser posterior à data atual."));
-
-
-            }
-
-            if (situacaoPendente == null)
-            {
-                throw (new Exception("Não existe um registro de situação pendente no banco de dados."));
-
             }
 
             //já cadastra a consulta com a situação setada em Pendente
-            consulta.Situacao = situacaoPendente;
+            consulta.Situacao = situacaoPendente ?? throw new Exception("Não existe um registro de situação pendente no banco de dados.");
+
+            Paciente pacienteConsulta = ctx.Pacientes.Include(x => x.Endereco).Include(x => x.IdNavigation).FirstOrDefault(p => p.Id == consulta.PacienteId)! ?? throw new Exception("Paciente inválido!");
+
+            if (pacienteConsulta.DataNascimento == null || pacienteConsulta.Rg == null || pacienteConsulta.Cpf == null || pacienteConsulta.Endereco!.Cep == null || pacienteConsulta.Endereco.Cidade == null) throw new Exception("É necessário terminar o cadastro do usuário para agendar uma consulta.");
+
 
             ctx.Consultas.Add(consulta);
             ctx.SaveChanges();

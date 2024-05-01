@@ -81,12 +81,13 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] PacienteViewModel pacienteModel)
+        public async Task<IActionResult> Post(PacienteViewModel pacienteModel)
         {
             try
             {
                 //objeto a ser cadastrado
-                Usuario user = new Usuario();
+                Usuario user = new();
+
 
                 //recebe os valores e preenche as propriedades específicas
                 user.Nome = pacienteModel.Nome;
