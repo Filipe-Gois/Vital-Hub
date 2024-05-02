@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
 
                     _exameRepository.Cadastrar(exame);
 
-                    return StatusCode(201);
+                    return StatusCode(201, exame);
 
                 }
             }
@@ -55,28 +55,33 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPut("AtualizarProntuario")]
-        public IActionResult Put(Guid idConsulta, ConsultaViewModel consulta)
-        {
-            try
-            {
-                _exameRepository.AtualizarExame(idConsulta, consulta);
-                return StatusCode(204);
-            }
-            catch (Exception e)
-            {
+        //[HttpPut("AtualizarProntuario")]
+        //public IActionResult Put(Guid idConsulta, ConsultaViewModel consulta)
+        //{
+        //    try
+        //    {
+        //        _exameRepository.AtualizarExame(idConsulta, consulta);
+        //        return StatusCode(204);
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                return BadRequest(e.Message);
-            }
-        }
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         [HttpGet("BuscarPorIdConsulta")]
         public IActionResult GetByIdConsult(Guid idConsulta)
         {
             try
             {
+                Exame exameBuscado = _exameRepository.BuscarPorIdConsulta(idConsulta);
 
-                return StatusCode(200, _exameRepository.BuscarPorIdConsulta(idConsulta));
+                if (exameBuscado == null)
+                {
+                    return StatusCode(404);
+                }
+                return StatusCode(200, exameBuscado);
             }
             catch (Exception e)
             {

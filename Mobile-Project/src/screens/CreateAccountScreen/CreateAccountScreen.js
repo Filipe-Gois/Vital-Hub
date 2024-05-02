@@ -54,7 +54,7 @@ const CreateAccountScreen = ({ navigation }) => {
       );
 
       if (responseCreateAccount.status !== 200) {
-        console.log("Erro ao criar conta.");
+        Alert.alert("Erro!", "Erro ao criar conta.");
         return;
       }
 

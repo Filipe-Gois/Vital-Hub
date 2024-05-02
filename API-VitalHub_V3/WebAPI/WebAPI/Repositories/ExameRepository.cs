@@ -24,13 +24,12 @@ namespace WebAPI.Repositories
 
         }
 
-        public List<Exame> BuscarPorIdConsulta(Guid idConsulta)
+        public Exame BuscarPorIdConsulta(Guid idConsulta)
         {
             try
             {
                 return ctx.Exames
-                    .Where(x => x.ConsultaId == idConsulta)
-                    .ToList();
+                    .FirstOrDefault(x => x.ConsultaId == idConsulta)!;
             }
             catch (Exception)
             {

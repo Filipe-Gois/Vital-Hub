@@ -77,7 +77,6 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const listarConsultas = async () => {
-    setRefreshing(true);
     try {
       const response = await apiFilipe.get(
         `${url}/BuscarPorData?data=${dataConsulta}`,
@@ -88,7 +87,6 @@ const HomeScreen = ({ navigation }) => {
     } catch (error) {
       console.log(error);
     }
-    setRefreshing(false);
   };
 
   const onRefresh = () => {

@@ -7,7 +7,7 @@ namespace WebAPI.Interfaces
     {
         public void Cadastrar(Exame exame);
 
-        public List<Exame> BuscarPorIdConsulta(Guid idConsulta);
+        public Exame BuscarPorIdConsulta(Guid idConsulta);
         public void AtualizarExame(Guid idConsulta, ConsultaViewModel consultaViewModel);
     }
 }

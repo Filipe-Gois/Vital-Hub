@@ -36,6 +36,8 @@ const ViewMRScreen = ({ navigation, route }) => {
   const [diagnostico, setDiagnostico] = useState("");
   const [descricao, setDescricao] = useState("");
   const [prescricao, setPrescricao] = useState("");
+  const [exameExists, setExameExists] = useState(false);
+  const [exameDescicao, setExameDescicao] = useState("");
 
   //Propriedades da página
   const [showCamera, setShowCamera] = useState(false);
@@ -52,7 +54,9 @@ const ViewMRScreen = ({ navigation, route }) => {
     }
   };
 
-  const removePicture = () => {};
+  const removePicture = () => {
+    setUriCameraCapture(null);
+  };
 
   const handleUpdate = async () => {
     setLoading(true);
@@ -63,7 +67,7 @@ const ViewMRScreen = ({ navigation, route }) => {
         {
           descricao,
           diagnostico,
-          prescricao,
+          medicamento: prescricao,
         }
       );
 
@@ -89,23 +93,32 @@ const ViewMRScreen = ({ navigation, route }) => {
   const inserirExame = async () => {
     const formData = new FormData();
 
+    if (!uriCameraCapture) {
+      Alert.alert("Erro", "Nenhuma imagem selecionada!");
+      return;
+    }
+
     formData.append("ConsultaId", prontuario.consulta.idConsulta);
     formData.append("Imagem", {
       uri: uriCameraCapture,
-      name: `image.${uriCameraCapture.split(".")[1].pop()}`,
-      type: `image/${uriCameraCapture.split(".")[1].pop()}`,
+      name: `image.${uriCameraCapture.split(".").pop()}`,
+      type: `image/${uriCameraCapture.split(".").pop()}`,
     });
     try {
       const response = await apiFilipe.post(
-        `${examesResource}/Cadastrar` + formData,
+        `${examesResource}/Cadastrar`,
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
       );
-      setPrescricao(descricao + "\n" + response.data.descricao);
-      console.log(response.data);
+
+      if (response.status === 201) {
+        setExameDescicao(response.data.descricao);
+        setExameExists(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -127,8 +140,26 @@ const ViewMRScreen = ({ navigation, route }) => {
     }
   };
 
+  const getExame = async () => {
+    try {
+      const respose = await apiFilipe.get(
+        `${examesResource}/BuscarPorIdConsulta?idConsulta=${route.params.consulta.idConsulta}`
+      );
+
+      if (respose.status === 200) {
+        setExameDescicao("\n" + respose.data.descricao);
+        setExameExists(true);
+      } else {
+        setExameExists(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchProfileData();
+    getExame();
 
     if (!prontuario || !diagnostico || !descricao) {
       setProntuario(route.params);
@@ -138,7 +169,7 @@ const ViewMRScreen = ({ navigation, route }) => {
     }
 
     return (cleanUp = () => {});
-  }, [route.params]);
+  }, [route.params, uriCameraCapture, exameDescicao]);
   return (
     <Container>
       <MainContentScroll>
@@ -245,56 +276,64 @@ const ViewMRScreen = ({ navigation, route }) => {
             />
             {userGlobalData.role === "Paciente" ? (
               <>
-                <Label
-                  textColor={Theme.colors.grayV2}
-                  border={"none"}
-                  backGround={Theme.colors.v2LightWhite}
-                  placeholderTextColor={Theme.colors.grayV2}
-                  titulo="Exames médicos"
-                  placeholder={"Nenhuma foto informada"}
-                  fieldHeight={"100%"}
-                  fieldMinHeight={"111px"}
-                  fieldTextAlign={"center"}
-                  isImage={true}
-                  uri={uriCameraCapture}
-                  imageExists={uriCameraCapture !== null}
-                />
-
-                <ButtonBox
-                  fieldFlexDirection={"row"}
-                  fieldJustifyContent={"space-around"}
-                >
-                  <ButtonAqua
-                    // onPress={() => {
-                    //   setCameraConfigs({ ...cameraConfigs, showCameraModal: true });
-                    //   console.log(cameraConfigs.showCameraModal);
-                    // }}
-                    onPress={() => setShowCamera(true)}
+                {!exameExists && (
+                  <Label
+                    textColor={Theme.colors.grayV2}
+                    border={"none"}
+                    backGround={Theme.colors.v2LightWhite}
+                    placeholderTextColor={Theme.colors.grayV2}
+                    titulo="Exames médicos"
+                    fieldHeight={"100%"}
+                    fieldMinHeight={"111px"}
+                    fieldTextAlign={"center"}
+                    isImage={true}
+                    uri={uriCameraCapture}
+                    imageExists={uriCameraCapture !== null}
+                    onPressImage={() => setShowCamera(true)}
                   />
+                )}
 
-                  <ButtonSecondary fieldWidth={"50%"} onPress={removePicture}>
-                    <ParagraphMA500 color={Theme.colors.red}>
-                      {userGlobalData.role === "Paciente"
-                        ? "Voltar"
-                        : "Cancelar"}
-                    </ParagraphMA500>
-                  </ButtonSecondary>
-                </ButtonBox>
+                {!exameExists && (
+                  <ButtonBox
+                    fieldFlexDirection={"row"}
+                    fieldJustifyContent={"space-around"}
+                  >
+                    <ButtonAqua
+                      // onPress={() => {
+                      //   setCameraConfigs({ ...cameraConfigs, showCameraModal: true });
+                      //   console.log(cameraConfigs.showCameraModal);
+                      // }}
+                      onPress={() => {
+                        inserirExame();
+                      }}
+                    />
+
+                    {uriCameraCapture && (
+                      <ButtonSecondary
+                        fieldWidth={"50%"}
+                        onPress={removePicture}
+                      >
+                        <ParagraphMA500 color={Theme.colors.red}>
+                          Cancelar
+                        </ParagraphMA500>
+                      </ButtonSecondary>
+                    )}
+                  </ButtonBox>
+                )}
+
                 <Line />
-                <Label
-                  pointerEvents={"none"}
-                  textColor={Theme.colors.grayV2}
-                  border={"none"}
-                  backGround={Theme.colors.v2LightWhite}
-                  placeholderTextColor={Theme.colors.grayV2}
-                  //   titulo="Exames médicos"
-                  //   fieldValue={
-                  //     "Medicamento: Advil Dosagem: 50 mg Frequência: 3 vezes ao dia Duração: 3 dias"
-                  //   }
-                  placeholder={"Resultado do exame de sangue : tudo normal"}
-                  fieldHeight={103}
-                  isTitulo={false}
-                />
+                {exameExists && (
+                  <Label
+                    pointerEvents={"none"}
+                    textColor={Theme.colors.grayV2}
+                    border={"none"}
+                    backGround={Theme.colors.v2LightWhite}
+                    placeholderTextColor={Theme.colors.grayV2}
+                    fieldValue={exameDescicao ? exameDescicao : ""}
+                    fieldHeight={200}
+                    titulo="Receita"
+                  />
+                )}
               </>
             ) : (
               <>

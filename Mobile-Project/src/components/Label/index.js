@@ -4,6 +4,7 @@ import { ParagraphMA500, ParagraphSemiBold } from "../Paragraph/style";
 import {
   ImageTextContainer,
   LabelImage,
+  LabelImageButton,
   LabelImageView,
   LabelStyle,
 } from "./style";
@@ -38,6 +39,7 @@ const Label = ({
   isImage = false,
   imageExists = false,
   uri = "",
+  onPressImage,
 }) => {
   return (
     <LabelStyle
@@ -49,37 +51,48 @@ const Label = ({
       {isTitulo && <ParagraphSemiBold>{titulo}</ParagraphSemiBold>}
 
       {isImage && imageExists ? (
-        <LabelImageView>
-          <LabelImage source={{ uri: uri }} />
-        </LabelImageView>
-      ) : isImage && !imageExists ? (
         <ImageTextContainer>
-          <Feather name="alert-circle" size={20} color={Theme.colors.grayV2} />
-          <ParagraphMA500>Nenhuma foto informada!</ParagraphMA500>
+          <LabelImage
+            source={{
+              uri: uri,
+            }}
+          />
         </ImageTextContainer>
+      ) : isImage && !imageExists ? (
+        <LabelImageButton onPress={onPressImage}>
+          <Feather
+            style={{ marginRight: 10 }}
+            name="alert-circle"
+            size={20}
+            color={Theme.colors.grayV2}
+          />
+          <ParagraphMA500>Nenhuma foto informada!</ParagraphMA500>
+        </LabelImageButton>
       ) : (
-        <Input
-          autoCorrect={autoCorrect}
-          ref={refInput}
-          autoFocus={autoFocus}
-          editable={editable}
-          textColor={textColor}
-          placeholderTextColor={placeholderTextColor}
-          placeholder={placeholder}
-          fieldValue={fieldValue}
-          onChangeText={onChangeText}
-          keyboardType={keyboardType}
-          maxLength={maxLength}
-          onEndEditing={onEndEditing}
-          fieldWidth={fieldWidth}
-          fieldHeight={fieldHeight}
-          border={border}
-          backGround={backGround}
-          fieldMaxWidth={fieldMaxWidth}
-          fieldPaddingBottom={fieldPaddingBottom}
-          fieldTextAlign={fieldTextAlign}
-          fieldMinHeight={fieldMinHeight}
-        />
+        !isImage && (
+          <Input
+            autoCorrect={autoCorrect}
+            ref={refInput}
+            autoFocus={autoFocus}
+            editable={editable}
+            textColor={textColor}
+            placeholderTextColor={placeholderTextColor}
+            placeholder={placeholder}
+            fieldValue={fieldValue}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType}
+            maxLength={maxLength}
+            onEndEditing={onEndEditing}
+            fieldWidth={fieldWidth}
+            fieldHeight={fieldHeight}
+            border={border}
+            backGround={backGround}
+            fieldMaxWidth={fieldMaxWidth}
+            fieldPaddingBottom={fieldPaddingBottom}
+            fieldTextAlign={fieldTextAlign}
+            fieldMinHeight={fieldMinHeight}
+          />
+        )
       )}
     </LabelStyle>
   );

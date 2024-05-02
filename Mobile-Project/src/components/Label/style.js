@@ -1,4 +1,4 @@
-import { Image, ScrollView, View } from "react-native";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
 import styled, { css } from "styled-components";
 import { Theme } from "../../themes";
 
@@ -8,17 +8,16 @@ export const LabelStyle = styled.View`
   height: max-content;
   display: flex;
   gap: 10px;
-  ${(props) =>
-    props.isImage &&
-    css`
-      background-color: ${Theme.colors.v2LightWhite};
-    `}
 `;
 
-export const LabelImageView = styled(ScrollView)`
+export const LabelImageButton = styled(TouchableOpacity)`
   width: 100%;
-  height: 100%;
-  max-height: 200px;
+  height: 200px;
+  background-color: ${Theme.colors.v2LightWhite};
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 `;
 
 export const LabelImage = styled(Image)`
@@ -28,5 +27,11 @@ export const LabelImage = styled(Image)`
 
 export const ImageTextContainer = styled(View)`
   width: 100%;
-  height: 100%;
+  height: 200px;
+  flex-direction: row;
+  gap: 10px;
+  background-color: ${Theme.colors.v2LightWhite};
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
 `;
