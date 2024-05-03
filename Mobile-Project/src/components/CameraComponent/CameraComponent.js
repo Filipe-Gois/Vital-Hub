@@ -63,11 +63,11 @@ const CameraComponent = ({
   const UploadPhoto = async () => {
     try {
       await MediaLibrary.createAssetAsync(photo);
-      alert("Foto salva com sucesso");
+
       await SendPhotoForm();
       setOpenModal(false);
     } catch (error) {
-      alert("Não foi possível processar a foto");
+      Alert.alert("Erro", "Não foi possível processar a foto");
     }
   };
 

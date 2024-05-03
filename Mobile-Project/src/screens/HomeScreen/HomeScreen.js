@@ -181,7 +181,7 @@ const HomeScreen = ({ navigation }) => {
                               setShowModalAppointment(true);
                               setConsultaSelecionada(item);
                             }
-                          : () =>
+                          : () => {
                               navigation.navigate("ViewMedicalRecord", {
                                 consulta: {
                                   idConsulta: item.id,
@@ -219,7 +219,8 @@ const HomeScreen = ({ navigation }) => {
                                     ),
                                   },
                                 },
-                              })
+                              });
+                            }
                       }
                       dados={item}
                       statusLista={item.situacao}

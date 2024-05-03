@@ -116,6 +116,7 @@ const ViewMRScreen = ({ navigation, route }) => {
       );
 
       if (response.status === 201) {
+        setProntuario({ ...prontuario, exame: response.data.descricao });
         setExameDescicao(response.data.descricao);
         setExameExists(true);
       }
@@ -130,8 +131,7 @@ const ViewMRScreen = ({ navigation, route }) => {
         consultasResource + `/BuscarPorId?id=${prontuario.consulta.idConsulta}`
       );
 
-      console.log(response.data);
-
+      setProntuario(response.data);
       setDescricao(response.data.descricao);
       setDiagnostico(response.data.diagnostico);
       setPrescricao(response.data.receita.medicamento);
@@ -147,14 +147,13 @@ const ViewMRScreen = ({ navigation, route }) => {
       );
 
       if (respose.status === 200) {
-        setExameDescicao("\n" + respose.data.descricao);
         setExameExists(true);
+        setExameDescicao(respose.data.descricao);
       } else {
+        console.log("nau");
         setExameExists(false);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -167,6 +166,8 @@ const ViewMRScreen = ({ navigation, route }) => {
       setDescricao(route.params.consulta.descricao);
       setPrescricao(route.params.consulta.prescricao);
     }
+
+    // console.log(route.params);
 
     return (cleanUp = () => {});
   }, [route.params, uriCameraCapture, exameDescicao]);
