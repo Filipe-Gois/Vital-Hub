@@ -80,21 +80,20 @@ const HomeScreen = ({ navigation }) => {
     try {
       const response = await apiFilipe.get(
         `${url}/BuscarPorData?data=${dataConsulta}`,
-        { headers: { Authorization: `Bearer ${profile.token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${profile.token}`,
+          },
+        }
       );
 
       setConsultas(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const onRefresh = () => {
     setRefreshing(true);
 
-    // setTimeout(() => {
-    //   setRefreshing(false);
-    // }, 2000);
     listarConsultas();
     fetchUserName();
     setRefreshing(false);
@@ -102,12 +101,9 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchUserName();
-    return (cleanUp = () => {});
-  }, [consultaSelecionada]);
 
-  useEffect(() => {
     listarConsultas();
-  }, [dataConsulta, consultaSelecionada]);
+  }, [dataConsulta, consultaSelecionada, profile]);
 
   return (
     <Container>
@@ -125,7 +121,6 @@ const HomeScreen = ({ navigation }) => {
 
           <CalendarList setDataConsulta={setDataConsulta} />
 
-          <Text>{dataConsulta}</Text>
           <ButtonBox
             fieldFlexDirection={"row"}
             fieldJustifyContent={"space-between"}

@@ -111,55 +111,6 @@ const CreateAccountScreen = ({ navigation }) => {
                 fieldValue={confirmPassword}
                 placeholder={"Confirmar Senha"}
               />
-
-              {/*
-
-              <Input
-                // keyType={"visible-password"}
-                onChangeText={(txt) => setUser({ ...user, cpf: txt })}
-                fieldValue={user.cpf}
-                placeholder={"CPF"}
-              />
-              <Input
-                // keyType={"visible-password"}
-                onChangeText={(txt) => setUser({ ...user, rg: txt })}
-                fieldValue={user.rg}
-                placeholder={"RG"}
-              />
-
-              <Input
-                // keyType={"visible-password"}
-                onChangeText={(txt) =>
-                  setUser({ ...user, dataNascimento: txt })
-                }
-                fieldValue={user.dataNascimento}
-                placeholder={"Data de nascimento:"}
-              />
-              <Input
-                // keyType={"visible-password"}
-                onChangeText={(txt) => setUser({ ...user, cep: txt })}
-                fieldValue={user.cep}
-                placeholder={"CEP"}
-              />
-
-              <Input
-                // keyType={"visible-password"}
-                onChangeText={(txt) => setUser({ ...user, cidade: txt })}
-                fieldValue={user.cidade}
-                placeholder={"Cidade"}
-              />
-              <Input
-                // keyType={"visible-password"}
-                onChangeText={(txt) => setUser({ ...user, logradouro: txt })}
-                fieldValue={user.logradouro}
-                placeholder={"Endereço"}
-              />
-              <Input
-                // keyType={"visible-password"}
-                onChangeText={(txt) => setUser({ ...user, numero: txt })}
-                fieldValue={user.numero}
-                placeholder={"Número"}
-              /> */}
             </InputBox>
 
             <Button onPress={() => HandleSubmit()}>

@@ -149,20 +149,15 @@ namespace WebAPI.Repositories
         {
             try
             {
-                Consulta buscada = ctx.Consultas.Include(x => x.Receita).FirstOrDefault(x => x.Id == idConsulta)!;
+                Consulta buscada = ctx.Consultas.Include(x => x.Receita).FirstOrDefault(x => x.Id == idConsulta)! ?? throw new Exception("Consulta não encontrada!");
 
                 buscada.Descricao = prontuarioviewModel.Descricao;
                 buscada.Diagnostico = prontuarioviewModel.Diagnostico;
 
-                if (buscada.Receita != null)
-                {
-                    buscada.Receita.Medicamento = prontuarioviewModel.Medicamento;
 
-                }
-                else
-                {
-                    ctx.Receitas.Add(buscada.Receita!);
-                }
+                buscada.Receita!.Medicamento = prontuarioviewModel.Medicamento;
+
+
 
                 ctx.Update(buscada);
                 ctx.SaveChanges();

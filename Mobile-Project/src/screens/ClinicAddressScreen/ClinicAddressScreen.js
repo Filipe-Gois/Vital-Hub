@@ -22,7 +22,6 @@ const ClinicAddressScreen = ({ navigation, route }) => {
       const response = await apiFilipe.get(
         clinicaResource + `/BuscarPorId?id=${route.params.clinicaId}`
       );
-      console.log(route.params.clinicaId)
 
       setClinic(response.data);
     } catch (error) {
@@ -42,7 +41,6 @@ const ClinicAddressScreen = ({ navigation, route }) => {
         {clinic !== null ? (
           <>
             <MapaGps finalPosition={clinic.endereco} />
-            
 
             <ClinicAddress dados={clinic} />
 

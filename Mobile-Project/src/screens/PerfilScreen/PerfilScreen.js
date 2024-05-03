@@ -214,11 +214,6 @@ export const PerfilScreen = ({ navigation }) => {
     }
   }, [userGlobalData.id, uriPhoto]);
 
-  useEffect(() => {
-    fetchProfileData();
-    return (cleanUp = () => {});
-  }, [uriPhoto]);
-
   return (
     <Container>
       <MainContentScroll>

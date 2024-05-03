@@ -62,8 +62,8 @@ const ViewMRScreen = ({ navigation, route }) => {
     setLoading(true);
     try {
       const response = await apiFilipe.put(
-        examesResource +
-          `/AtualizarProntuario?idConsulta=${prontuario.consulta.idConsulta}`,
+        consultasResource +
+          `/EditarProntuario?idConsulta=${prontuario.consulta.idConsulta}`,
         {
           descricao,
           diagnostico,

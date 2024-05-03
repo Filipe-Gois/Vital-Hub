@@ -118,15 +118,24 @@ export const ModalAgendarConsulta = ({
 
   const niveisPrioridade = {
     rotina: {
-      prioridadeId: "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
+      //senai
+      // prioridadeId: "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
+      //casa
+      prioridadeId: "CD8C8459-0951-47E3-8791-EA3CEBF4A772",
       prioridadeLabel: "Rotina",
     },
     exame: {
-      prioridadeId: "76C4AAC2-E570-4985-97EA-F9BC5ECD280C",
+      //senai
+      // prioridadeId: "76C4AAC2-E570-4985-97EA-F9BC5ECD280C",
+      //casa
+      prioridadeId: "060D1BE9-0140-4371-92A8-DBDED76ABC9B",
       prioridadeLabel: "Exame",
     },
     urgencia: {
-      prioridadeId: "790307E0-E8E9-443A-8E57-A5BA87934EEC",
+      //senai
+      // prioridadeId: "790307E0-E8E9-443A-8E57-A5BA87934EEC",
+      //casa
+      prioridadeId: "0FF3D388-012E-4BC9-85D5-F6D80DB63B0D",
       prioridadeLabel: "Urgência",
     },
   };
@@ -279,6 +288,7 @@ export const ModalConfirmarAgendamento = ({
   ...rest
 }) => {
   const [profile, setProfile] = useState({});
+
   const profileLoad = async () => {
     try {
       const token = await userDecodeToken();
@@ -288,15 +298,21 @@ export const ModalConfirmarAgendamento = ({
       }
     } catch (error) {}
   };
+
   const handleConfirm = async () => {
     try {
-      const response = await apiFilipe.post(`${consultasResource}/Cadastrar`, {
-        ...agendamento,
-        pacienteId: profile.id,
+      const response = await apiFilipe.post(
+        `${consultasResource}/Cadastrar`,
+        { ...agendamento },
         //a situação já é setada como pendente automaticamente na api
-      });
-      Alert.alert("Sucesso", "Consulta agendada!");
-      navigation.replace("Main");
+
+        { headers: { Authorization: `Bearer ${profile.token}` } }
+      );
+
+      if (response.status === 201) {
+        Alert.alert("Sucesso", "Consulta agendada!");
+        navigation.replace("Main");
+      }
     } catch (error) {
       console.log(error);
     }

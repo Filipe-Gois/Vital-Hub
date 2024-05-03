@@ -62,10 +62,11 @@ namespace WebAPI.Controllers
         {
             try
             {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
                 Consulta consulta = new();
 
                 consulta.SituacaoId = consultaViewModel.SituacaoId;
-                consulta.PacienteId = consultaViewModel.PacienteId;
+                consulta.PacienteId = idUsuario;
                 consulta.MedicoClinicaId = consultaViewModel.MedicoClinicaId;
 
                 consulta.Receita = new Receita();
@@ -106,30 +107,11 @@ namespace WebAPI.Controllers
         {
             try
             {
-                Consulta consulta = consultaRepository.BuscarPorId(idConsulta);
 
-                consulta.Descricao = prontuarioviewModel.Descricao;
-
-                consulta.Diagnostico = prontuarioviewModel.Diagnostico;
-
-                if (consulta.ReceitaId != null && prontuarioviewModel.Medicamento != null)
-                {
-                    consulta.Receita!.Medicamento = prontuarioviewModel.Medicamento;
-                }
-                if (consulta.ReceitaId == null && prontuarioviewModel.Medicamento != null)
-                {
-
-                    Receita receita = new Receita
-                    {
-                        Medicamento = prontuarioviewModel.Medicamento
-                    };
-
-                    consulta.Receita = receita;
-                }
 
                 consultaRepository.EditarProntuario(idConsulta, prontuarioviewModel);
 
-                return Ok();
+                return StatusCode(204);
             }
             catch (Exception ex)
             {
