@@ -5,7 +5,7 @@ import { Theme } from "../../themes";
 import { Hour } from "../CardConsulta";
 import { AntDesign } from "@expo/vector-icons";
 
-const ClinicCard = ({ dados, onPress, clickButton,  }) => {
+const ClinicCard = ({ dados, onPress, clickButton, }) => {
   if (!dados || !dados.endereco) {
     return null;
   }

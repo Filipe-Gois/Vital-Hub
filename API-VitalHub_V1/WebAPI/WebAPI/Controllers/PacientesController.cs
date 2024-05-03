@@ -121,6 +121,18 @@ namespace WebAPI.Controllers
                 return BadRequest(e.Message);
             }
 
+<<<<<<< HEAD:API-VitalHub/WebAPI/WebAPI/Controllers/PacientesController.cs
+            user.Paciente.Endereco = new Endereco();
+
+            user.Paciente.Endereco.Cep = pacienteModel.Cep;
+            user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
+            user.Paciente.Endereco.Numero = pacienteModel.Numero;
+
+
+
+            pacienteRepository.Cadastrar(user);
+=======
+>>>>>>> e50e9a2cfa207f035779d6e3bb4ce585c0638816:API-VitalHub_V1/WebAPI/WebAPI/Controllers/PacientesController.cs
 
         }
     }

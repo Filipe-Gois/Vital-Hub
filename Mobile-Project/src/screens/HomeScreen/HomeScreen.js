@@ -36,7 +36,7 @@ import {
 } from "../../Utils/stringFunctions";
 
 const HomeScreen = ({ navigation }) => {
-  const [profile, setProfile] = useState("");
+  const [profile, setProfile] = useState({});
 
   //pega o id da consulta ao clicar no card
   const [consultaSelecionada, setConsultaSelecionada] = useState(null);
@@ -101,7 +101,6 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchUserName();
-
     listarConsultas();
   }, [dataConsulta, consultaSelecionada, profile]);
 

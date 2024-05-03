@@ -14,6 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
+<<<<<<< HEAD
       //ip filipe pc do senai
       "applicationUrl": "http://172.16.39.113:4466",
 
@@ -22,6 +23,9 @@
 
       //ip gabriel pc do senai
       //"applicationUrl": "http://172.16.39.101:4466",
+=======
+      "applicationUrl": "http://172.16.39.101:4466",
+>>>>>>> gabriel
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -36,3 +40,5 @@
     }
   }
 }
+
+

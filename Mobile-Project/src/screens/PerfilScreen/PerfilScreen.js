@@ -121,6 +121,11 @@ export const PerfilScreen = ({ navigation }) => {
   const handleUpdate = async () => {
     setLoading(true);
     try {
+      const response = await apiFilipe.get(`${url}/PerfilLogado`, {
+        headers: { Authorization: `Bearer ${userGlobalData.token}` },
+      });
+
+
       await apiFilipe.put(
         url,
         {
