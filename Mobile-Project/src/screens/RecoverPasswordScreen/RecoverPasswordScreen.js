@@ -12,24 +12,32 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/Button/style";
 import { ButtonTitle } from "../../components/ButtonTitle/style";
 import { LeftArrowAOrXComponent } from "../../components/LeftArrowAOrX";
-import { apiFilipe, apiGabriel, recuperarSenhaResource } from "../../Services/Service";
+import {
+  apiFilipe,
+  apiGabriel,
+  recuperarSenhaResource,
+} from "../../Services/Service";
+import { ButtonAsync } from "../../components/Button";
 
 const RecoverPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const enviarEmail = async () => {
+    setLoading(true);
     try {
-      const response = await apiFilipe.post(`${recuperarSenhaResource}?email=${email}`);
+      const response = await apiFilipe.post(
+        `${recuperarSenhaResource}?email=${email}`
+      );
 
-      if(response.data){
+      if (response.data) {
         // Após o envio do email navegar para a próxima tela
-        navigation.navigate('CheckEmail', { emailRecuperacao: email });
+        navigation.navigate("CheckEmail", { emailRecuperacao: email });
       }
-
     } catch (error) {
       console.log(error);
-    
     }
+    setLoading(false);
   };
 
   return (
@@ -49,12 +57,15 @@ const RecoverPasswordScreen = ({ navigation }) => {
           <Input
             placeholder={"Usuário ou E-mail"}
             fieldValue={email}
-            onChangeText={txt => setEmail(txt)}
+            onChangeText={(txt) => setEmail(txt)}
           />
-          <Button onPress={enviarEmail}>
-            <ButtonTitle>Continuar</ButtonTitle>
-          </Button>
 
+          <ButtonAsync
+            onPress={() => enviarEmail()}
+            disabled={loading}
+            loading={loading}
+            textButton={"Continuar"}
+          />
         </FormBox>
       </MainContent>
     </Container>

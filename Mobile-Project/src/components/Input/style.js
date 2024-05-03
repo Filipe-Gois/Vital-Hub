@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import { Theme } from "../../themes";
+import { TextInput } from "react-native";
 
-export const InputStyle = styled.TextInput.attrs((props) => ({
+export const InputStyle = styled(TextInput).attrs((props) => ({
   placeholderTextColor: props.placeholderTextColor
     ? props.placeholderTextColor
     : "#49B3BA",

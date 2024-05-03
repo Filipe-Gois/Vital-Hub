@@ -3,14 +3,14 @@ import { WelComeImageStyle } from "./style";
 export const WelComeImage = ({
   widthImage = "",
   heigthImage = "",
-  src = "",
+  uri,
   alt = "",
 }) => {
   return (
     <WelComeImageStyle
       widthImage={widthImage}
       heigthImage={heigthImage}
-      source={src}
+      source={{ uri: uri }}
       alt={alt}
     />
   );

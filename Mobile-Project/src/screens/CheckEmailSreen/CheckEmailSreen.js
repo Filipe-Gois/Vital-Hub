@@ -21,17 +21,19 @@ import {
   apiFilipe,
   apiGabriel,
   recuperarSenhaResource,
+  validarCodigoResource,
 } from "../../Services/Service";
 import { Text } from "react-native";
+import { ButtonAsync } from "../../components/Button";
 
 const CheckEmailScreen = ({ navigation, route }) => {
   const [codigo, setCodigo] = useState("");
   const [focusedInput, setFocusedInput] = useState(0);
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+  const [loading, setLoading] = useState(false);
 
   function focusNextInput(index) {
     if (index < inputRefs.length - 1) {
-      console.log(inputRefs);
       inputRefs[index + 1].current.focus();
     }
   }
@@ -56,11 +58,12 @@ const CheckEmailScreen = ({ navigation, route }) => {
   }
 
   const validarCodigo = async () => {
+    setLoading(true);
     try {
       const response = await apiFilipe.post(
-        `${recuperarSenhaResource}/ValidarCodigo?email=${route.params.emailRecuperacao}&codigo=${codigo}`
+        `${validarCodigoResource}?email=${route.params.emailRecuperacao}&code=${codigo}`
       );
-      console.log(response.data);
+
       navigation.replace("RedefinePassword", {
         emailRecuperacao: route.params.emailRecuperacao,
       });
@@ -69,6 +72,7 @@ const CheckEmailScreen = ({ navigation, route }) => {
       console.log(route.params.emailRecuperacao);
       console.log(codigo);
     }
+    setLoading(false);
   };
 
   return (
@@ -88,6 +92,7 @@ const CheckEmailScreen = ({ navigation, route }) => {
           <InputBoxCheckEmail>
             {[0, 1, 2, 3].map((index) => (
               <InputCheckEmail
+                keyboardType={"numeric"}
                 inputRef={inputRefs[index]}
                 key={index}
                 placeholder={"0"}
@@ -111,14 +116,13 @@ const CheckEmailScreen = ({ navigation, route }) => {
               />
             ))}
           </InputBoxCheckEmail>
-          <Text>{codigo[0]}</Text>
-          <Text>{codigo[1]}</Text>
-          <Text>{codigo[2]}</Text>
-          <Text>{codigo[3]}</Text>
 
-          <Button onPress={() => validarCodigo(codigo)}>
-            <ButtonTitle>ENTRAR</ButtonTitle>
-          </Button>
+          <ButtonAsync
+            onPress={() => validarCodigo()}
+            disabled={loading}
+            loading={loading}
+            textButton={"ENTRAR"}
+          />
 
           <ButtonSecondary padding={"0"} onPress={() => navigation.goBack()}>
             <TextCreateAccount2>Cancelar</TextCreateAccount2>

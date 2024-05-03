@@ -31,6 +31,8 @@ const SelectDoctorScreen = ({ navigation, route }) => {
         `${medicosResource}/BuscarPorIdClinica?id=${route.params.clinicaId}`
       );
 
+      console.log(response.data)
+
       setDoctors(response.data);
     } catch (error) {
       console.log(error);
@@ -46,7 +48,6 @@ const SelectDoctorScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     getDoctors();
-
     return (cleanUp = () => {});
   }, [route]);
 

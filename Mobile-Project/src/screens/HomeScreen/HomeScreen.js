@@ -57,6 +57,7 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchUserName = async () => {
     const userInfo = await userDecodeToken();
+
     if (userInfo) {
       setProfile(userInfo);
     }
@@ -101,8 +102,11 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchUserName();
+
     listarConsultas();
-  }, [dataConsulta, consultaSelecionada, profile]);
+
+    //passar o profile como dependencia dá looping infinito
+  }, [dataConsulta, consultaSelecionada]);
 
   return (
     <Container>

@@ -32,7 +32,11 @@ export const CardConsulta = ({
 }) => {
   return (
     <CardConsultaStyle onPress={onPress}>
-      <WelComeImage widthImage="26%" heigthImage="100%" src={Nicole} />
+      <WelComeImage
+        widthImage="26%"
+        heigthImage="100%"
+        uri={dados.medicoClinica.medico.idNavigation.foto}
+      />
 
       <InfoTextBox>
         <TextCreateAccount1>

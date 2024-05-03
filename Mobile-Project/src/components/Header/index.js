@@ -4,7 +4,7 @@ import { HeaderContentBox, HeaderStyle } from "./style";
 import { MaterialIcons } from "@expo/vector-icons";
 import { WelCome } from "../WelCome";
 
-export const Header = ({ viewProfile, user }) => {
+export const Header = ({ viewProfile, user = {} }) => {
   return (
     <HeaderStyle onPress={viewProfile}>
       <LinearGradient

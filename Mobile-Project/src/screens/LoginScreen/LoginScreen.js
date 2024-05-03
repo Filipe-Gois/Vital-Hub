@@ -31,7 +31,11 @@ import {
   TextCreateAccount2,
 } from "../../components/Paragraph/style.js";
 import { useContext, useState } from "react";
-import { apiFilipe, loginResource } from "../../Services/Service.js";
+import {
+  apiFilipe,
+  loginResource,
+  pacientesResource,
+} from "../../Services/Service.js";
 import { ActivityIndicator, Alert, TouchableHighlight } from "react-native";
 import os from "react-native-os";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -42,13 +46,15 @@ import {
 } from "../../Utils/Auth.js";
 import { AuthContext } from "../../Context/AuthProvider.js";
 import { ButtonAsync } from "../../components/Button/index.js";
+import { jwtDecode } from "jwt-decode";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   // const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
-  const [user, setUser] = useState({ email: "f@f.com", senha: "12345" });
-
-  // const { userData, setUserData } = useContext(AuthContext);
+  const [user, setUser] = useState({
+    email: "fythoy@gmail.com",
+    senha: "12345",
+  });
 
   const Login = async () => {
     setLoading(true); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
@@ -56,6 +62,28 @@ const LoginScreen = ({ navigation }) => {
       const response = await apiFilipe.post(loginResource, user);
 
       await AsyncStorage.setItem("token", JSON.stringify(response.data));
+
+      const decoded = jwtDecode(response.data.token);
+
+      if (decoded.role === "Paciente") {
+        const responsePaciente = await apiFilipe.get(
+          `${pacientesResource}/PerfilLogado`,
+          {
+            headers: { Authorization: `Bearer ${response.data.token}` },
+          }
+        );
+        if (
+          !responsePaciente.data.dataNascimento ||
+          !responsePaciente.data.cpf ||
+          !responsePaciente.data.rg ||
+          !responsePaciente.data.endereco.cep ||
+          !responsePaciente.data.endereco.logradouro ||
+          !responsePaciente.data.endereco.cidade
+        ) {
+          navigation.replace("Perfil");
+          return;
+        }
+      }
 
       navigation.replace("Main");
     } catch (error) {
@@ -76,11 +104,13 @@ const LoginScreen = ({ navigation }) => {
 
             <InputBox gap={"20px"}>
               <Input
+                keyboardType={"email-address"}
                 fieldValue={user.email}
                 onChangeText={(txt) => setUser({ ...user, email: txt })}
                 placeholder={"Email:"}
               />
               <Input
+                keyboardType={"visible-password"}
                 fieldValue={user.senha}
                 onChangeText={(txt) => setUser({ ...user, senha: txt })}
                 placeholder={"Senha:"}

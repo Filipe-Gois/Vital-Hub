@@ -8,32 +8,29 @@ import moment from "moment";
 // import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesome } from "@expo/vector-icons";
 
-export const Input = React.forwardRef((props, ref) => {
-  const {
-    placeholder,
-    fieldValue,
-    onChangeText,
-    keyboardType,
-    maxLength,
-    onEndEditing,
-    fieldWidth = 100,
-    fieldMaxWidth = 100,
-    fieldHeight = 55,
-    backGround = "",
-    border = "",
-    placeholderTextColor,
-    fieldPaddingBottom,
-    textColor,
-    fieldTextAlign,
-    fieldMinHeight,
-    secureTextEntry = false,
-    autoFocus,
-    autoCorrect,
-  } = props;
-
+export const Input = ({
+  placeholder,
+  fieldValue,
+  onChangeText,
+  keyboardType,
+  maxLength,
+  onEndEditing,
+  fieldWidth = 100,
+  fieldMaxWidth = 100,
+  fieldHeight = 55,
+  backGround = "",
+  border = "",
+  placeholderTextColor,
+  fieldPaddingBottom,
+  textColor,
+  fieldTextAlign,
+  fieldMinHeight,
+  secureTextEntry = false,
+  autoFocus,
+  autoCorrect,
+}) => {
   return (
     <InputStyle
-      ref={ref}
       autoCorrect={autoCorrect}
       secureTextEntry={secureTextEntry}
       fieldMinHeight={fieldMinHeight}
@@ -57,7 +54,7 @@ export const Input = React.forwardRef((props, ref) => {
       autoFocus={autoFocus}
     />
   );
-});
+};
 
 export const InputCheckEmail = ({
   placeholder,

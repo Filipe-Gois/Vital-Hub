@@ -22,16 +22,19 @@ import {
 import { Title } from "../../components/Title/style";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ButtonAsync } from "../../components/Button";
 
 const CreateAccountScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(false);
   const [confirmPassword, setconfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     nome: "",
     email: "",
     senha: "",
   });
   const HandleSubmit = async () => {
+    setLoading(true);
     try {
       if (
         user.email.trim() === "" ||
@@ -68,6 +71,7 @@ const CreateAccountScreen = ({ navigation }) => {
     } catch (error) {
       Alert.alert("OPS!", "Já existe um usuário com esse Email!");
     }
+    setLoading(false);
   };
 
   return (
@@ -113,9 +117,12 @@ const CreateAccountScreen = ({ navigation }) => {
               />
             </InputBox>
 
-            <Button onPress={() => HandleSubmit()}>
-              <ButtonTitle>CADASTRAR</ButtonTitle>
-            </Button>
+            <ButtonAsync
+              onPress={() => HandleSubmit()}
+              disabled={loading}
+              loading={loading}
+              textButton={"CADASTRAR"}
+            />
 
             <ButtonSecondary padding={"0"} onPress={() => navigation.goBack()}>
               <TextCreateAccount2>Cancelar</TextCreateAccount2>

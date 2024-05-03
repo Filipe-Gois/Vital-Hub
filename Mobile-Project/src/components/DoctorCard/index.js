@@ -11,7 +11,7 @@ const DoctorCard = ({ dados = [], clickButton, onPress }) => {
       <WelComeImage
         widthImage="26%"
         heigthImage="100%"
-        src={DoctorAlessandra}
+        uri={dados.idNavigation.foto}
       />
 
       <DoctorCardColumn>

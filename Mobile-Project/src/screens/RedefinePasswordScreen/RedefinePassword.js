@@ -14,12 +14,15 @@ import { Paragraph } from "../../components/Paragraph/style";
 import { Title } from "../../components/Title/style";
 import { LeftArrowAOrXComponent } from "../../components/LeftArrowAOrX";
 import { Alert } from "react-native";
+import { ButtonAsync } from "../../components/Button";
 
 const RedefinePasswordScreen = ({ navigation, route }) => {
   const [senha, setSenha] = useState("");
   const [confirmar, setConfirmar] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const AlterarSenha = async () => {
+  const alterarSenha = async () => {
+    setLoading(true);
     if (senha === confirmar) {
       await apiFilipe
         .put(
@@ -31,12 +34,11 @@ const RedefinePasswordScreen = ({ navigation, route }) => {
         .then(() => {
           navigation.replace("Login");
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     } else {
       Alert.alert("Ops!", "Senhas incompatíveis!");
     }
+    setLoading(false);
   };
 
   return (
@@ -59,9 +61,13 @@ const RedefinePasswordScreen = ({ navigation, route }) => {
               onChangeText={(txt) => setConfirmar(txt)}
             />
           </InputBox>
-          <Button onPress={() => AlterarSenha()}>
-            <ButtonTitle>CONFIRMAR NOVA SENHA</ButtonTitle>
-          </Button>
+
+          <ButtonAsync
+            onPress={() => alterarSenha()}
+            disabled={loading}
+            loading={loading}
+            textButton={"CONFIRMAR NOVA SENHA"}
+          />
         </FormBox>
       </MainContent>
     </Container>

@@ -19,15 +19,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendRecoveryCodePassword(int code)
+        public async Task<IActionResult> SendRecoveryCodePassword(string email, int code)
         {
             try
             {
-                var usuarioBuscado = await _context.Usuarios.FirstOrDefaultAsync(x => x.CodRecupSenha == code);
+                var usuarioBuscado = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
 
                 if (usuarioBuscado == null)
                 {
-                    return StatusCode(404, "Usuário não encontrado!");
+                    return StatusCode(404);
                 }
 
                 if (usuarioBuscado.CodRecupSenha != code)
@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
                 await _context.SaveChangesAsync();
 
 
-                return StatusCode(200);
+                return StatusCode(204);
             }
             catch (Exception e)
             {

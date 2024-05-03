@@ -31,7 +31,7 @@ import {
   getLocation,
   rgMasked,
 } from "../../Utils/stringFunctions";
-import { Alert, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Alert, Text, TouchableOpacity } from "react-native";
 import { ButtonAsync } from "../../components/Button";
 import { unMask, unmask } from "remask";
 
@@ -71,6 +71,7 @@ export const PerfilScreen = ({ navigation }) => {
   //Propriedades da tela
   const [editUserInfo, setEditUserInfo] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingExit, setLoadingExit] = useState(false);
 
   //Câmera
   const [showCamera, setShowCamera] = useState(false);
@@ -85,13 +86,28 @@ export const PerfilScreen = ({ navigation }) => {
     }
   };
 
+  const handleNavigate = async () => {
+    try {
+    } catch (error) {}
+  };
+
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
     navigation.replace("Login");
   };
 
-  //traz os dados pessoais do usuario Ex: cpf, logradouro, etc
   const getUserInfo = async () => {
+    try {
+      const response = await apiFilipe.get(`${url}/PerfilLogado`, {
+        headers: { Authorization: `Bearer ${userGlobalData.token}` },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //traz os dados pessoais do usuario Ex: cpf, logradouro, etc
+  const getUserInfoUpload = async () => {
     try {
       const response = await apiFilipe.get(`${url}/PerfilLogado`, {
         headers: { Authorization: `Bearer ${userGlobalData.token}` },
@@ -113,9 +129,7 @@ export const PerfilScreen = ({ navigation }) => {
         setCrm(response.data.crm);
         setEspecialidadeMedico(response.data.especialidade.especialidade1);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleUpdate = async () => {
@@ -124,7 +138,6 @@ export const PerfilScreen = ({ navigation }) => {
       const response = await apiFilipe.get(`${url}/PerfilLogado`, {
         headers: { Authorization: `Bearer ${userGlobalData.token}` },
       });
-
 
       await apiFilipe.put(
         url,
@@ -148,7 +161,20 @@ export const PerfilScreen = ({ navigation }) => {
           },
         }
       );
-      getUserInfo();
+
+      if (
+        !response.data.dataNascimento ||
+        !response.data.cpf ||
+        !response.data.rg ||
+        !response.data.endereco.cep ||
+        !response.data.endereco.logradouro ||
+        !response.data.endereco.cidade
+      ) {
+        navigation.replace("Main");
+        return;
+      }
+
+      getUserInfoUpload();
       Alert.alert("Sucesso", "Dados atualizados com sucesso!");
     } catch (error) {
       editActionAbort();
@@ -165,7 +191,7 @@ export const PerfilScreen = ({ navigation }) => {
 
   const editActionAbort = () => {
     setEditUserInfo(false);
-    getUserInfo();
+    getUserInfoUpload();
     setEnderecoLocalizado({});
   };
 
@@ -213,6 +239,7 @@ export const PerfilScreen = ({ navigation }) => {
     if (userGlobalData.id) {
       getUserInfo();
     }
+    getUserInfoUpload();
 
     if (uriPhoto !== null) {
       alterarFotoPerfil();
@@ -451,8 +478,16 @@ export const PerfilScreen = ({ navigation }) => {
               loading={false}
             />
 
-            <ButtonGray onPress={handleLogout}>
-              <ButtonTitle>Sair</ButtonTitle>
+            <ButtonGray
+              onPress={
+                userGlobalData.token && !loadingExit ? handleLogout : null
+              }
+            >
+              {loadingExit ? (
+                <ActivityIndicator color={Theme.colors.whiteColor} />
+              ) : (
+                <ButtonTitle>Sair</ButtonTitle>
+              )}
             </ButtonGray>
           </FormBox>
         </MainContent>
