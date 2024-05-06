@@ -6,7 +6,11 @@ import {
   MainContentScroll,
 } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
-import { Button, ButtonSecondary } from "../../components/Button/style";
+import {
+  Button,
+  ButtonActive,
+  ButtonSecondary,
+} from "../../components/Button/style";
 import { ButtonTitle } from "../../components/ButtonTitle/style";
 import { TextCreateAccount2 } from "../../components/Paragraph/style";
 import { Theme } from "../../themes";
@@ -75,9 +79,13 @@ const SelectClinicScreen = ({ navigation, route }) => {
               keyExtractor={(item) => item.id}
             />
 
-            <Button onPress={() => handleContinue()} padding={"0"}>
+            <ButtonActive
+              buttonAtivado={selectedClinic.clinicaId}
+              onPress={selectedClinic.clinicaId ? handleContinue : null}
+              padding={"0"}
+            >
               <ButtonTitle>Continuar</ButtonTitle>
-            </Button>
+            </ButtonActive>
 
             <ButtonSecondary onPress={() => navigation.goBack()}>
               <TextCreateAccount2>Cancelar</TextCreateAccount2>

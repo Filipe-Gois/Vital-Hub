@@ -19,6 +19,43 @@ namespace WebAPI.Controllers
             _ocrService = ocrService;
         }
 
+        [HttpPut("AtualizarExame")]
+        public async Task<IActionResult> Put(Guid idConsulta, [FromForm] ExameViewModel exame)
+        {
+            try
+            {
+                if (exame.Imagem == null || exame == null)
+                {
+                    return BadRequest("Nenhuma imagem fornecida!");
+                }
+
+                using (var stream = exame.Imagem.OpenReadStream())
+                {
+                    var result = await _ocrService.RecognizeTextAsync(stream);
+
+                    if (result == null)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    exame.Descricao = result;
+
+                    _exameRepository.AtualizarExame(idConsulta, exame);
+
+                    return StatusCode(204);
+
+                }
+
+
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost("Cadastrar")]
         public async Task<IActionResult> Post([FromForm] ExameViewModel exameViewModel)
         {
@@ -33,9 +70,14 @@ namespace WebAPI.Controllers
                 {
                     var result = await _ocrService.RecognizeTextAsync(stream);
 
+                    if (result == null)
+                    {
+                        return StatusCode(400);
+                    }
+
                     exameViewModel.Descricao = result;
 
-                    Exame exame = new Exame();
+                    Exame exame = new();
 
                     exame.Descricao = exameViewModel.Descricao;
                     exame.ConsultaId = exameViewModel.ConsultaId;

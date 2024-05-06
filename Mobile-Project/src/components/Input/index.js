@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { InputCheckEmailStyle, InputSelectBox, InputStyle } from "./style";
+import {
+  InputCheckEmailStyle,
+  InputLibrary,
+  InputSelectBox,
+  InputStyle,
+} from "./style";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import moment from "moment";
+import { HelperText, TextInput } from "react-native-paper";
+import { Theme } from "../../themes";
+import { LabelStyle } from "../Label/style";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 // import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -90,7 +98,7 @@ export const InputCheckEmail = ({
   );
 };
 
-export const InputSelect = ({ setHoraSelecionada }) => {
+export const InputSelectHours = ({ setHoraSelecionada }) => {
   const dataAtual = moment().format("YYYY-MM-DD");
   const [arrayOptions, setArrayOptions] = useState(null);
 
@@ -176,3 +184,61 @@ const style = StyleSheet.create({
     color: "#34898F",
   },
 });
+
+export const InputEmail = ({ value, onChangeText, visible }) => {
+  return (
+    <View style={{ width: "100%", height: "max-content", marginBottom: 10 }}>
+      <InputLibrary
+        multiline={false}
+        keyboardType="email-address"
+        activeUnderlineColor={Theme.colors.primary}
+        textColor={Theme.colors.primary}
+        outlineColor="transparent"
+        label={"Email:"}
+        value={value}
+        onChangeText={onChangeText}
+        // hasErrors={hasErrors}
+      />
+      <HelperText style={{ padding: 0 }} type="error" visible={visible}>
+        Insira um formato de e-mail válido!
+      </HelperText>
+    </View>
+  );
+};
+
+export const InputPassword = ({
+  senhaVisivel,
+  setSenhaVisivel,
+  onPressIcon,
+  value,
+  onChangeText,
+}) => {
+  return (
+    <InputLibrary
+      multiline={false}
+      secureTextEntry={!senhaVisivel}
+      right={
+        <TextInput.Icon
+          style={{ margin: 10 }}
+          icon={senhaVisivel ? "eye" : "eye-off"}
+          onPress={() =>
+            senhaVisivel ? setSenhaVisivel(false) : setSenhaVisivel(true)
+            //setSenhaVisivel(!senhaVisivel) testar com essa lógica
+          }
+          color={senhaVisivel ? Theme.colors.primary : Theme.colors.grayV5}
+        />
+      }
+      keyboardType="default"
+      activeUnderlineColor={Theme.colors.primary}
+      textColor={Theme.colors.primary}
+      outlineColor="transparent"
+      label={"Senha:"}
+      value={value}
+      onChangeText={onChangeText}
+    />
+  );
+};
+
+export const SelectInput = () => {
+  return <></>;
+};

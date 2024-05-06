@@ -26,6 +26,10 @@ const RecoverPasswordScreen = ({ navigation }) => {
   const enviarEmail = async () => {
     setLoading(true);
     try {
+      if (!email) {
+        Alert.alert("Alerta", "Preencha o campo de e-mail.");
+      }
+
       const response = await apiFilipe.post(
         `${recuperarSenhaResource}?email=${email}`
       );
@@ -35,7 +39,7 @@ const RecoverPasswordScreen = ({ navigation }) => {
         navigation.navigate("CheckEmail", { emailRecuperacao: email });
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert("Erro","Email inválido")
     }
     setLoading(false);
   };

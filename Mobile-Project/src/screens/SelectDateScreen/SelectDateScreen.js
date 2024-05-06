@@ -5,7 +5,11 @@ import {
   MainContent,
   MainContentScroll,
 } from "../../components/Container/style";
-import { Button, ButtonSecondary } from "../../components/Button/style";
+import {
+  Button,
+  ButtonActive,
+  ButtonSecondary,
+} from "../../components/Button/style";
 import { ButtonTitle } from "../../components/ButtonTitle/style";
 import {
   ParagraphSemiBold,
@@ -14,7 +18,7 @@ import {
 import { Theme } from "../../themes";
 import { Title } from "../../components/Title/style";
 import CalendarMaximized from "../../components/CalendarMaximized";
-import { InputSelect } from "../../components/Input";
+import { InputSelectHours } from "../../components/Input";
 import { LabelStyle } from "../../components/Label/style";
 import { ModalConfirmarAgendamento } from "../../components/Modal";
 import { Text } from "react-native";
@@ -34,7 +38,6 @@ const SelectDateScreen = ({ navigation, route }) => {
     setShowModal(true);
   };
 
-
   return (
     <Container>
       <MainContentScroll>
@@ -47,19 +50,21 @@ const SelectDateScreen = ({ navigation, route }) => {
               setSelected={setDateSelected}
             />
 
-            <Text>{dateSelected}</Text>
-
             <LabelStyle>
               <ParagraphSemiBold color={Theme.colors.blackColor}>
                 Selecione um horário disponível
               </ParagraphSemiBold>
 
-              <InputSelect setHoraSelecionada={setHoraSelecionada} />
+              <InputSelectHours setHoraSelecionada={setHoraSelecionada} />
             </LabelStyle>
 
-            <Button onPress={() => handleContinue()} padding={"0"}>
+            <ButtonActive
+              buttonAtivado={dateSelected && horaSelecionada}
+              onPress={dateSelected && horaSelecionada ? handleContinue : null}
+              padding={"0"}
+            >
               <ButtonTitle>Confirmar</ButtonTitle>
-            </Button>
+            </ButtonActive>
 
             <ButtonSecondary onPress={() => navigation.goBack()}>
               <TextCreateAccount2>Cancelar</TextCreateAccount2>

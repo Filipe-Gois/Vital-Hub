@@ -146,11 +146,10 @@ const ViewMRScreen = ({ navigation, route }) => {
         `${examesResource}/BuscarPorIdConsulta?idConsulta=${route.params.consulta.idConsulta}`
       );
 
-      if (respose.status === 200) {
+      if (respose.status === 200 && respose.data.descricao) {
         setExameExists(true);
         setExameDescicao(respose.data.descricao);
       } else {
-        console.log("nau");
         setExameExists(false);
       }
     } catch (error) {}

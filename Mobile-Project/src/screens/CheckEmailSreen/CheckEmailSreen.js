@@ -5,6 +5,7 @@ import {
   FormBox,
   InputBoxCheckEmail,
   MainContent,
+  MainContentScroll,
 } from "../../components/Container/style";
 import { LogoComponent } from "../../components/Logo";
 import {
@@ -23,39 +24,39 @@ import {
   recuperarSenhaResource,
   validarCodigoResource,
 } from "../../Services/Service";
-import { Text } from "react-native";
+import { Alert, Text } from "react-native";
 import { ButtonAsync } from "../../components/Button";
 
 const CheckEmailScreen = ({ navigation, route }) => {
-  const [codigo, setCodigo] = useState("");
+  const [codigo, setCodigo] = useState([]);
   const [focusedInput, setFocusedInput] = useState(0);
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [loading, setLoading] = useState(false);
 
-  function focusNextInput(index) {
+  const focusNextInput = (index) => {
     if (index < inputRefs.length - 1) {
       inputRefs[index + 1].current.focus();
     }
-  }
+  };
 
-  function focusPrevInput(index) {
+  const focusPrevInput = (index) => {
     if (index > 0) {
       inputRefs[index - 1].current.focus();
     }
-  }
+  };
 
-  function InserirCodigo(event) {
-    if (event.nativeEvent.key === "Backspace" && focusedInput > 0) {
+  const inserirCodigo = (e) => {
+    if (e.nativeEvent.key === "Backspace" && focusedInput > 0) {
       setFocusedInput(focusedInput - 1);
     } else if (
-      event.nativeEvent.key.length === 1 &&
-      (event.nativeEvent.key.match(/[0-9]/) || event.nativeEvent.key === "0") &&
+      e.nativeEvent.key.length === 1 &&
+      (e.nativeEvent.key.match(/[0-9]/) || e.nativeEvent.key === "0") &&
       focusedInput < 3
     ) {
-      setCodigo((prevCodigo) => prevCodigo + event.nativeEvent.key);
+      setCodigo((prevCodigo) => prevCodigo + e.nativeEvent.key);
       setFocusedInput(focusedInput + 1);
     }
-  }
+  };
 
   const validarCodigo = async () => {
     setLoading(true);
@@ -68,67 +69,69 @@ const CheckEmailScreen = ({ navigation, route }) => {
         emailRecuperacao: route.params.emailRecuperacao,
       });
     } catch (error) {
-      console.log(error);
-      console.log(route.params.emailRecuperacao);
-      console.log(codigo);
+      Alert.alert("Erro", "Código inválido!");
+      setCodigo([]);
+      setFocusedInput(0);
     }
     setLoading(false);
   };
 
   return (
     <Container>
-      <MainContent>
-        <LeftArrowAOrXComponent isLefArrow={false} navigation={navigation} />
-        <LogoComponent />
+      <MainContentScroll>
+        <MainContent>
+          <LeftArrowAOrXComponent isLefArrow={false} navigation={navigation} />
+          <LogoComponent />
 
-        <FormBox>
-          <Title>Verifique seu e-mail</Title>
+          <FormBox>
+            <Title>Verifique seu e-mail</Title>
 
-          <ContainerText>
-            <Paragraph>Digite o código de 4 dígitos enviado para </Paragraph>
-            <UserEmailText>{route.params.emailRecuperacao}</UserEmailText>
-          </ContainerText>
+            <ContainerText>
+              <Paragraph>Digite o código de 4 dígitos enviado para </Paragraph>
+              <UserEmailText>{route.params.emailRecuperacao}</UserEmailText>
+            </ContainerText>
 
-          <InputBoxCheckEmail>
-            {[0, 1, 2, 3].map((index) => (
-              <InputCheckEmail
-                keyboardType={"numeric"}
-                inputRef={inputRefs[index]}
-                key={index}
-                placeholder={"0"}
-                fieldWidth={18}
-                fieldHeight={62}
-                maxLength={1}
-                value={codigo[index]}
-                // onFocus={() => focusInput(index)}
-                onChangeText={(txt) => {
-                  if (txt == "") {
-                    focusPrevInput(index);
-                  } else {
-                    const novoCodigo = [...codigo];
-                    novoCodigo[index] = txt;
-                    setCodigo(novoCodigo.join(""));
+            <InputBoxCheckEmail>
+              {[0, 1, 2, 3].map((index) => (
+                <InputCheckEmail
+                  keyboardType={"numeric"}
+                  inputRef={inputRefs[index]}
+                  key={index}
+                  placeholder={"0"}
+                  fieldWidth={18}
+                  fieldHeight={62}
+                  maxLength={1}
+                  value={codigo[index]}
+                  // onFocus={() => focusInput(index)}
+                  onChangeText={(txt) => {
+                    if (txt == "") {
+                      focusPrevInput(index);
+                    } else {
+                      const novoCodigo = [...codigo];
+                      novoCodigo[index] = txt;
+                      setCodigo(novoCodigo.join(""));
 
-                    focusNextInput(index);
-                  }
-                }}
-                onKeyPress={InserirCodigo}
-              />
-            ))}
-          </InputBoxCheckEmail>
+                      focusNextInput(index);
+                    }
+                  }}
+                  onKeyPress={inserirCodigo}
+                />
+              ))}
+            </InputBoxCheckEmail>
 
-          <ButtonAsync
-            onPress={() => validarCodigo()}
-            disabled={loading}
-            loading={loading}
-            textButton={"ENTRAR"}
-          />
+            <ButtonAsync
+              onPress={() => validarCodigo()}
+              disabled={loading}
+              loading={loading}
+              textButton={"ENTRAR"}
+            />
 
-          <ButtonSecondary padding={"0"} onPress={() => navigation.goBack()}>
-            <TextCreateAccount2>Cancelar</TextCreateAccount2>
-          </ButtonSecondary>
-        </FormBox>
-      </MainContent>
+            <ButtonSecondary padding={"0"} onPress={() => navigation.goBack()}>
+              <TextCreateAccount2>Cancelar</TextCreateAccount2>
+            </ButtonSecondary>
+          </FormBox>
+        </MainContent>
+      </MainContentScroll>
     </Container>
   );
 };

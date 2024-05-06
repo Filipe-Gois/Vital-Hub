@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import { Theme } from "../../themes";
+import { TouchableOpacity } from "react-native";
 
-export const Button = styled.TouchableOpacity`
+export const Button = styled(TouchableOpacity)`
   width: ${(props) => (props.fieldWidth ? props.fieldWidth : "100%")};
   height: ${(props) => (props.fieldHeight ? props.fieldHeight : "44px")};
   background-color: ${(props) =>
@@ -14,9 +15,20 @@ export const Button = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const ButtonActive = styled(Button)`
+  background-color: ${(props) =>
+    props.buttonAtivado ? Theme.colors.secondary : Theme.colors.grayV5};
+  border: 1px solid
+    ${(props) =>
+      props.buttonAtivado ? Theme.colors.secondary : Theme.colors.grayV5};
+`;
+
 export const ButtonAsyncStyle = styled(Button)`
   background-color: ${(props) =>
-    props.backgroundColor ? props.backgroundColor : Theme.colors.secondary};
+    props.buttonAtivado ? Theme.colors.secondary : Theme.colors.grayV5};
+  border: 1px solid
+    ${(props) =>
+      props.buttonAtivado ? Theme.colors.secondary : Theme.colors.grayV5};
 `;
 
 export const ButtonGray = styled(Button)`

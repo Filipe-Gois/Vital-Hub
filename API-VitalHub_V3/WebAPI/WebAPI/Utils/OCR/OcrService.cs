@@ -24,8 +24,9 @@ namespace WebAPI.Utils.OCR
             }
             catch (Exception e)
             {
-
-                return "Erro ao reconhecer o texto: " + e.Message;
+                //retorna null caso nao consiga ler o texto
+                //"Erro ao reconhecer o texto: " + e.Message;
+                return null!;
             }
         }
 

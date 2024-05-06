@@ -11,7 +11,7 @@ import {
 import { LogoComponent } from "../../components/Logo";
 import { Title } from "../../components/Title/style";
 
-import { Input } from "../../components/Input";
+import { Input, InputEmail, InputPassword } from "../../components/Input";
 import { LinkMedium } from "../../components/Link/style";
 import {
   Button,
@@ -30,7 +30,7 @@ import {
   TextCreateAccount1,
   TextCreateAccount2,
 } from "../../components/Paragraph/style.js";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   apiFilipe,
   loginResource,
@@ -47,14 +47,21 @@ import {
 import { AuthContext } from "../../Context/AuthProvider.js";
 import { ButtonAsync } from "../../components/Button/index.js";
 import { jwtDecode } from "jwt-decode";
+import { HelperText, TextInput } from "react-native-paper";
+import { InputLibrary } from "../../components/Input/style.js";
+import { Text } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   // const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
   const [user, setUser] = useState({
-    email: "fythoy@gmail.com",
-    senha: "12345",
+    email: "",
+    senha: "",
   });
+
+  const [loginError, setLoginError] = useState(false);
+
+  const [senhaVisivel, setSenhaVisivel] = useState(false);
 
   const Login = async () => {
     setLoading(true); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
@@ -87,11 +94,20 @@ const LoginScreen = ({ navigation }) => {
 
       navigation.replace("Main");
     } catch (error) {
-      Alert.alert("Erro");
+      Alert.alert("Erro", "E-mail ou senha inválidos.");
+
       setLoading(false);
     }
     setLoading(false); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
   };
+
+  const handleErrors = () => {
+    setLoginError(!user.email.includes("@") && user.email);
+  };
+
+  useEffect(() => {
+    setLoginError(!user.email.includes("@") && user.email);
+  }, [user.email]);
 
   return (
     <Container>
@@ -102,18 +118,20 @@ const LoginScreen = ({ navigation }) => {
           <FormBox>
             <Title>Entrar ou criar conta</Title>
 
-            <InputBox gap={"20px"}>
-              <Input
-                keyboardType={"email-address"}
-                fieldValue={user.email}
-                onChangeText={(txt) => setUser({ ...user, email: txt })}
-                placeholder={"Email:"}
+            <InputBox>
+              <InputEmail
+                visible={loginError}
+                value={user.email}
+                onChangeText={(txt) => {
+                  setUser({ ...user, email: txt });
+                  handleErrors();
+                }}
               />
-              <Input
-                keyboardType={"visible-password"}
-                fieldValue={user.senha}
+              <InputPassword
+                senhaVisivel={senhaVisivel}
+                setSenhaVisivel={setSenhaVisivel}
+                value={user.senha}
                 onChangeText={(txt) => setUser({ ...user, senha: txt })}
-                placeholder={"Senha:"}
               />
             </InputBox>
             <ButtonSecondary
@@ -130,7 +148,10 @@ const LoginScreen = ({ navigation }) => {
 
             <ButtonBox>
               <ButtonAsync
-                onPress={() => Login()}
+                buttonAtivado={!loginError && user.email && user.senha}
+                onPress={
+                  !loginError && user.email && user.senha ? () => Login() : null
+                }
                 disabled={loading}
                 loading={loading}
                 textButton={"Entrar"}

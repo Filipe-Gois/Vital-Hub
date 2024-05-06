@@ -10,16 +10,15 @@ namespace WebAPI.Repositories
     {
         public VitalContext ctx = new VitalContext();
 
-        public void AtualizarExame(Guid idConsulta, ConsultaViewModel consultaViewModel)
+
+
+        public void AtualizarExame(Guid idConsulta, ExameViewModel exame)
         {
-            Consulta consultaBuscada = ctx.Consultas.Include(x => x.Receita).FirstOrDefault(c => c.Id == idConsulta)! ?? throw new Exception("Consulta não encontrada"); //mesma coisa do if (consultaBuscada == null)
+            Exame exameBuscado = BuscarPorIdConsulta(idConsulta) ?? throw new Exception("Exame não encontrado!");
 
-            consultaBuscada.Descricao = consultaViewModel.Descricao;
-            consultaBuscada.Diagnostico = consultaViewModel.Diagnostico;
-            consultaBuscada.Receita!.Medicamento = consultaViewModel.Prescricao;
+            exameBuscado.Descricao = exame.Descricao;
 
-
-            ctx.Consultas.Update(consultaBuscada);
+            ctx.Exames.Update(exameBuscado);
             ctx.SaveChanges();
 
         }
@@ -41,6 +40,13 @@ namespace WebAPI.Repositories
         {
             try
             {
+                Exame exameBuscado = ctx.Exames.Include(x => x.Consulta)
+                    .FirstOrDefault(x => x.ConsultaId == exame.ConsultaId)!;
+
+                if (exameBuscado != null)
+                {
+                    throw new Exception("Já existe um exame para essa conmsulta!");
+                }
                 ctx.Exames.Add(exame);
                 ctx.SaveChanges();
 

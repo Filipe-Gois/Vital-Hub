@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { Theme } from "../../themes";
+import { TextInput as TextInputPaper } from "react-native-paper";
 import { TextInput } from "react-native";
 
 export const InputStyle = styled(TextInput).attrs((props) => ({
@@ -36,6 +37,16 @@ export const InputStyle = styled(TextInput).attrs((props) => ({
     css`
       text-align: ${props.fieldTextAlign};
     `}
+`;
+
+export const InputLibrary = styled(TextInputPaper)`
+  color: ${(props) =>
+    props.textColor ? props.textColor : Theme.colors.primary};
+  background-color: ${(props) =>
+    props.backGround ? props.backGround : Theme.colors.whiteColor};
+  border: ${(props) =>
+    props.border ? props.border : `2px solid ${Theme.colors.primary}`};
+  border-bottom: 1px solid red;
 `;
 
 export const InputVerification = styled(InputStyle)`

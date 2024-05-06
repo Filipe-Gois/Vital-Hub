@@ -57,9 +57,14 @@ export const ButtonAsync = ({
   disabled = false,
   sizeActivityIndicator = 20,
   colorsizeActivityIndicator = Theme.colors.whiteColor,
+  buttonAtivado,
 }) => {
   return (
-    <ButtonAsyncStyle disabled={disabled} onPress={onPress}>
+    <ButtonAsyncStyle
+      buttonAtivado={buttonAtivado}
+      disabled={disabled}
+      onPress={onPress}
+    >
       {loading ? (
         <ActivityIndicator
           size={sizeActivityIndicator}

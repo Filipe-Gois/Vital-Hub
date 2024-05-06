@@ -463,6 +463,7 @@ export const PerfilScreen = ({ navigation }) => {
 
             {editUserInfo && (
               <ButtonAsync
+                buttonAtivado
                 loading={loading}
                 disabled={loading}
                 textButton={"Salvar"}
@@ -471,6 +472,7 @@ export const PerfilScreen = ({ navigation }) => {
             )}
 
             <ButtonAsync
+              buttonAtivado
               onPress={() =>
                 !editUserInfo ? showUpdateForm() : editActionAbort()
               }

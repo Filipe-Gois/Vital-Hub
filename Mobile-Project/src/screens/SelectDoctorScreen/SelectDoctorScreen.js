@@ -7,7 +7,11 @@ import {
 } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
 import { FlatListStyle } from "../../components/FlatList/style";
-import { Button, ButtonSecondary } from "../../components/Button/style";
+import {
+  Button,
+  ButtonActive,
+  ButtonSecondary,
+} from "../../components/Button/style";
 import { ButtonTitle } from "../../components/ButtonTitle/style";
 import { TextCreateAccount2 } from "../../components/Paragraph/style";
 import { Theme } from "../../themes";
@@ -31,7 +35,7 @@ const SelectDoctorScreen = ({ navigation, route }) => {
         `${medicosResource}/BuscarPorIdClinica?id=${route.params.clinicaId}`
       );
 
-      console.log(response.data)
+
 
       setDoctors(response.data);
     } catch (error) {
@@ -79,9 +83,13 @@ const SelectDoctorScreen = ({ navigation, route }) => {
               keyExtractor={(item) => item.id}
             />
 
-            <Button onPress={() => handleContinue()} padding={"0"}>
+            <ButtonActive
+              buttonAtivado={selectedDoctor.medicoClinicaId}
+              onPress={selectedDoctor.medicoClinicaId ? handleContinue : null}
+              padding={"0"}
+            >
               <ButtonTitle>Continuar</ButtonTitle>
-            </Button>
+            </ButtonActive>
 
             <ButtonSecondary onPress={() => navigation.goBack()}>
               <TextCreateAccount2>Cancelar</TextCreateAccount2>
