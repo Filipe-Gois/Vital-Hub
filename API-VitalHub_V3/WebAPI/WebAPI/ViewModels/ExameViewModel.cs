@@ -10,5 +10,6 @@ namespace WebAPI.ViewModels
         [JsonIgnore]
         public IFormFile? Imagem { get; set; }
         public string? Descricao { get; set; }
+        public string? FotoExame { get; set; }
     }
 }

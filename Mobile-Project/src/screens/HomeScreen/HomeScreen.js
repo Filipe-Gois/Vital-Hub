@@ -34,6 +34,7 @@ import {
   calcularIdadeDoUsuario,
   getDataAtual,
 } from "../../Utils/stringFunctions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState({});

@@ -53,10 +53,10 @@ import { Text } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  // const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
+  // const [user, setUser] = useState({ email: "a@a.com", senha: "12345" });
   const [user, setUser] = useState({
-    email: "",
-    senha: "",
+    email: "fythoy@gmail.com",
+    senha: "12345",
   });
 
   const [loginError, setLoginError] = useState(false);
@@ -91,8 +91,7 @@ const LoginScreen = ({ navigation }) => {
           return;
         }
       }
-
-      navigation.replace("Main");
+      navigation.replace("Main", { token: response.data.token });
     } catch (error) {
       Alert.alert("Erro", "E-mail ou senha inválidos.");
 

@@ -19,7 +19,12 @@ export const Header = ({ viewProfile, user = {} }) => {
             uri={user.foto ? user.foto : null}
             name={user.role === "Medico" ? `Dr. ${user.name}` : user.name}
           />
-          <MaterialIcons name="notifications" size={25} color="white" />
+          <MaterialIcons
+            onPress={() => console.log()}
+            name="notifications"
+            size={25}
+            color="white"
+          />
         </HeaderContentBox>
       </LinearGradient>
     </HeaderStyle>

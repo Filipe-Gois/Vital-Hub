@@ -131,7 +131,6 @@ const ViewMRScreen = ({ navigation, route }) => {
         consultasResource + `/BuscarPorId?id=${prontuario.consulta.idConsulta}`
       );
 
-      setProntuario(response.data);
       setDescricao(response.data.descricao);
       setDiagnostico(response.data.diagnostico);
       setPrescricao(response.data.receita.medicamento);
@@ -165,8 +164,6 @@ const ViewMRScreen = ({ navigation, route }) => {
       setDescricao(route.params.consulta.descricao);
       setPrescricao(route.params.consulta.prescricao);
     }
-
-    // console.log(route.params);
 
     return (cleanUp = () => {});
   }, [route.params, uriCameraCapture, exameDescicao]);
@@ -216,7 +213,6 @@ const ViewMRScreen = ({ navigation, route }) => {
               placeholder={"Descrição da consulta"}
               fieldHeight={121}
             />
-
             <Label
               autoCorrect={false}
               pointerEvents={
@@ -274,71 +270,65 @@ const ViewMRScreen = ({ navigation, route }) => {
               placeholder={"Prescrição médica"}
               fieldHeight={121}
             />
-            {userGlobalData.role === "Paciente" ? (
+            {!exameExists && userGlobalData.role === "Paciente" && (
               <>
-                {!exameExists && (
-                  <Label
-                    textColor={Theme.colors.grayV2}
-                    border={"none"}
-                    backGround={Theme.colors.v2LightWhite}
-                    placeholderTextColor={Theme.colors.grayV2}
-                    titulo="Exames médicos"
-                    fieldHeight={"100%"}
-                    fieldMinHeight={"111px"}
-                    fieldTextAlign={"center"}
-                    isImage={true}
-                    uri={uriCameraCapture}
-                    imageExists={uriCameraCapture !== null}
-                    onPressImage={() => setShowCamera(true)}
+                <Label
+                  textColor={Theme.colors.grayV2}
+                  border={"none"}
+                  backGround={Theme.colors.v2LightWhite}
+                  placeholderTextColor={Theme.colors.grayV2}
+                  titulo="Exames médicos"
+                  fieldHeight={"100%"}
+                  fieldMinHeight={"111px"}
+                  fieldTextAlign={"center"}
+                  isImage={true}
+                  uri={uriCameraCapture}
+                  imageExists={uriCameraCapture !== null}
+                  onPressImage={() => setShowCamera(true)}
+                />
+
+                <ButtonBox
+                  fieldFlexDirection={"row"}
+                  fieldJustifyContent={"space-around"}
+                >
+                  <ButtonAqua
+                    // onPress={() => {
+                    //   setCameraConfigs({ ...cameraConfigs, showCameraModal: true });
+                    //   console.log(cameraConfigs.showCameraModal);
+                    // }}
+                    onPress={() => {
+                      inserirExame();
+                    }}
                   />
-                )}
 
-                {!exameExists && (
-                  <ButtonBox
-                    fieldFlexDirection={"row"}
-                    fieldJustifyContent={"space-around"}
-                  >
-                    <ButtonAqua
-                      // onPress={() => {
-                      //   setCameraConfigs({ ...cameraConfigs, showCameraModal: true });
-                      //   console.log(cameraConfigs.showCameraModal);
-                      // }}
-                      onPress={() => {
-                        inserirExame();
-                      }}
-                    />
-
-                    {uriCameraCapture && (
-                      <ButtonSecondary
-                        fieldWidth={"50%"}
-                        onPress={removePicture}
-                      >
-                        <ParagraphMA500 color={Theme.colors.red}>
-                          Cancelar
-                        </ParagraphMA500>
-                      </ButtonSecondary>
-                    )}
-                  </ButtonBox>
-                )}
-
-                <Line />
-                {exameExists && (
-                  <Label
-                    pointerEvents={"none"}
-                    textColor={Theme.colors.grayV2}
-                    border={"none"}
-                    backGround={Theme.colors.v2LightWhite}
-                    placeholderTextColor={Theme.colors.grayV2}
-                    fieldValue={exameDescicao ? exameDescicao : ""}
-                    fieldHeight={200}
-                    titulo="Receita"
-                  />
-                )}
+                  {uriCameraCapture && (
+                    <ButtonSecondary fieldWidth={"50%"} onPress={removePicture}>
+                      <ParagraphMA500 color={Theme.colors.red}>
+                        Cancelar
+                      </ParagraphMA500>
+                    </ButtonSecondary>
+                  )}
+                </ButtonBox>
               </>
-            ) : (
+            )}
+            <Line />
+            {exameExists && (
+              <Label
+                pointerEvents={"none"}
+                textColor={Theme.colors.grayV2}
+                border={"none"}
+                backGround={Theme.colors.v2LightWhite}
+                placeholderTextColor={Theme.colors.grayV2}
+                fieldValue={exameDescicao ? exameDescicao : ""}
+                fieldHeight={200}
+                titulo="Receita"
+              />
+            )}
+            {userGlobalData.role !== "Paciente" && (
               <>
                 {editUserInfo && (
                   <ButtonAsync
+                    buttonAtivado
                     loading={loading}
                     disabled={loading}
                     textButton={"Salvar"}
@@ -347,6 +337,7 @@ const ViewMRScreen = ({ navigation, route }) => {
                 )}
 
                 <ButtonAsync
+                  buttonAtivado
                   onPress={() =>
                     !editUserInfo ? showUpdateForm() : editActionAbort()
                   }
@@ -355,6 +346,7 @@ const ViewMRScreen = ({ navigation, route }) => {
                 />
               </>
             )}
+
             <ButtonSecondary onPress={() => navigation.goBack()}>
               <TextCreateAccount2>Voltar</TextCreateAccount2>
             </ButtonSecondary>

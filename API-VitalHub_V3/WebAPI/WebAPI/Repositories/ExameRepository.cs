@@ -12,11 +12,13 @@ namespace WebAPI.Repositories
 
 
 
-        public void AtualizarExame(Guid idConsulta, ExameViewModel exame)
+        public void AtualizarExame(ExameViewModel exame)
         {
-            Exame exameBuscado = BuscarPorIdConsulta(idConsulta) ?? throw new Exception("Exame não encontrado!");
+            Exame exameBuscado = BuscarPorIdConsulta(exame.ConsultaId) ?? throw new Exception("Exame não encontrado!");
 
             exameBuscado.Descricao = exame.Descricao;
+
+            exameBuscado.FotoExame = exame.FotoExame;
 
             ctx.Exames.Update(exameBuscado);
             ctx.SaveChanges();

@@ -1,26 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\",
+  "WorkspaceRootPath": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\controllers\\examecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\controllers\\examecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\controllers\\examecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\repositories\\examerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\repositories\\examerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\utils\\blobstorage\\azureblobstoragehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\utils\\blobstorage\\azureblobstoragehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\utils\\ocr\\ocrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\utils\\ocr\\ocrservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\controllers\\pacientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\controllers\\pacientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\interfaces\\iexamerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\interfaces\\iexamerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\viewmodels\\exameviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\viewmodels\\exameviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\viewmodels\\exameviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\repositories\\examerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\repositories\\examerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,67 +30,71 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OcrService.cs",
-              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Utils\\OCR\\OcrService.cs",
-              "RelativeDocumentMoniker": "WebAPI\\Utils\\OCR\\OcrService.cs",
-              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Utils\\OCR\\OcrService.cs",
-              "RelativeToolTip": "WebAPI\\Utils\\OCR\\OcrService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAA9AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-04T03:15:35.849Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ExameViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\ViewModels\\ExameViewModel.cs",
-              "RelativeDocumentMoniker": "WebAPI\\ViewModels\\ExameViewModel.cs",
-              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\ViewModels\\ExameViewModel.cs",
-              "RelativeToolTip": "WebAPI\\ViewModels\\ExameViewModel.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-04T02:54:36.394Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "IExameRepository.cs",
-              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Interfaces\\IExameRepository.cs",
-              "RelativeDocumentMoniker": "WebAPI\\Interfaces\\IExameRepository.cs",
-              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Interfaces\\IExameRepository.cs",
-              "RelativeToolTip": "WebAPI\\Interfaces\\IExameRepository.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAABCAAAA",
+              "Title": "ExameViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\ViewModels\\ExameViewModel.cs",
+              "RelativeDocumentMoniker": "WebAPI\\ViewModels\\ExameViewModel.cs",
+              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\ViewModels\\ExameViewModel.cs",
+              "RelativeToolTip": "WebAPI\\ViewModels\\ExameViewModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-04T02:51:17.107Z"
+              "WhenOpened": "2024-05-06T20:01:23.369Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ExameRepository.cs",
-              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ExameRepository.cs",
-              "RelativeDocumentMoniker": "WebAPI\\Repositories\\ExameRepository.cs",
-              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ExameRepository.cs",
-              "RelativeToolTip": "WebAPI\\Repositories\\ExameRepository.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAAAAABAAAABtAAAA",
+              "Title": "AzureBlobStorageHelper.cs",
+              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Utils\\BlobStorage\\AzureBlobStorageHelper.cs",
+              "RelativeDocumentMoniker": "WebAPI\\Utils\\BlobStorage\\AzureBlobStorageHelper.cs",
+              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Utils\\BlobStorage\\AzureBlobStorageHelper.cs",
+              "RelativeToolTip": "WebAPI\\Utils\\BlobStorage\\AzureBlobStorageHelper.cs",
+              "ViewState": "AQIAAFQAAAAAAAAAAAAAAGEAAABvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-04T02:51:15.225Z"
+              "WhenOpened": "2024-05-06T19:51:19.095Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "ExameController.cs",
-              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ExameController.cs",
+              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ExameController.cs",
               "RelativeDocumentMoniker": "WebAPI\\Controllers\\ExameController.cs",
-              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ExameController.cs",
+              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ExameController.cs",
               "RelativeToolTip": "WebAPI\\Controllers\\ExameController.cs",
-              "ViewState": "AQIAABYAAAAAAAAAAAAqwDAAAAAAAAAA",
+              "ViewState": "AQIAAH4AAAAAAAAAAAAAwJMAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-04T02:51:08.789Z",
+              "WhenOpened": "2024-05-06T19:31:36.939Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PacientesController.cs",
+              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\PacientesController.cs",
+              "RelativeDocumentMoniker": "WebAPI\\Controllers\\PacientesController.cs",
+              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\PacientesController.cs",
+              "RelativeToolTip": "WebAPI\\Controllers\\PacientesController.cs",
+              "ViewState": "AQIAAIoAAAAAAAAAAAAwwFoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-06T19:46:28.343Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ExameRepository.cs",
+              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ExameRepository.cs",
+              "RelativeDocumentMoniker": "WebAPI\\Repositories\\ExameRepository.cs",
+              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ExameRepository.cs",
+              "RelativeToolTip": "WebAPI\\Repositories\\ExameRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-06T19:30:02.661Z",
               "EditorCaption": ""
             }
           ]

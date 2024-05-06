@@ -10,6 +10,7 @@ public partial class Exame
     public string? Descricao { get; set; }
 
     public Guid? ConsultaId { get; set; }
+    public string? FotoExame { get; set; }
 
     public virtual Consulta? Consulta { get; set; }
 }

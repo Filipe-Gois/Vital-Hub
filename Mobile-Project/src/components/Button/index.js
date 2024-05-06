@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image } from "react-native";
+import { Image } from "react-native";
 import {
   ButtonTextStyle,
   ButtonTitle,
@@ -12,6 +12,7 @@ import {
 } from "./style";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Theme } from "../../themes";
+import { ActivityIndicator } from "react-native-paper";
 
 export const ButtonGoogleComponent = () => {
   return (
@@ -66,10 +67,7 @@ export const ButtonAsync = ({
       onPress={onPress}
     >
       {loading ? (
-        <ActivityIndicator
-          size={sizeActivityIndicator}
-          color={colorsizeActivityIndicator}
-        />
+        <ActivityIndicator size={"small"} color={colorsizeActivityIndicator} />
       ) : (
         <ButtonTitle>{textButton}</ButtonTitle>
       )}

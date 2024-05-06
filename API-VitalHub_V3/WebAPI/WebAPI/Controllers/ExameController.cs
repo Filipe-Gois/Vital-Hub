@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
+using WebAPI.Utils.BlobStorage;
 using WebAPI.Utils.OCR;
 using WebAPI.ViewModels;
 
@@ -20,7 +21,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("AtualizarExame")]
-        public async Task<IActionResult> Put(Guid idConsulta, [FromForm] ExameViewModel exame)
+        public async Task<IActionResult> Put([FromForm] ExameViewModel exame)
         {
             try
             {
@@ -33,14 +34,14 @@ namespace WebAPI.Controllers
                 {
                     var result = await _ocrService.RecognizeTextAsync(stream);
 
-                    if (result == null)
+                    if (result == null || result == "")
                     {
                         return StatusCode(400);
                     }
 
                     exame.Descricao = result;
 
-                    _exameRepository.AtualizarExame(idConsulta, exame);
+                    _exameRepository.AtualizarExame(exame);
 
                     return StatusCode(204);
 
@@ -59,6 +60,11 @@ namespace WebAPI.Controllers
         [HttpPost("Cadastrar")]
         public async Task<IActionResult> Post([FromForm] ExameViewModel exameViewModel)
         {
+            //define o nome do container do blob
+            var containerName = "containervitalhubfilipegoisg2";
+
+            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
+
             try
             {
                 if (exameViewModel.Imagem == null || exameViewModel == null)
@@ -70,10 +76,15 @@ namespace WebAPI.Controllers
                 {
                     var result = await _ocrService.RecognizeTextAsync(stream);
 
-                    if (result == null)
+
+
+
+
+                    if (result == null || result == "")
                     {
                         return StatusCode(400);
                     }
+
 
                     exameViewModel.Descricao = result;
 
@@ -81,6 +92,8 @@ namespace WebAPI.Controllers
 
                     exame.Descricao = exameViewModel.Descricao;
                     exame.ConsultaId = exameViewModel.ConsultaId;
+
+                    exame.FotoExame = await AzureBlobStorageHelper.UploadExameImageBlobAsync(exameViewModel.Imagem!, connectionString, containerName);
 
                     _exameRepository.Cadastrar(exame);
 
@@ -129,6 +142,25 @@ namespace WebAPI.Controllers
             {
 
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteBlob(string blobName)
+        {
+            var containerName = "containervitalhubfilipegoisg2";
+
+            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
+            try
+            {
+                await AzureBlobStorageHelper.DeleteBlobAsync(connectionString, containerName, blobName);
+
+                return StatusCode(204);
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
         //aqui vai a lógica da OCR

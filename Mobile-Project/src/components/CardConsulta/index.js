@@ -35,7 +35,11 @@ export const CardConsulta = ({
       <WelComeImage
         widthImage="26%"
         heigthImage="100%"
-        uri={dados.medicoClinica.medico.idNavigation.foto}
+        uri={
+          profileData.role === "Paciente"
+            ? dados.medicoClinica.medico.idNavigation.foto
+            : dados.paciente.idNavigation.foto
+        }
       />
 
       <InfoTextBox>
@@ -66,9 +70,11 @@ export const CardConsulta = ({
           <ButtonSecondary padding={"0"} onPress={onPressCancel}>
             <ParagraphMA500
               color={
-                dados.situacao === "Pendente"
-                  ? Theme.colors.red
-                  : Theme.colors.grayBlue
+                // dados.situacao === "Pendente"
+
+                // ?
+                Theme.colors.red
+                // : Theme.colors.grayBlue
               }
             >
               Cancelar

@@ -5,9 +5,13 @@ import { Theme } from "../../themes";
 import { MainContentIcon, TextIcon } from "./style";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import HomeScreen from "../HomeScreen/HomeScreen";
+import { useEffect } from "react";
 const BottomTab = createBottomTabNavigator();
 
-const Main = () => {
+const Main = ({ route, navigation }) => {
+  useEffect(() => {
+    return (cleanUp = () => {});
+  }, [route]);
   return (
     <BottomTab.Navigator
       initialRouteName="HomeScreen"
@@ -74,8 +78,12 @@ const Main = () => {
         },
       })}
     >
-      <BottomTab.Screen name="HomeScreen" component={HomeScreen} />
+      {/* fluxo para passagem de props: login => main => home */}
+      {/* <BottomTab.Screen name="HomeScreen">
+        {(props) => <HomeScreen route={route} />}
+      </BottomTab.Screen> */}
 
+      <BottomTab.Screen name="HomeScreen" component={HomeScreen} />
       <BottomTab.Screen name="Perfil" component={PerfilScreen} />
       {/* <BottomTab.Screen name="GPS" component={ClinicAddressScreen} /> */}
     </BottomTab.Navigator>

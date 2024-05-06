@@ -88,7 +88,7 @@ const App = () => {
     //options(title): titulo da tela
 
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen
           name="Navegacao"
           component={Navegacao}
