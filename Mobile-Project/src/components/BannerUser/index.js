@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Theme } from "../../themes";
 import CameraComponent from "../CameraComponent/CameraComponent";
 import { Paragraph } from "../Paragraph/style";

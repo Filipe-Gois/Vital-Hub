@@ -35,18 +35,21 @@ namespace WebAPI.Repositories
             }
         }
 
-        public async Task AtualizarFoto(Guid id, string novaUrlFoto, string novoBlobName)
+        public async Task AtualizarFoto(Guid id, Usuario user)
         {
             try
             {
-                Usuario usuarioBuscado = ctx.Usuarios.FirstOrDefault(x => x.Id == id)!;
+                Usuario usuarioBuscado = ctx.Usuarios.FirstOrDefault(x => x.Id == id)! ?? throw new Exception("Usuário não encontrado!");
 
-                if (usuarioBuscado == null || usuarioBuscado.BlobNameUsuario == null) throw new Exception("Usuário não encontrado!");
 
-                await AzureBlobStorageHelper.DeleteBlobAsync(connectionString, containerName, usuarioBuscado.BlobNameUsuario);
 
-                usuarioBuscado.Foto = novaUrlFoto;
-                usuarioBuscado.BlobNameUsuario = novoBlobName;
+                if (usuarioBuscado.BlobNameUsuario != null)
+                {
+                    await AzureBlobStorageHelper.DeleteBlobAsync(usuarioBuscado.BlobNameUsuario);
+                }
+
+                usuarioBuscado.Foto = user.Foto;
+                usuarioBuscado.BlobNameUsuario = user.BlobNameUsuario;
 
 
                 ctx.Usuarios.Update(usuarioBuscado);

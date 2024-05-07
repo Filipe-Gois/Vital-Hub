@@ -4,7 +4,6 @@ export const HeaderStyle = styled.View`
   width: 100%;
   height: 120px;
   border-radius: 0 0 15px 15px;
-  margin: 0px 0 0 0;
 
   /* box-shadow para android */
   shadow-color: "black";

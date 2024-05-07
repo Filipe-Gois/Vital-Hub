@@ -38,6 +38,7 @@ const ViewMRScreen = ({ navigation, route }) => {
   const [prescricao, setPrescricao] = useState("");
   const [exameExists, setExameExists] = useState(false);
   const [exameDescicao, setExameDescicao] = useState("");
+  const [exameFoto, setExameFoto] = useState(null);
 
   //Propriedades da página
   const [showCamera, setShowCamera] = useState(false);
@@ -125,6 +126,37 @@ const ViewMRScreen = ({ navigation, route }) => {
     }
   };
 
+  const atualizarExame = async () => {
+    const formData = new FormData();
+
+    if (!uriCameraCapture) {
+      Alert.alert("Erro", "Nenhuma imagem selecionada!");
+      return;
+    }
+
+    formData.append("ConsultaId", prontuario.consulta.idConsulta);
+    formData.append("Imagem", {
+      uri: uriCameraCapture,
+      name: `image.${uriCameraCapture.split(".").pop()}`,
+      type: `image/${uriCameraCapture.split(".").pop()}`,
+    });
+    try {
+      const response = await apiFilipe.put(
+        `${examesResource}/AtualizarExame`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("status update:", response.status);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getConsulta = async () => {
     try {
       const response = await apiFilipe.get(
@@ -148,6 +180,7 @@ const ViewMRScreen = ({ navigation, route }) => {
       if (respose.status === 200 && respose.data.descricao) {
         setExameExists(true);
         setExameDescicao(respose.data.descricao);
+        setExameFoto(respose.data.fotoExame);
       } else {
         setExameExists(false);
       }
@@ -165,8 +198,10 @@ const ViewMRScreen = ({ navigation, route }) => {
       setPrescricao(route.params.consulta.prescricao);
     }
 
+    console.log("uriCameraCapture", uriCameraCapture);
+
     return (cleanUp = () => {});
-  }, [route.params, uriCameraCapture, exameDescicao]);
+  }, [route.params, uriCameraCapture, exameDescicao, exameFoto]);
   return (
     <Container>
       <MainContentScroll>
@@ -270,7 +305,7 @@ const ViewMRScreen = ({ navigation, route }) => {
               placeholder={"Prescrição médica"}
               fieldHeight={121}
             />
-            {!exameExists && userGlobalData.role === "Paciente" && (
+            {userGlobalData.role === "Paciente" && (
               <>
                 <Label
                   textColor={Theme.colors.grayV2}
@@ -282,8 +317,8 @@ const ViewMRScreen = ({ navigation, route }) => {
                   fieldMinHeight={"111px"}
                   fieldTextAlign={"center"}
                   isImage={true}
-                  uri={uriCameraCapture}
-                  imageExists={uriCameraCapture !== null}
+                  uri={uriCameraCapture !== null ? uriCameraCapture : exameFoto}
+                  imageExists={uriCameraCapture !== null || exameExists}
                   onPressImage={() => setShowCamera(true)}
                 />
 
@@ -292,16 +327,13 @@ const ViewMRScreen = ({ navigation, route }) => {
                   fieldJustifyContent={"space-around"}
                 >
                   <ButtonAqua
-                    // onPress={() => {
-                    //   setCameraConfigs({ ...cameraConfigs, showCameraModal: true });
-                    //   console.log(cameraConfigs.showCameraModal);
-                    // }}
+                    exameExists={exameExists}
                     onPress={() => {
-                      inserirExame();
+                      !exameExists ? inserirExame() : atualizarExame();
                     }}
                   />
 
-                  {uriCameraCapture && (
+                  {uriCameraCapture && !exameExists && (
                     <ButtonSecondary fieldWidth={"50%"} onPress={removePicture}>
                       <ParagraphMA500 color={Theme.colors.red}>
                         Cancelar

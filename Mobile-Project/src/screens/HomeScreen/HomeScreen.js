@@ -35,6 +35,8 @@ import {
   getDataAtual,
 } from "../../Utils/stringFunctions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
+import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState({});
@@ -305,6 +307,7 @@ const HomeScreen = ({ navigation }) => {
           setNavigation={"SelectClinic"}
         />
       )}
+      <StatusBar style="auto" />
     </Container>
   );
 };

@@ -22,7 +22,7 @@ namespace WebAPI.Repositories
                     .FirstOrDefault(x => x.ConsultaId == exame.ConsultaId)! ?? throw new Exception("Exame não encontrado!");
 
             Uri uriExame = new Uri(exameBuscado.FotoExame!);
-            await AzureBlobStorageHelper.DeleteBlobAsync(connectionString, containerName, exameBuscado.BlobNameExame!);
+            await AzureBlobStorageHelper.DeleteBlobAsync(exameBuscado.BlobNameExame!);
             //await AzureBlobStorageHelper.DeleteBlobAsync(uriExame); 
             //tentar deletar só com a uri do blob
 

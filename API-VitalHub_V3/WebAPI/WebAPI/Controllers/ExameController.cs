@@ -162,7 +162,7 @@ namespace WebAPI.Controllers
             var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
             try
             {
-                await AzureBlobStorageHelper.DeleteBlobAsync(connectionString, containerName, blobName);
+                await AzureBlobStorageHelper.DeleteBlobAsync(blobName);
 
                 return StatusCode(204);
             }

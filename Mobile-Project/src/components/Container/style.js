@@ -31,6 +31,7 @@ export const MainContent = styled.View`
   margin: ${(props) => (props.fieldMargin ? props.fieldMargin : "0 0 90px 0")};
   align-items: center;
   background-color: ${Theme.colors.lightWhite};
+  /* margin-top: 10px; */
 `;
 
 export const ContainerText = styled(MainContent)`

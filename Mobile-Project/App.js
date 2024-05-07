@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, StatusBar } from "react-native";
 import { useFonts, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import {
   MontserratAlternates_500Medium,
@@ -88,6 +87,10 @@ const App = () => {
     //options(title): titulo da tela
 
     <NavigationContainer>
+      <StatusBar
+        // backgroundColor="transparent"
+        barStyle="default"
+      />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen
           name="Navegacao"

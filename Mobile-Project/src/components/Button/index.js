@@ -41,11 +41,11 @@ export const ButtonListAppontment = ({
   );
 };
 
-export const ButtonAqua = ({ onPress }) => {
+export const ButtonAqua = ({ onPress, exameExists = false }) => {
   return (
     <ButtonAquaStyle onPress={onPress}>
       <MaterialIcons name="add-a-photo" size={20} color="white" />
-      <ButtonTitle>Enviar</ButtonTitle>
+      <ButtonTitle>{!exameExists ? "Enviar" : "Alterar Foto"}</ButtonTitle>
     </ButtonAquaStyle>
   );
 };

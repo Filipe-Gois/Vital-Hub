@@ -47,10 +47,13 @@ namespace WebAPI.Controllers
             //lógica para upload de imagem
 
 
-            Usuario userPreenchido = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!, connectionString, containerName);
+            Usuario userPreenchido = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!);
+
+            //user.Foto = userPreenchido.Foto;
+            //user.BlobNameUsuario = userPreenchido.BlobNameUsuario;
             //fim do upload de imagem
 
-            await usuarioRepository.AtualizarFoto(id, userPreenchido.Foto, userPreenchido.BlobNameUsuario);
+            await usuarioRepository.AtualizarFoto(id, userPreenchido);
 
             return Ok();
 

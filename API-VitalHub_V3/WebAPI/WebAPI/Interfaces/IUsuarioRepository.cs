@@ -12,6 +12,6 @@ namespace WebAPI.Interfaces
 
         bool AlterarSenha(string email, string senhaNova);
 
-        public Task AtualizarFoto(Guid id, string novaUrlFoto, string novoBlobName);
+        public Task AtualizarFoto(Guid id, Usuario user);
     }
 }

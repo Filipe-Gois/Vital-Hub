@@ -88,6 +88,7 @@ namespace WebAPI.Controllers
                 //objeto a ser cadastrado
                 Usuario user = new();
 
+                user = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo!);
 
                 //recebe os valores e preenche as propriedades específicas
                 user.Nome = pacienteModel.Nome;
@@ -96,13 +97,8 @@ namespace WebAPI.Controllers
 
 
 
-                //define o nome do container do blob
-                var containerName = "containervitalhubfilipegoisg2";
-
-                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
                 //aqui vamos chamar o metodo de upload de imagem
-                user = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo!, connectionString, containerName);
 
                 user.Senha = pacienteModel.Senha;
 

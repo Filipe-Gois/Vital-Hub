@@ -7,7 +7,10 @@ namespace WebAPI.Utils.BlobStorage
 {
     public static class AzureBlobStorageHelper
     {
-        public static async Task<Usuario> UploadImageBlobAsync(IFormFile arquivo, string stringConexao, string nomeContainer)
+        private static readonly string containerName = "containervitalhubfilipegoisg2";
+
+        private static readonly string connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
+        public static async Task<Usuario> UploadImageBlobAsync(IFormFile arquivo)
         {
             try
             {
@@ -21,10 +24,10 @@ namespace WebAPI.Utils.BlobStorage
 
 
                     //cria uma instancia do cliente blob service e passa a string de conexao
-                    var blobServiceClient = new BlobServiceClient(stringConexao);
+                    var blobServiceClient = new BlobServiceClient(connectionString);
 
                     //obtem um containerclient usando o nome do container dp blob
-                    var blobContainerClient = blobServiceClient.GetBlobContainerClient(nomeContainer);
+                    var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
                     //obtem um blob client usando o blob name
                     var blobClient = blobContainerClient.GetBlobClient(blobName);
@@ -175,7 +178,7 @@ namespace WebAPI.Utils.BlobStorage
             }
         }
 
-        public static async Task DeleteBlobAsync(string connectionString, string containerName, string blobName)
+        public static async Task DeleteBlobAsync(string blobName)
         {
             try
             {

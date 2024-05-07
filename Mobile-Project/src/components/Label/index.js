@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Theme } from "../../themes";
 import { Input } from "../Input";
 import { ParagraphMA500, ParagraphSemiBold } from "../Paragraph/style";
@@ -40,6 +41,7 @@ const Label = ({
   imageExists = false,
   uri = "",
   onPressImage,
+  onPress,
 }) => {
   return (
     <LabelStyle
@@ -51,13 +53,13 @@ const Label = ({
       {isTitulo && <ParagraphSemiBold>{titulo}</ParagraphSemiBold>}
 
       {isImage && imageExists ? (
-        <ImageTextContainer>
+        <LabelImageButton onPress={onPressImage}>
           <LabelImage
             source={{
               uri: uri,
             }}
           />
-        </ImageTextContainer>
+        </LabelImageButton>
       ) : isImage && !imageExists ? (
         <LabelImageButton onPress={onPressImage}>
           <Feather
