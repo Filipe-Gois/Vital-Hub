@@ -2,12 +2,15 @@
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Utils;
+using WebAPI.Utils.BlobStorage;
 
 namespace WebAPI.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
         VitalContext ctx = new VitalContext();
+        private readonly string containerName = "containervitalhubfilipegoisg2";
+        private readonly string connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
         public bool AlterarSenha(string email, string senhaNova)
         {
@@ -19,7 +22,7 @@ namespace WebAPI.Repositories
 
                 user.Senha = Criptografia.GerarHash(senhaNova);
 
-                ctx.Update(user);
+                ctx.Usuarios.Update(user);
 
                 ctx.SaveChanges();
 
@@ -32,17 +35,21 @@ namespace WebAPI.Repositories
             }
         }
 
-        public void AtualizarFoto(Guid id, string novaUrlFoto)
+        public async Task AtualizarFoto(Guid id, string novaUrlFoto, string novoBlobName)
         {
             try
             {
                 Usuario usuarioBuscado = ctx.Usuarios.FirstOrDefault(x => x.Id == id)!;
 
-                if (usuarioBuscado != null)
-                {
-                    usuarioBuscado.Foto = novaUrlFoto;
-                }
+                if (usuarioBuscado == null || usuarioBuscado.BlobNameUsuario == null) throw new Exception("Usuário não encontrado!");
 
+                await AzureBlobStorageHelper.DeleteBlobAsync(connectionString, containerName, usuarioBuscado.BlobNameUsuario);
+
+                usuarioBuscado.Foto = novaUrlFoto;
+                usuarioBuscado.BlobNameUsuario = novoBlobName;
+
+
+                ctx.Usuarios.Update(usuarioBuscado);
                 ctx.SaveChanges();
             }
             catch (Exception)

@@ -9,5 +9,6 @@ namespace WebAPI.ViewModels
         [JsonIgnore]
         public IFormFile? Arquivo { get; set; }
         public string? Foto { get; set; }
+        public string? BlobNameUsuario { get; set; }
     }
 }

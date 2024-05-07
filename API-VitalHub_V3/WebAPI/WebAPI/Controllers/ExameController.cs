@@ -14,6 +14,12 @@ namespace WebAPI.Controllers
     {
         private readonly IExameRepository _exameRepository;
         private readonly OcrService _ocrService;
+
+        private readonly string containerName = "containervitalhubfilipegoisg2";
+
+        private readonly string connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
+
+
         public ExameController(IExameRepository exameRepository, OcrService ocrService)
         {
             _exameRepository = exameRepository;
@@ -21,16 +27,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("AtualizarExame")]
-        public async Task<IActionResult> Put([FromForm] ExameViewModel exame)
+        public async Task<IActionResult> Put([FromForm] ExameViewModel exameViewModel)
         {
+
             try
             {
-                if (exame.Imagem == null || exame == null)
+                if (exameViewModel.Imagem == null || exameViewModel == null)
                 {
                     return BadRequest("Nenhuma imagem fornecida!");
                 }
 
-                using (var stream = exame.Imagem.OpenReadStream())
+                using (var stream = exameViewModel.Imagem.OpenReadStream())
                 {
                     var result = await _ocrService.RecognizeTextAsync(stream);
 
@@ -39,9 +46,17 @@ namespace WebAPI.Controllers
                         return StatusCode(400);
                     }
 
-                    exame.Descricao = result;
 
-                    _exameRepository.AtualizarExame(exame);
+
+
+
+                    Exame exame = new();
+
+                    exame = await AzureBlobStorageHelper.UploadExameImageBlobAsync(exameViewModel.Imagem!, connectionString, containerName);
+                    exame.Descricao = result;
+                    exame.ConsultaId = exameViewModel.ConsultaId;
+
+                    await _exameRepository.AtualizarExame(exame);
 
                     return StatusCode(204);
 
@@ -61,9 +76,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Post([FromForm] ExameViewModel exameViewModel)
         {
             //define o nome do container do blob
-            var containerName = "containervitalhubfilipegoisg2";
 
-            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
             try
             {
@@ -77,23 +90,19 @@ namespace WebAPI.Controllers
                     var result = await _ocrService.RecognizeTextAsync(stream);
 
 
-
-
-
                     if (result == null || result == "")
                     {
                         return StatusCode(400);
                     }
 
 
-                    exameViewModel.Descricao = result;
 
                     Exame exame = new();
 
-                    exame.Descricao = exameViewModel.Descricao;
+                    exame = await AzureBlobStorageHelper.UploadExameImageBlobAsync(exameViewModel.Imagem!, connectionString, containerName);
+                    exame.Descricao = result;
                     exame.ConsultaId = exameViewModel.ConsultaId;
 
-                    exame.FotoExame = await AzureBlobStorageHelper.UploadExameImageBlobAsync(exameViewModel.Imagem!, connectionString, containerName);
 
                     _exameRepository.Cadastrar(exame);
 

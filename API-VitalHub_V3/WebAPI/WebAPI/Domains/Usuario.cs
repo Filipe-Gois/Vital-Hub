@@ -16,6 +16,7 @@ public partial class Usuario
     public string? Senha { get; set; }
 
     public string? Foto { get; set; }
+    public string? BlobNameUsuario { get; set; }
 
     public int? CodRecupSenha { get; set; }
 

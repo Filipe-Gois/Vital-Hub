@@ -11,5 +11,8 @@ namespace WebAPI.ViewModels
         public IFormFile? Imagem { get; set; }
         public string? Descricao { get; set; }
         public string? FotoExame { get; set; }
+
+        //vai receber do metodo assincrono ao upar a img
+        public string? BlobNameExame { get; set; }
     }
 }

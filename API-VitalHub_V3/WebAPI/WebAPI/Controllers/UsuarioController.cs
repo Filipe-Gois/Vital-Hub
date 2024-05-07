@@ -15,6 +15,9 @@ namespace WebAPI.Controllers
     public class UsuarioController : ControllerBase
     {
         private IUsuarioRepository usuarioRepository { get; set; }
+        private readonly string containerName = "containervitalhubfilipegoisg2";
+
+        private readonly string connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
         public UsuarioController()
         {
@@ -39,39 +42,32 @@ namespace WebAPI.Controllers
         [HttpPut("AlterarFotoPerfil")]
         public async Task<IActionResult> UploadProfileImage(Guid id, [FromForm] UsuarioViewModel user)
         {
-            Usuario usuarioBuscado = usuarioRepository.BuscarPorId(id);
 
-            if (usuarioBuscado == null)
-            {
-                return NotFound();
-            }
 
             //lógica para upload de imagem
-            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
-            var containerName = "containervitalhubfilipegoisg2";
 
-            string fotoUrl = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!, connectionString, containerName);
+            Usuario userPreenchido = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!, connectionString, containerName);
             //fim do upload de imagem
 
-            usuarioRepository.AtualizarFoto(id, fotoUrl);
+            await usuarioRepository.AtualizarFoto(id, userPreenchido.Foto, userPreenchido.BlobNameUsuario);
 
-            return Ok(usuarioBuscado);
+            return Ok();
 
         }
-    
 
-    [HttpGet("BuscarPorId")]
-    public IActionResult GetById(Guid id)
-    {
-        try
+
+        [HttpGet("BuscarPorId")]
+        public IActionResult GetById(Guid id)
         {
-            return Ok(usuarioRepository.BuscarPorId(id));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
+            try
+            {
+                return Ok(usuarioRepository.BuscarPorId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
-}
 }

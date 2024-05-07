@@ -11,6 +11,7 @@ public partial class Exame
 
     public Guid? ConsultaId { get; set; }
     public string? FotoExame { get; set; }
+    public string? BlobNameExame { get; set; }
 
     public virtual Consulta? Consulta { get; set; }
 }
