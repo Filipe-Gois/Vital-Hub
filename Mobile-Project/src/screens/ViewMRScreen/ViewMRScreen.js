@@ -92,10 +92,12 @@ const ViewMRScreen = ({ navigation, route }) => {
   };
 
   const inserirExame = async () => {
+    setLoading(true);
     const formData = new FormData();
 
     if (!uriCameraCapture) {
       Alert.alert("Erro", "Nenhuma imagem selecionada!");
+      setLoading(false);
       return;
     }
 
@@ -124,13 +126,17 @@ const ViewMRScreen = ({ navigation, route }) => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const atualizarExame = async () => {
+    setLoading(true);
     const formData = new FormData();
 
     if (!uriCameraCapture) {
       Alert.alert("Erro", "Nenhuma imagem selecionada!");
+      setLoading(false);
+
       return;
     }
 
@@ -151,10 +157,12 @@ const ViewMRScreen = ({ navigation, route }) => {
         }
       );
 
-      console.log("status update:", response.status);
-    } catch (error) {
-      console.log(error);
-    }
+      if (response.status === 200) {
+        Alert.alert("Atualizado");
+        setExameDescicao(response.data.descricao);
+      }
+    } catch (error) {}
+    setLoading(false);
   };
 
   const getConsulta = async () => {
@@ -166,9 +174,7 @@ const ViewMRScreen = ({ navigation, route }) => {
       setDescricao(response.data.descricao);
       setDiagnostico(response.data.diagnostico);
       setPrescricao(response.data.receita.medicamento);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const getExame = async () => {
@@ -198,7 +204,7 @@ const ViewMRScreen = ({ navigation, route }) => {
       setPrescricao(route.params.consulta.prescricao);
     }
 
-    console.log("uriCameraCapture", uriCameraCapture);
+    console.log("uriCameraCapture123", uriCameraCapture);
 
     return (cleanUp = () => {});
   }, [route.params, uriCameraCapture, exameDescicao, exameFoto]);
@@ -317,8 +323,8 @@ const ViewMRScreen = ({ navigation, route }) => {
                   fieldMinHeight={"111px"}
                   fieldTextAlign={"center"}
                   isImage={true}
-                  uri={uriCameraCapture !== null ? uriCameraCapture : exameFoto}
-                  imageExists={uriCameraCapture !== null || exameExists}
+                  uri={uriCameraCapture ? uriCameraCapture : exameFoto}
+                  imageExists={uriCameraCapture || exameExists}
                   onPressImage={() => setShowCamera(true)}
                 />
 
@@ -327,6 +333,8 @@ const ViewMRScreen = ({ navigation, route }) => {
                   fieldJustifyContent={"space-around"}
                 >
                   <ButtonAqua
+                    loading={loading}
+                    disabled={loading}
                     exameExists={exameExists}
                     onPress={() => {
                       !exameExists ? inserirExame() : atualizarExame();

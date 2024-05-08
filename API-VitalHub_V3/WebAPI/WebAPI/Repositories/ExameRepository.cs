@@ -16,7 +16,7 @@ namespace WebAPI.Repositories
 
 
 
-        public async Task AtualizarExame(Exame exame)
+        public async Task<Exame> AtualizarExame(Exame exame)
         {
             Exame exameBuscado = ctx.Exames.Include(x => x.Consulta)
                     .FirstOrDefault(x => x.ConsultaId == exame.ConsultaId)! ?? throw new Exception("Exame não encontrado!");
@@ -31,8 +31,12 @@ namespace WebAPI.Repositories
             exameBuscado.Descricao = exame.Descricao;
 
 
+
+
             ctx.Exames.Update(exameBuscado);
             ctx.SaveChanges();
+
+            return exameBuscado;
         }
         //public async Task AtualizarExame(ExameViewModel exame)
         //{

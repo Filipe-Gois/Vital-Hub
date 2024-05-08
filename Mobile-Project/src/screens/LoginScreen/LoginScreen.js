@@ -50,6 +50,7 @@ import { jwtDecode } from "jwt-decode";
 import { HelperText, TextInput } from "react-native-paper";
 import { InputLibrary } from "../../components/Input/style.js";
 import { Text } from "react-native";
+import DialogComponent from "../../components/Dialog/Dialog.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -58,6 +59,8 @@ const LoginScreen = ({ navigation }) => {
     email: "fythoy@gmail.com",
     senha: "12345",
   });
+
+  const [showDialog, setShowDialog] = useState(false);
 
   const [loginError, setLoginError] = useState(false);
 
@@ -93,9 +96,7 @@ const LoginScreen = ({ navigation }) => {
       }
       navigation.replace("Main", { token: response.data.token });
     } catch (error) {
-      Alert.alert("Erro", "E-mail ou senha inválidos.");
-
-      setLoading(false);
+      setShowDialog(true);
     }
     setLoading(false); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
   };
@@ -110,6 +111,12 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <Container>
+      <DialogComponent
+        contentMessage="Usuário ou senha incorretos!"
+        status={"erro"}
+        visible={showDialog}
+        setVisible={setShowDialog}
+      />
       <MainContentScroll>
         <MainContent>
           <LogoComponent />

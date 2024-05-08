@@ -41,11 +41,23 @@ export const ButtonListAppontment = ({
   );
 };
 
-export const ButtonAqua = ({ onPress, exameExists = false }) => {
+export const ButtonAqua = ({
+  onPress,
+  exameExists = false,
+  loading = false,
+  disabled = false,
+  colorsizeActivityIndicator = Theme.colors.whiteColor,
+}) => {
   return (
-    <ButtonAquaStyle onPress={onPress}>
-      <MaterialIcons name="add-a-photo" size={20} color="white" />
-      <ButtonTitle>{!exameExists ? "Enviar" : "Alterar Foto"}</ButtonTitle>
+    <ButtonAquaStyle disabled={disabled} onPress={onPress}>
+      {loading ? (
+        <ActivityIndicator size={"small"} color={colorsizeActivityIndicator} />
+      ) : (
+        <>
+          <MaterialIcons name="add-a-photo" size={20} color="white" />
+          <ButtonTitle>{!exameExists ? "Enviar" : "Alterar Foto"}</ButtonTitle>
+        </>
+      )}
     </ButtonAquaStyle>
   );
 };

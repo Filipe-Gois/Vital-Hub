@@ -1,5 +1,5 @@
 // import da camera
-import { Camera, requestCameraPermissionsAsync, CameraType } from "expo-camera";
+import { Camera, requestCameraPermissionsAsync, CameraView } from "expo-camera";
 
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 
@@ -9,7 +9,6 @@ import {
   CameraComponentStyle,
   CameraModalContent,
   CameraModalStyle,
-  CameraView,
   CameraTypeSwitchButton,
   CameraTypeSwitchText,
   CapturePhotoButton,
@@ -50,11 +49,17 @@ const CameraComponent = ({
 }) => {
   const [photo, setPhoto] = useState(null);
   const cameraReference = useRef(null);
-  const [tipoCamera, setTipoCamera] = useState(CameraType.front);
+  const [tipoCamera, setTipoCamera] = useState("back");
   const [openModal, setOpenModal] = useState(false);
   const [lastPhoto, setLastPhoto] = useState(null);
 
   const SendPhotoForm = async () => {
+    await setUriCameraCapture(photo);
+    HandleClose();
+  };
+
+  //o normal estava bugado. Erro de assincronidade: ele enviava o null antes de alterar o valor da uriCameraCapture
+  const SendPhotoForm2 = async (photo) => {
     await setUriCameraCapture(photo);
     HandleClose();
   };
@@ -98,7 +103,7 @@ const CameraComponent = ({
 
         await setUriCameraCapture(result.assets[0].uri);
 
-        await SendPhotoForm();
+        await SendPhotoForm2(result.assets[0].uri);
 
         Alert.alert("Sucesso", "Foto salva com sucesso!");
       }
@@ -123,6 +128,7 @@ const CameraComponent = ({
   };
 
   const requestGaleriaPermissions = async () => {
+    await Camera.requestCameraPermissionsAsync();
     await MediaLibrary.requestPermissionsAsync();
     await ImagePicker.requestMediaLibraryPermissionsAsync();
   };
@@ -130,12 +136,12 @@ const CameraComponent = ({
   useEffect(() => {
     //verificar se tem a necessidade de mostrar a galeria
 
-    async () => {
-      const { status: cameraStatus } =
-        await Camera.requestCameraPermissionsAsync();
-    };
+    // (async () => {
+    //   const { status: cameraStatus } =
+    //     await Camera.requestCameraPermissionsAsync();
+    // })();
 
-    requestGaleriaPermissions;
+    requestGaleriaPermissions(); //TAVA SEM PARANTESES
 
     if (getMediaLibrary) {
       getLatestPhoto();
@@ -149,7 +155,7 @@ const CameraComponent = ({
       <CameraComponentStyle
         ref={cameraReference}
         ratio="16:9"
-        type={tipoCamera}
+        facing={tipoCamera}
       >
         <CameraFlip>
           <CloseCameraButton>
@@ -166,11 +172,7 @@ const CameraComponent = ({
 
           <CameraTypeSwitchButton
             onPress={() =>
-              setTipoCamera(
-                tipoCamera === CameraType.back
-                  ? CameraType.front
-                  : CameraType.back
-              )
+              setTipoCamera(tipoCamera === "back" ? "front" : "back")
             }
           >
             <FontAwesome6

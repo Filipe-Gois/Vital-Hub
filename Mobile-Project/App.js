@@ -1,4 +1,6 @@
 import { StyleSheet, Text, View, StatusBar } from "react-native";
+import { PaperProvider } from "react-native-paper";
+
 import { useFonts, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import {
   MontserratAlternates_500Medium,
@@ -86,103 +88,103 @@ const App = () => {
     //component: componente que será chamado
     //options(title): titulo da tela
 
-    <NavigationContainer>
-      <StatusBar
-        // backgroundColor="transparent"
-        barStyle="default"
-      />
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen
+    //PaperProvider: usado para envolver os componentes do react native paper
+    <PaperProvider>
+      <NavigationContainer>
+        <StatusBar backgroundColor="#000" barStyle="default" />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {/* <Stack.Screen
           name="Navegacao"
           component={Navegacao}
           options={{ title: "Navegacao" }}
         /> */}
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ title: "Login" }}
-        />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ title: "Login" }}
+          />
 
-        <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="Main" component={Main} />
 
-        {/* <Stack.Screen
+          {/* <Stack.Screen
           name="Navegação"
           component={Navegacao}
           options={{ title: "Navegação" }}
         /> */}
 
-        <Stack.Screen
-          name="RecoverPassword"
-          component={RecoverPasswordScreen}
-          options={{ title: "RecoverPassword", headerShown: false }}
-        />
+          <Stack.Screen
+            name="RecoverPassword"
+            component={RecoverPasswordScreen}
+            options={{ title: "RecoverPassword", headerShown: false }}
+          />
 
-        <Stack.Screen
-          name="CheckEmail"
-          component={CheckEmailSreen}
-          options={{ title: "CheckyourEmail" }}
-        />
+          <Stack.Screen
+            name="CheckEmail"
+            component={CheckEmailSreen}
+            options={{ title: "CheckyourEmail" }}
+          />
 
-        <Stack.Screen
-          name="RedefinePassword"
-          component={RedefinePasswordScreen}
-          options={{ title: "Redefineyourpassword" }}
-        />
+          <Stack.Screen
+            name="RedefinePassword"
+            component={RedefinePasswordScreen}
+            options={{ title: "Redefineyourpassword" }}
+          />
 
-        <Stack.Screen
-          name="CreateAccount"
-          component={CreateAccountScreen}
-          options={{ title: "CreateAccount" }}
-        />
+          <Stack.Screen
+            name="CreateAccount"
+            component={CreateAccountScreen}
+            options={{ title: "CreateAccount" }}
+          />
 
-        <Stack.Screen
-          name="MedicalRecord"
-          component={MedicalRecordScreen}
-          options={{ title: "MedicalRecord" }}
-        />
+          <Stack.Screen
+            name="MedicalRecord"
+            component={MedicalRecordScreen}
+            options={{ title: "MedicalRecord" }}
+          />
 
-        <Stack.Screen
-          name="Perfil"
-          component={PerfilScreen}
-          options={{ title: "Perfil" }}
-        />
+          <Stack.Screen
+            name="Perfil"
+            component={PerfilScreen}
+            options={{ title: "Perfil" }}
+          />
 
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: "Home" }}
-        />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ title: "Home" }}
+          />
 
-        <Stack.Screen
-          name="SelectClinic"
-          component={SelectClinicScreen}
-          options={{ title: "SelectClinic" }}
-        />
-        <Stack.Screen
-          name="SelectDoctor"
-          component={SelectDoctorScreen}
-          options={{ title: "SelectDoctor" }}
-        />
+          <Stack.Screen
+            name="SelectClinic"
+            component={SelectClinicScreen}
+            options={{ title: "SelectClinic" }}
+          />
+          <Stack.Screen
+            name="SelectDoctor"
+            component={SelectDoctorScreen}
+            options={{ title: "SelectDoctor" }}
+          />
 
-        <Stack.Screen
-          name="SelectDate"
-          component={SelectDateScreen}
-          options={{ title: "SelectDate" }}
-        />
+          <Stack.Screen
+            name="SelectDate"
+            component={SelectDateScreen}
+            options={{ title: "SelectDate" }}
+          />
 
-        <Stack.Screen
-          name="ViewMedicalRecord"
-          component={ViewMRScreen}
-          options={{ title: "ViewMedicalRecord" }}
-        />
+          <Stack.Screen
+            name="ViewMedicalRecord"
+            component={ViewMRScreen}
+            options={{ title: "ViewMedicalRecord" }}
+          />
 
-        <Stack.Screen
-          name="ClinicAddress"
-          component={ClinicAddressScreen}
-          options={{ title: "ClinicAddress" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="ClinicAddress"
+            component={ClinicAddressScreen}
+            options={{ title: "ClinicAddress" }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 

@@ -37,6 +37,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
+import { Dialog } from "react-native-paper";
 
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState({});

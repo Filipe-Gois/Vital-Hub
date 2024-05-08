@@ -220,9 +220,11 @@ export const InputPassword = ({
       right={
         <TextInput.Icon
           style={{ margin: 10 }}
+          //trocar o "icon" por "name" em alguma futura atualizacao do react native paper
           icon={senhaVisivel ? "eye" : "eye-off"}
-          onPress={() =>
-            senhaVisivel ? setSenhaVisivel(false) : setSenhaVisivel(true)
+          onPress={
+            () =>
+              senhaVisivel ? setSenhaVisivel(false) : setSenhaVisivel(true)
             //setSenhaVisivel(!senhaVisivel) testar com essa lógica
           }
           color={senhaVisivel ? Theme.colors.primary : Theme.colors.grayV5}

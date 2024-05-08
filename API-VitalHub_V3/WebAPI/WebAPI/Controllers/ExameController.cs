@@ -56,9 +56,9 @@ namespace WebAPI.Controllers
                     exame.Descricao = result;
                     exame.ConsultaId = exameViewModel.ConsultaId;
 
-                    await _exameRepository.AtualizarExame(exame);
 
-                    return StatusCode(204);
+
+                    return StatusCode(200, await _exameRepository.AtualizarExame(exame));
 
                 }
 

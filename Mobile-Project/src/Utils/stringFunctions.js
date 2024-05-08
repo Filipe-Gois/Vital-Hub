@@ -80,3 +80,28 @@ export const getDataAtual = () => {
   const diaAtual = dataAtual.getDate();
   return `${anoAtual}-${mesAtual}-${diaAtual}`;
 };
+
+/*
+biblioteca para mascarar input (recomendação do Lucão)
+
+
+ import { Masks, useMaskedInputProps } from 'react-native-mask-input';
+
+
+const dataMasked = useMaskedInputProps({
+        value: dtNasc,
+        onChangeText: setDtNasc,
+        mask: Masks.DATE_DDMMYYYY
+    });
+
+    const cpfMasked = useMaskedInputProps({
+        value: cpf,
+        onChangeText: setCpf,
+        mask: Masks.BRL_CPF
+    })
+
+
+<Input {...cpfMasked} keyboardType="numeric" />
+<Input {...dataMasked} />
+
+*/

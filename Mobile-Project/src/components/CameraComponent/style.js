@@ -1,6 +1,6 @@
 import styled from "styled-components";
 // import da camera
-import { Camera } from "expo-camera";
+import { CameraView } from "expo-camera";
 import { Theme } from "../../themes";
 
 export const CameraStyle = styled.Modal`
@@ -15,10 +15,9 @@ export const CameraModalContent = styled.View`
   justify-content: center;
   align-items: center;
   margin: 20px;
-
 `;
 
-export const CameraComponentStyle = styled(Camera)`
+export const CameraComponentStyle = styled(CameraView)`
   flex: 1;
   width: 100%;
   height: 100%;
