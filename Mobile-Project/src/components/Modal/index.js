@@ -18,6 +18,7 @@ import {
   AgendarConsultaContentBox,
   ConsultaInfoBoxStyle,
   ConsultaInfoContent,
+  FlatListProximasConsulta,
   ModalContent,
   ModalContentAgendarConsulta,
   ModalImage,
@@ -48,7 +49,7 @@ export const ModalComponent = ({
   textButton1 = "",
   textButton2 = "",
   cancel = true,
-  srcImage = "",
+  uriImage = "",
   setNavigation = "",
   onPressNotification,
   navigation,
@@ -78,7 +79,7 @@ export const ModalComponent = ({
     >
       <PatientModal>
         <ModalContent>
-          {!cancel && <ModalImage source={srcImage} />}
+          {!cancel && <ModalImage source={{ uri: uriImage }} />}
           <Title>{title}</Title>
 
           <ModalTextBox>
@@ -126,23 +127,23 @@ export const ModalAgendarConsulta = ({
   const niveisPrioridade = {
     rotina: {
       //senai
-      // prioridadeId: "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
+      prioridadeId: "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
       //casa
-      prioridadeId: "CD8C8459-0951-47E3-8791-EA3CEBF4A772",
+      // prioridadeId: "CD8C8459-0951-47E3-8791-EA3CEBF4A772",
       prioridadeLabel: "Rotina",
     },
     exame: {
       //senai
-      // prioridadeId: "76C4AAC2-E570-4985-97EA-F9BC5ECD280C",
+      prioridadeId: "76C4AAC2-E570-4985-97EA-F9BC5ECD280C",
       //casa
-      prioridadeId: "060D1BE9-0140-4371-92A8-DBDED76ABC9B",
+      // prioridadeId: "060D1BE9-0140-4371-92A8-DBDED76ABC9B",
       prioridadeLabel: "Exame",
     },
     urgencia: {
       //senai
-      // prioridadeId: "790307E0-E8E9-443A-8E57-A5BA87934EEC",
+      prioridadeId: "790307E0-E8E9-443A-8E57-A5BA87934EEC",
       //casa
-      prioridadeId: "0FF3D388-012E-4BC9-85D5-F6D80DB63B0D",
+      // prioridadeId: "0FF3D388-012E-4BC9-85D5-F6D80DB63B0D",
       prioridadeLabel: "Urgência",
     },
   };
@@ -414,5 +415,33 @@ const ConsultaInfoBox = ({
       <Paragraph textAlign={"left"}>{info}</Paragraph>
       {doctor && <Paragraph textAlign={"left"}>{especialidade1}</Paragraph>}
     </ConsultaInfoBoxStyle>
+  );
+};
+
+export const ModalProximasConsultas = ({
+  data,
+  renderItem,
+  keyExtractor,
+  setVerModalProximasConsultas,
+  verModalProximasConsultas,
+  onDismiss,
+}) => {
+  return (
+    <ModalStyle
+      onDismiss={() => setVerModalProximasConsultas(false)}
+      visible={verModalProximasConsultas}
+      transparent={true}
+      animationType="fade"
+      title=""
+    >
+      <PatientModal>
+        <Title>Próximas consultas</Title>
+        <FlatListProximasConsulta
+          renderItem={renderItem}
+          data={data}
+          keyExtractor={keyExtractor}
+        />
+      </PatientModal>
+    </ModalStyle>
   );
 };

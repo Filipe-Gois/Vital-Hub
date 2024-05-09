@@ -13,6 +13,7 @@ export const Header = ({
   number = 0,
   exibeBadge,
   setExibeBadge,
+  setVerModalProximasConsultas,
 }) => {
   // const [exibeBadge, setExibeBadge] = useState(false);
   return (
@@ -34,6 +35,7 @@ export const Header = ({
             <MaterialIcons
               onPress={() => {
                 setExibeBadge(false);
+                setVerModalProximasConsultas(true);
               }}
               name="notifications"
               size={25}

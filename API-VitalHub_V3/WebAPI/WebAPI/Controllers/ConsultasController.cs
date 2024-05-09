@@ -134,19 +134,6 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("ListarProximas")]
-        public IActionResult ListarProximasConsultas()
-        {
-            try
-            {
-                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-                return StatusCode(200, consultaRepository.ListarProximas(idUsuario));
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
+        
     }
 }

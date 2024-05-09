@@ -62,8 +62,10 @@ namespace WebAPI.Repositories
                 return ctx.Consultas
                  .Include(x => x.Situacao)
                  .Include(x => x.Prioridade)
-                 .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
+                 .Include(x => x.MedicoClinica)
+                 .Include(x => x.MedicoClinica!.Medico)
                  .Include(x => x.MedicoClinica!.Medico!.Especialidade)
+                 .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
                  .Include(x => x.Paciente)
                  .Include(x => x.Paciente!.IdNavigation)
                  .Include(x => x.Receita)
@@ -109,6 +111,15 @@ namespace WebAPI.Repositories
             {
                 throw;
             }
+        }
+
+        public List<Consulta> ListarProximasPaciente(Guid idPaciente)
+        {
+            return ctx.Consultas
+                .Include(c => c.MedicoClinica!.Clinica)
+                .Include(c => c.MedicoClinica!.Medico)
+                .Include(c => c.MedicoClinica!.Medico!.Especialidade)
+                .Where(c => c.PacienteId == idPaciente && c.DataConsulta > DateTime.Now).ToList();
         }
     }
 }

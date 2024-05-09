@@ -81,7 +81,8 @@ export const CardConsulta = ({
             </ParagraphMA500>
           </ButtonSecondary>
         ) : (
-          dados.situacao.situacao === "Realizada" && (
+          dados.situacao.situacao === "Realizada" &&
+          profileData.role === "Paciente" && (
             <ButtonSecondary padding={"0"} onPress={onPressAppointment}>
               <ParagraphMA500 color={Theme.colors.grayBlue}>
                 Ver prontuário

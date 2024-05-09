@@ -239,13 +239,5 @@ namespace WebAPI.Repositories
             throw new NotImplementedException();
         }
 
-        public List<Consulta> ListarProximas(Guid idPaciente)
-        {
-            return ctx.Consultas
-                .Include(c => c.MedicoClinica!.Clinica)
-                .Include(c => c.MedicoClinica!.Medico)
-                .Include(c => c.MedicoClinica!.Medico!.Especialidade)
-                .Where(c => c.PacienteId == idPaciente && c.DataConsulta > DateTime.Now).ToList();
-        }
     }
 }

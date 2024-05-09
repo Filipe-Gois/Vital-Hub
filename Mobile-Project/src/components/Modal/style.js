@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { Theme } from "../../themes";
+import { FlatList, Image, Modal } from "react-native";
+import { MainContentScroll } from "../Container/style";
+import { View } from "react-native";
 
-export const ModalStyle = styled.Modal`
+export const ModalStyle = styled(Modal)`
   flex: 1;
   background-color: ${Theme.colors.grayV4};
 `;
@@ -31,7 +34,7 @@ export const ModalText = styled.Text`
   margin-top: 10px;
 `;
 
-export const ModalImage = styled.Image`
+export const ModalImage = styled(Image)`
   width: 300px;
   height: 181px;
   border-radius: 10px;
@@ -80,4 +83,14 @@ export const ConsultaInfoBoxStyle = styled.View`
   width: 100%;
   /* border: 1px solid red; */
   gap: 7px;
+`;
+
+// export const ModalContentScrol = styled(MainContentScroll)``;
+
+// export const ModalContentProximasConsultas = styled(View)`
+
+// `;
+
+export const FlatListProximasConsulta = styled(FlatList)`
+
 `;

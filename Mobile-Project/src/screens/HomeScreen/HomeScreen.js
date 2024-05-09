@@ -15,7 +15,7 @@ import { ButtonTextStyle } from "../../components/ButtonTitle/style";
 import Nicole from "../../assets/nicole-sarga.png";
 import DoctorBanner from "../../assets/DoctorBanner.png";
 import User from "../../assets/UserProfileImageWelcome.png";
-import { ModalComponent } from "../../components/Modal";
+import { ModalComponent, ModalProximasConsultas } from "../../components/Modal";
 import { FlatListStyle } from "../../components/FlatList/style";
 import { CardConsulta } from "../../components/CardConsulta";
 import Stethoscope from "../../components/stethoscope";
@@ -38,6 +38,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Dialog } from "react-native-paper";
+import CardProximasConsultas from "../../components/CardProximasConsultas/CardProximasConsultas";
 
 const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState({});
@@ -63,6 +64,9 @@ const HomeScreen = ({ navigation }) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
+  const [verModalProximasConsultas, setVerModalProximasConsultas] =
+    useState(false);
+
   const fetchUserName = async () => {
     const userInfo = await userDecodeToken();
 
@@ -83,9 +87,7 @@ const HomeScreen = ({ navigation }) => {
       }
 
       setProximasConsultas(response.data);
-    } catch (error) {
-      console.log("erro ao buscar proximas");
-    }
+    } catch (error) {}
   };
 
   const handleCancelarConsulta = async (id) => {
@@ -148,6 +150,7 @@ const HomeScreen = ({ navigation }) => {
             exibeBadge={exibeBadge}
             setExibeBadge={setExibeBadge}
             number={proximasConsultas.length}
+            setVerModalProximasConsultas={setVerModalProximasConsultas}
           />
 
           <CalendarList setDataConsulta={setDataConsulta} />
@@ -193,24 +196,20 @@ const HomeScreen = ({ navigation }) => {
                   statusLista === item.situacao.situacao && (
                     <CardConsulta
                       profileData={profile}
-                      onPress={
-                        profile.role === "Paciente"
-                          ? () => {
-                              setShowModalAppointment(true);
-                              setConsultaSelecionada(item);
-                            }
-                          : null
-                      }
-                      onPressCancel={() => {
-                        setShowModalCancel(true);
+                      onPress={() => {
                         setConsultaSelecionada(item);
+                        setShowModalAppointment(true);
+                      }}
+                      onPressCancel={() => {
+                        setConsultaSelecionada(item);
+                        setShowModalCancel(true);
                       }}
                       onPressAppointment={
                         profile !== "Paciente" &&
                         item.situacao.situacao === "Pendente"
                           ? () => {
-                              setShowModalAppointment(true);
                               setConsultaSelecionada(item);
+                              setShowModalAppointment(true);
                             }
                           : () => {
                               navigation.navigate("ViewMedicalRecord", {
@@ -288,22 +287,36 @@ const HomeScreen = ({ navigation }) => {
             <ModalComponent
               visible={showModalAppointment}
               setShowModalCancel={setShowModalAppointment}
-              srcImage={profile.role === "Paciente" ? DoctorBanner : Nicole}
+              uriImage={
+                profile.role === "Paciente" && consultaSelecionada
+                  ? consultaSelecionada.medicoClinica.medico.idNavigation.foto
+                  : profile.role === "Medico" && consultaSelecionada
+                  ? consultaSelecionada.paciente.idNavigation.foto
+                  : !consultaSelecionada && ""
+              }
               title={
                 profile.role === "Paciente" && consultaSelecionada
                   ? consultaSelecionada.medicoClinica.medico.idNavigation.nome
-                  : "Niccole Sarga"
+                  : profile.role === "Medico" && consultaSelecionada
+                  ? consultaSelecionada.paciente.idNavigation.nome
+                  : !consultaSelecionada && ""
               }
               texto1={
                 profile.role === "Paciente" && consultaSelecionada
                   ? consultaSelecionada.medicoClinica.medico.especialidade
                       .especialidade1
-                  : ""
+                  : profile.role === "Medico" && consultaSelecionada
+                  ? calcularIdadeDoUsuario(
+                      consultaSelecionada.paciente.dataNascimento
+                    )
+                  : !consultaSelecionada && ""
               }
               texto2={
                 profile.role === "Paciente" && consultaSelecionada
                   ? "crm: " + consultaSelecionada.medicoClinica.medico.crm
-                  : "niccole.sarga@gmail.com"
+                  : profile.role === "Medico" && consultaSelecionada
+                  ? consultaSelecionada.paciente.idNavigation.email
+                  : !consultaSelecionada && ""
               }
               textButton1={
                 profile.role === "Paciente"
@@ -313,11 +326,59 @@ const HomeScreen = ({ navigation }) => {
               textButton2={"Cancelar"}
               cancel={false}
               HandleModal={() => {
-                navigation.navigate("ClinicAddress", {
-                  clinicaId: consultaSelecionada.medicoClinica.clinicaId,
-                });
+                profile.role === "Paciente"
+                  ? navigation.navigate("ClinicAddress", {
+                      clinicaId: consultaSelecionada.medicoClinica.clinicaId,
+                    })
+                  : navigation.navigate("ViewMedicalRecord", {
+                      consulta: {
+                        idConsulta: consultaSelecionada.id,
+                        descricao: consultaSelecionada.descricao,
+                        diagnostico: consultaSelecionada.diagnostico,
+                        prescricao: consultaSelecionada.receita.medicamento,
+                        foto:
+                          profile.role === "Medico"
+                            ? consultaSelecionada.paciente.idNavigation.foto
+                            : consultaSelecionada.medicoClinica.medico
+                                .idNavigation.foto,
+                        nome:
+                          profile.role !== "Medico"
+                            ? consultaSelecionada.medicoClinica.medico
+                                .idNavigation.nome
+                            : consultaSelecionada.paciente.idNavigation.nome,
+
+                        medico: {
+                          idMedico: consultaSelecionada.medicoClinica.medico.id,
+                          // fotoMedico:
+                          //   consultaSelecionada.medicoClinica.medico.idNavigation.foto,
+
+                          crm: consultaSelecionada.medicoClinica.medico.crm,
+                          especialidade:
+                            consultaSelecionada.medicoClinica.medico
+                              .especialidade.especialidade1,
+                        },
+
+                        paciente: {
+                          idPaciente: consultaSelecionada.paciente.id,
+                          // fotoPaciente: consultaSelecionada.paciente.idNavigation.foto,
+                          email:
+                            consultaSelecionada.paciente.idNavigation.email,
+                          idade: calcularIdadeDoUsuario(
+                            consultaSelecionada.paciente.dataNascimento
+                          ),
+                        },
+                      },
+                    });
                 setShowModalAppointment(false);
               }}
+            />
+
+            <ModalProximasConsultas
+              verModalProximasConsultas={verModalProximasConsultas}
+              setVerModalProximasConsultas={setVerModalProximasConsultas}
+              keyExtractor={(item) => item.id}
+              data={proximasConsultas}
+              renderItem={({ consulta }) => <CardProximasConsultas />}
             />
           </ContainerBoxStyle>
         </MainContent>

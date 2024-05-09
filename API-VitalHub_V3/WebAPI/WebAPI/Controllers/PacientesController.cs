@@ -142,6 +142,22 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpGet("ListarProximas")]
+        public IActionResult ListarProximasConsultas()
+        {
+            try
+            {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+                return StatusCode(200, pacienteRepository.ListarProximasPaciente(idUsuario));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+
         [Authorize]
         [HttpPut]
         public IActionResult UpdateProfile(PacienteViewModel paciente)
