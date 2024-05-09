@@ -34,6 +34,8 @@ import { Theme } from "../../themes";
 import moment from "moment";
 import { apiFilipe, consultasResource } from "../../Services/Service";
 import { userDecodeToken } from "../../Utils/Auth";
+import { Dialog } from "react-native-paper";
+import DialogComponent from "../Dialog/Dialog";
 
 export const ModalComponent = ({
   consulta,
@@ -118,29 +120,29 @@ export const ModalAgendarConsulta = ({
   const [agendamento, setAgendamento] = useState({
     prioridadeId: "",
     prioridadeLabel: "",
-    localizacao: "",
+    localizacao: "São Paulo",
   });
 
   const niveisPrioridade = {
     rotina: {
       //senai
-      prioridadeId: "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
+      // prioridadeId: "283600B3-EFD3-4E58-B7A7-C8DE22A48839",
       //casa
-      // prioridadeId: "CD8C8459-0951-47E3-8791-EA3CEBF4A772",
+      prioridadeId: "CD8C8459-0951-47E3-8791-EA3CEBF4A772",
       prioridadeLabel: "Rotina",
     },
     exame: {
       //senai
-      prioridadeId: "76C4AAC2-E570-4985-97EA-F9BC5ECD280C",
+      // prioridadeId: "76C4AAC2-E570-4985-97EA-F9BC5ECD280C",
       //casa
-      // prioridadeId: "060D1BE9-0140-4371-92A8-DBDED76ABC9B",
+      prioridadeId: "060D1BE9-0140-4371-92A8-DBDED76ABC9B",
       prioridadeLabel: "Exame",
     },
     urgencia: {
       //senai
-      prioridadeId: "790307E0-E8E9-443A-8E57-A5BA87934EEC",
+      // prioridadeId: "790307E0-E8E9-443A-8E57-A5BA87934EEC",
       //casa
-      // prioridadeId: "0FF3D388-012E-4BC9-85D5-F6D80DB63B0D",
+      prioridadeId: "0FF3D388-012E-4BC9-85D5-F6D80DB63B0D",
       prioridadeLabel: "Urgência",
     },
   };
@@ -296,6 +298,7 @@ export const ModalConfirmarAgendamento = ({
   ...rest
 }) => {
   const [profile, setProfile] = useState({});
+  const [showDialog, setShowDialog] = useState(false);
 
   const profileLoad = async () => {
     try {
@@ -318,7 +321,7 @@ export const ModalConfirmarAgendamento = ({
       );
 
       if (response.status === 201) {
-        Alert.alert("Sucesso", "Consulta agendada!");
+        setShowDialog(true);
         navigation.replace("Main");
       }
     } catch (error) {
@@ -332,7 +335,7 @@ export const ModalConfirmarAgendamento = ({
     profileLoad();
 
     return (cleanUp = () => {});
-  }, []);
+  }, [showDialog]);
 
   return (
     <ModalStyle
@@ -342,6 +345,12 @@ export const ModalConfirmarAgendamento = ({
       title=""
       {...rest}
     >
+      <DialogComponent
+        contentMessage="Consulta marcada!"
+        status={"sucess"}
+        visible={true}
+        setVisible={setShowDialog}
+      />
       <PatientModal>
         <ModalContentAgendarConsulta>
           <TitleBox>

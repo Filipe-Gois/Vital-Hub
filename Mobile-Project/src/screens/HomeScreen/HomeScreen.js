@@ -53,9 +53,13 @@ const HomeScreen = ({ navigation }) => {
   const [agendarConsulta, setAgendarConsulta] = useState(false);
   const [consultas, setConsultas] = useState([]);
 
+  const [proximasConsultas, setProximasConsultas] = useState([]);
+
   //state para a exibição dos modais
   const [showModalCancel, setShowModalCancel] = useState(false);
   const [showModalAppointment, setShowModalAppointment] = useState(false);
+
+  const [exibeBadge, setExibeBadge] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -64,6 +68,23 @@ const HomeScreen = ({ navigation }) => {
 
     if (userInfo) {
       setProfile(userInfo);
+    }
+  };
+
+  const getProximasConsultas = async () => {
+    try {
+      const response = await apiFilipe.get(
+        `${consultasResource}/ListarProximas`,
+        { headers: { Authorization: `Bearer ${profile.token}` } }
+      );
+
+      if (response.data.length > 0) {
+        setExibeBadge(true);
+      }
+
+      setProximasConsultas(response.data);
+    } catch (error) {
+      console.log("erro ao buscar proximas");
     }
   };
 
@@ -98,7 +119,7 @@ const HomeScreen = ({ navigation }) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-
+    getProximasConsultas();
     listarConsultas();
     fetchUserName();
     setRefreshing(false);
@@ -106,11 +127,11 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchUserName();
-
+    getProximasConsultas();
     listarConsultas();
 
     //passar o profile como dependencia dá looping infinito
-  }, [dataConsulta, consultaSelecionada]);
+  }, [dataConsulta, consultaSelecionada, profile.token]);
 
   return (
     <Container>
@@ -124,6 +145,9 @@ const HomeScreen = ({ navigation }) => {
           <Header
             user={profile}
             viewProfile={() => navigation.navigate("Perfil")}
+            exibeBadge={exibeBadge}
+            setExibeBadge={setExibeBadge}
+            number={proximasConsultas.length}
           />
 
           <CalendarList setDataConsulta={setDataConsulta} />

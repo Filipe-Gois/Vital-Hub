@@ -133,6 +133,7 @@ const LoginScreen = ({ navigation }) => {
                   handleErrors();
                 }}
               />
+
               <InputPassword
                 senhaVisivel={senhaVisivel}
                 setSenhaVisivel={setSenhaVisivel}

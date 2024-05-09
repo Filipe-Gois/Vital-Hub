@@ -23,6 +23,8 @@ namespace WebAPI.Interfaces
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid id);
         public void CancelarConsulta(Guid idConsulta);
 
+        public List<Consulta> ListarProximas(Guid idPaciente);
+
         /// <summary>
         /// Método responsável por verificar periodicamente se a data da consulta já passou. Caso tenha passado, alterar a situação para "Realizada"
         /// </summary>

@@ -1,18 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\",
+  "WorkspaceRootPath": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\controllers\\examecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\controllers\\examecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\controllers\\consultascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\controllers\\consultascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\repositories\\examerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\repositories\\examerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\repositories\\consultarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\repositories\\consultarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\46633783825\\desktop\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\interfaces\\iexamerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\interfaces\\iexamerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|c:\\users\\fytho\\documents\\github\\vital-hub-duo-project\\api-vitalhub_v3\\webapi\\webapi\\interfaces\\iconsultarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23BAD9E5-81FE-42EB-979F-0F9CF775B74C}|WebAPI\\WebAPI.csproj|solutionrelative:webapi\\interfaces\\iconsultarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ExameRepository.cs",
-              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ExameRepository.cs",
-              "RelativeDocumentMoniker": "WebAPI\\Repositories\\ExameRepository.cs",
-              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ExameRepository.cs",
-              "RelativeToolTip": "WebAPI\\Repositories\\ExameRepository.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACYAAAAgAAAA",
+              "DocumentIndex": 0,
+              "Title": "ConsultasController.cs",
+              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ConsultasController.cs",
+              "RelativeDocumentMoniker": "WebAPI\\Controllers\\ConsultasController.cs",
+              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ConsultasController.cs",
+              "RelativeToolTip": "WebAPI\\Controllers\\ConsultasController.cs",
+              "ViewState": "AQIAAHoAAAAAAAAAAAAAAI0AAAB9AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-08T17:26:06.95Z",
+              "WhenOpened": "2024-05-08T22:31:15.803Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ConsultaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ConsultaRepository.cs",
+              "RelativeDocumentMoniker": "WebAPI\\Repositories\\ConsultaRepository.cs",
+              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Repositories\\ConsultaRepository.cs",
+              "RelativeToolTip": "WebAPI\\Repositories\\ConsultaRepository.cs",
+              "ViewState": "AQIAAOIAAAAAAAAAAAAAAPYAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-08T22:26:59.462Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "IExameRepository.cs",
-              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Interfaces\\IExameRepository.cs",
-              "RelativeDocumentMoniker": "WebAPI\\Interfaces\\IExameRepository.cs",
-              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Interfaces\\IExameRepository.cs",
-              "RelativeToolTip": "WebAPI\\Interfaces\\IExameRepository.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAPAAAA",
+              "Title": "IConsultaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Interfaces\\IConsultaRepository.cs",
+              "RelativeDocumentMoniker": "WebAPI\\Interfaces\\IConsultaRepository.cs",
+              "ToolTip": "C:\\Users\\fytho\\Documents\\Github\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Interfaces\\IConsultaRepository.cs",
+              "RelativeToolTip": "WebAPI\\Interfaces\\IConsultaRepository.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABkAAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-08T17:26:03.372Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ExameController.cs",
-              "DocumentMoniker": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ExameController.cs",
-              "RelativeDocumentMoniker": "WebAPI\\Controllers\\ExameController.cs",
-              "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\ExameController.cs",
-              "RelativeToolTip": "WebAPI\\Controllers\\ExameController.cs",
-              "ViewState": "AQIAABgAAAAAAAAAAAAQwDwAAAApAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-07T20:01:34.572Z",
+              "WhenOpened": "2024-05-08T22:25:37.399Z",
               "EditorCaption": ""
             }
           ]

@@ -6,6 +6,7 @@ import { Paragraph } from "../Paragraph/style";
 export const DialogStyle = styled(Dialog)`
   background-color: ${(props) =>
     props.status === "erro" ? Theme.colors.lightWhite : "#fff"};
+  z-index: 100;
 `;
 
 export const DialogTitle = styled(Dialog.Title)`

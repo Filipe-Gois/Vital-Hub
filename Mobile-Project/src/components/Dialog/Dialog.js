@@ -9,6 +9,9 @@ import {
   DialogStyle,
   DialogTitle,
 } from "./style";
+import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const DialogComponent = ({
   visible,
@@ -26,7 +29,30 @@ const DialogComponent = ({
   return (
     <Portal>
       <DialogStyle status={status} visible={visible} onDismiss={hideDialog}>
-        <DialogIcon
+        {status === "erro" ? (
+          <MaterialIcons
+            name="disabled-by-default"
+            size={70}
+            color={Theme.colors.redColor}
+            style={{ alignSelf: "center" }}
+          />
+        ) : status === "sucesso" ? (
+          <AntDesign
+            name="checksquare"
+            size={60}
+            color={Theme.colors.primary}
+            style={{ alignSelf: "center" }}
+          />
+        ) : (
+          <FontAwesome5
+            name="exclamation-triangle"
+            size={60}
+            color={Theme.colors.orangeColor}
+            style={{ alignSelf: "center" }}
+          />
+        )}
+
+        {/* <DialogIcon
           size={26}
           status={status}
           icon={
@@ -43,7 +69,8 @@ const DialogComponent = ({
               ? Theme.colors.primary
               : Theme.colors.orangeColor
           }
-        />
+        /> */}
+
         <DialogTitle status={status}>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>{contentMessage}</DialogContentText>
