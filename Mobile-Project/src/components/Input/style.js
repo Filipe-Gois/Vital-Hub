@@ -47,6 +47,7 @@ export const InputLibrary = styled(TextInputPaper)`
   border: ${(props) =>
     props.border ? props.border : `2px solid ${Theme.colors.primary}`};
   border-bottom: 1px solid red;
+  border-bottom: none;
 `;
 
 export const InputVerification = styled(InputStyle)`

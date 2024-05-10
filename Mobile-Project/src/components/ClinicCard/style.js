@@ -2,15 +2,16 @@ import styled, { css } from "styled-components";
 import { Theme } from "../../themes";
 
 export const ClinicCardStyle = styled.TouchableOpacity`
-  width: 100%;
+  width: 90%;
   height: 100px;
   padding: 12px;
   border-radius: 5px;
   box-shadow: 0 4px 4px #000;
   justify-content: center;
+  align-self: center;
   align-items: center;
   background-color: ${Theme.colors.whiteColor};
-  margin: 15px 0;
+  margin: 20px 0;
 
   /* se a variavel "clickButton" for igual a true, aplicará a borda */
   ${(props) =>

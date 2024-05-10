@@ -23,6 +23,7 @@ const DialogComponent = ({
     ? "Sucesso"
     : "Alerta",
   contentMessage = "This is simple dialog",
+  setDialog,
 }) => {
   const hideDialog = () => setVisible(false);
 

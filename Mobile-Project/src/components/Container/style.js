@@ -14,7 +14,7 @@ export const ContainerBoxStyle = styled.View`
   justify-content: ${(props) => props.fieldJustifyContent};
   align-items: ${(props) => props.fieldAlignItems};
   width: 100%;
-  height: max-content;
+  height: ${(props) => (props.fieldHeight ? props.fieldHeight : "100%")};
   margin: ${(props) => (props.fieldMargin ? props.fieldMargin : "0")};
   gap: ${(props) => (props.fieldGap ? props.fieldGap : "0")};
 `;

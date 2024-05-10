@@ -26,12 +26,16 @@ import {
 } from "../../Services/Service";
 import { Alert, Text } from "react-native";
 import { ButtonAsync } from "../../components/Button";
+import DialogComponent from "../../components/Dialog/Dialog";
 
 const CheckEmailScreen = ({ navigation, route }) => {
-  const [codigo, setCodigo] = useState([]);
+  const [codigo, setCodigo] = useState("");
   const [focusedInput, setFocusedInput] = useState(0);
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [loading, setLoading] = useState(false);
+
+  const [dialog, setDialog] = useState({});
+  const [showDialog, setShowDialog] = useState(false);
 
   const focusNextInput = (index) => {
     if (index < inputRefs.length - 1) {
@@ -69,7 +73,12 @@ const CheckEmailScreen = ({ navigation, route }) => {
         emailRecuperacao: route.params.emailRecuperacao,
       });
     } catch (error) {
-      Alert.alert("Erro", "Código inválido!");
+      setDialog({
+        status: "erro",
+        contentMessage: "Código inválido!",
+      });
+      setShowDialog(true);
+
       setCodigo([]);
       setFocusedInput(0);
     }
@@ -78,8 +87,14 @@ const CheckEmailScreen = ({ navigation, route }) => {
 
   return (
     <Container>
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
       <MainContentScroll>
-        <MainContent>
+        <MainContent fieldMargin={"20px 0 90px 0"}>
           <LeftArrowAOrXComponent isLefArrow={false} navigation={navigation} />
           <LogoComponent />
 
@@ -119,8 +134,19 @@ const CheckEmailScreen = ({ navigation, route }) => {
               ))}
             </InputBoxCheckEmail>
 
+            {/* <Text>{codigo[0]}</Text>
+            <Text>{codigo[1]}</Text>
+            <Text>{codigo[2]}</Text>
+            <Text>{codigo[3]}</Text>
+            <Text>{codigo.split("")}</Text>
+            {console.log(codigo.split(""))} */}
+
             <ButtonAsync
-              onPress={() => validarCodigo()}
+              // buttonAtivado={
+              //   typeof codigo === "string" && codigo.split("").length === 4
+              // }
+              buttonAtivado={codigo.length === 4}
+              onPress={codigo ? () => validarCodigo() : null}
               disabled={loading}
               loading={loading}
               textButton={"ENTRAR"}

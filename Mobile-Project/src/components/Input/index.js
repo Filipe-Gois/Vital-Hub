@@ -63,6 +63,48 @@ export const Input = ({
     />
   );
 };
+// export const Input = ({
+//   placeholder,
+//   fieldValue,
+//   onChangeText,
+//   keyboardType,
+//   maxLength,
+//   onEndEditing,
+//   fieldWidth = 100,
+//   fieldMaxWidth = 100,
+//   fieldHeight = 55,
+//   backGround = "",
+//   border = "",
+//   placeholderTextColor,
+//   fieldPaddingBottom,
+//   textColor,
+//   fieldTextAlign,
+//   fieldMinHeight,
+//   secureTextEntry = false,
+//   autoFocus,
+//   autoCorrect,
+// }) => {
+//   return (
+//     <View style={{ width: "100%", height: "max-content" }}>
+//       <InputLibrary
+//         multiline={false}
+//         keyboardType="email-address"
+//         activeUnderlineColor={Theme.colors.primary}
+//         textColor={Theme.colors.primary}
+//         outlineColor="transparent"
+//         label={"Email:"}
+//         value={value}
+//         onChangeText={onChangeText}
+//         underlineColor="transparent"
+//       />
+//       {visible && (
+//         <HelperText style={{ padding: 0 }} type="error" visible={visible}>
+//           Insira um formato de e-mail válido!
+//         </HelperText>
+//       )}
+//     </View>
+//   );
+// };
 
 export const InputCheckEmail = ({
   placeholder,
@@ -187,7 +229,7 @@ const style = StyleSheet.create({
 
 export const InputEmail = ({ value, onChangeText, visible }) => {
   return (
-    <View style={{ width: "100%", height: "max-content", marginBottom: 10 }}>
+    <View style={{ width: "100%", height: "max-content" }}>
       <InputLibrary
         multiline={false}
         keyboardType="email-address"
@@ -197,11 +239,35 @@ export const InputEmail = ({ value, onChangeText, visible }) => {
         label={"Email:"}
         value={value}
         onChangeText={onChangeText}
-        // hasErrors={hasErrors}
+        underlineColor="transparent"
       />
+
       <HelperText style={{ padding: 0 }} type="error" visible={visible}>
         Insira um formato de e-mail válido!
       </HelperText>
+    </View>
+  );
+};
+
+export const InputDefault = ({
+  value,
+  onChangeText,
+  label,
+  keyboardType = "default",
+}) => {
+  return (
+    <View style={{ width: "100%", height: "max-content" }}>
+      <InputLibrary
+        multiline={false}
+        keyboardType={keyboardType}
+        activeUnderlineColor={Theme.colors.primary}
+        textColor={Theme.colors.primary}
+        outlineColor="transparent"
+        label={label}
+        value={value}
+        onChangeText={onChangeText}
+        underlineColor="transparent"
+      />
     </View>
   );
 };
@@ -212,11 +278,13 @@ export const InputPassword = ({
   onPressIcon,
   value,
   onChangeText,
+  label,
 }) => {
   return (
     <InputLibrary
       multiline={false}
       secureTextEntry={!senhaVisivel}
+      underlineColor="transparent"
       right={
         <TextInput.Icon
           style={{ margin: 10 }}
@@ -234,7 +302,7 @@ export const InputPassword = ({
       activeUnderlineColor={Theme.colors.primary}
       textColor={Theme.colors.primary}
       outlineColor="transparent"
-      label={"Senha:"}
+      label={label}
       value={value}
       onChangeText={onChangeText}
     />

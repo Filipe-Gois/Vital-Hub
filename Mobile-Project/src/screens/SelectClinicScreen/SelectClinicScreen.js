@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Container,
+  ContainerBoxStyle,
   FormBox,
   MainContent,
   MainContentScroll,
@@ -57,10 +58,12 @@ const SelectClinicScreen = ({ navigation, route }) => {
     <Container>
       <MainContentScroll>
         <MainContent>
-          <FormBox margin={"30px 0 0 0"}>
+          <ContainerBoxStyle
+            fieldHeight={"max-content"}
+            fieldMargin={"30px 0 0 0"}
+            fieldAlignItems="center"
+          >
             <Title>Selecionar Clínica</Title>
-
-            {/* <ClinicCard dados={clinics[0]} /> */}
 
             <FlatListStyle
               fieldWidth={"100%"}
@@ -85,6 +88,7 @@ const SelectClinicScreen = ({ navigation, route }) => {
             />
 
             <ButtonActive
+              fieldWidth={"90%"}
               buttonAtivado={selectedClinic.clinicaId}
               onPress={selectedClinic.clinicaId ? handleContinue : null}
               padding={"0"}
@@ -95,7 +99,7 @@ const SelectClinicScreen = ({ navigation, route }) => {
             <ButtonSecondary onPress={() => navigation.goBack()}>
               <TextCreateAccount2>Cancelar</TextCreateAccount2>
             </ButtonSecondary>
-          </FormBox>
+          </ContainerBoxStyle>
         </MainContent>
       </MainContentScroll>
     </Container>

@@ -149,14 +149,25 @@ namespace WebAPI.Repositories
         {
             try
             {
+                string Pendente = "Pendente";
+                string Realizada = "Realizada";
+
+                //SituacaoConsulta situacaoPendente = ctx.Situacoes.FirstOrDefault(s => s.Situacao == Pendente)! ?? throw new Exception("Situação não encontrada!");
+                SituacaoConsulta situacaoRealizada = ctx.Situacoes.FirstOrDefault(s => s.Situacao == Realizada)! ?? throw new Exception("Situação não encontrada!");
+
                 Consulta buscada = ctx.Consultas.Include(x => x.Receita).FirstOrDefault(x => x.Id == idConsulta)! ?? throw new Exception("Consulta não encontrada!");
 
-                buscada.Descricao = prontuarioviewModel.Descricao;
-                buscada.Diagnostico = prontuarioviewModel.Diagnostico;
+
+                if (buscada.Situacao!.Situacao == Pendente && buscada.DataConsulta <= DateTime.Now)
+                {
+                    buscada.Descricao = prontuarioviewModel.Descricao;
+                    buscada.Diagnostico = prontuarioviewModel.Diagnostico;
 
 
-                buscada.Receita!.Medicamento = prontuarioviewModel.Medicamento;
+                    buscada.Receita!.Medicamento = prontuarioviewModel.Medicamento;
 
+                    buscada.Situacao = situacaoRealizada;
+                }
 
 
                 ctx.Update(buscada);

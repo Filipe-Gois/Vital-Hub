@@ -54,11 +54,13 @@ import DialogComponent from "../../components/Dialog/Dialog.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
-  // const [user, setUser] = useState({
-  //   email: "fythoy@gmail.com",
-  //   senha: "12345",
-  // });
+  // const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
+  const [user, setUser] = useState({
+    email: "fythoy@gmail.com",
+    senha: "12345",
+  });
+
+  const [dialog, setDialog] = useState({});
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -96,6 +98,10 @@ const LoginScreen = ({ navigation }) => {
       }
       navigation.replace("Main", { token: response.data.token });
     } catch (error) {
+      setDialog({
+        status: "erro",
+        contentMessage: "Usuário ou senha incorretos!",
+      });
       setShowDialog(true);
     }
     setLoading(false); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
@@ -112,10 +118,10 @@ const LoginScreen = ({ navigation }) => {
   return (
     <Container>
       <DialogComponent
-        contentMessage="Usuário ou senha incorretos!"
-        status={"erro"}
+        {...dialog}
         visible={showDialog}
         setVisible={setShowDialog}
+        setDialog={setDialog}
       />
       <MainContentScroll>
         <MainContent>
@@ -124,7 +130,7 @@ const LoginScreen = ({ navigation }) => {
           <FormBox>
             <Title>Entrar ou criar conta</Title>
 
-            <InputBox>
+            <InputBox gap={"20px"}>
               <InputEmail
                 visible={loginError}
                 value={user.email}

@@ -2,15 +2,17 @@ import styled from "styled-components";
 import { Theme } from "../../themes";
 
 export const CardConsultaStyle = styled.TouchableOpacity`
-  width: 100%;
+  width: 90%;
   height: 102px;
   padding: 10px 30px 10px 10px;
   background-color: ${Theme.colors.whiteColor};
   flex-direction: row;
-  margin-top: 20px;
+  margin-top: 0px;
+  margin-bottom: 20px;
   gap: 5px;
   border-radius: 5px;
   box-shadow: 0 4px 4px #000;
+  align-self: center;
 
   /* box-shadow para android */
   shadow-color: "black";

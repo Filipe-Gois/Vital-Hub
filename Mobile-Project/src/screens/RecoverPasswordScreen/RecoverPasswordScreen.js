@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, Alert } from "react-native";
 import {
   Container,
@@ -8,7 +8,7 @@ import {
 import { LogoComponent } from "../../components/Logo";
 import { Title } from "../../components/Title/style";
 import { Paragraph } from "../../components/Paragraph/style";
-import { Input } from "../../components/Input";
+import { Input, InputEmail } from "../../components/Input";
 import { Button } from "../../components/Button/style";
 import { ButtonTitle } from "../../components/ButtonTitle/style";
 import { LeftArrowAOrXComponent } from "../../components/LeftArrowAOrX";
@@ -18,10 +18,16 @@ import {
   recuperarSenhaResource,
 } from "../../Services/Service";
 import { ButtonAsync } from "../../components/Button";
+import DialogComponent from "../../components/Dialog/Dialog";
 
 const RecoverPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [loginError, setLoginError] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [dialog, setDialog] = useState({});
+
+  const [showDialog, setShowDialog] = useState(false);
 
   const enviarEmail = async () => {
     setLoading(true);
@@ -39,14 +45,32 @@ const RecoverPasswordScreen = ({ navigation }) => {
         navigation.navigate("CheckEmail", { emailRecuperacao: email });
       }
     } catch (error) {
-      Alert.alert("Erro","Email inválido")
+      setDialog({
+        status: "erro",
+        contentMessage: "Email inválido!",
+      });
+      setShowDialog(true);
     }
     setLoading(false);
   };
 
+  const handleErrors = () => {
+    setLoginError(!email.includes("@") && email);
+  };
+
+  useEffect(() => {
+    setLoginError(!email.includes("@") && email);
+  }, [email]);
+
   return (
     <Container>
-      <MainContent fieldMargin={"50px 0 90px 0"} fieldWidth={"90%"}>
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
+      <MainContent fieldMargin={"20px 0 90px 0"} fieldWidth={"90%"}>
         <LeftArrowAOrXComponent navigation={navigation} />
 
         <LogoComponent />
@@ -58,14 +82,18 @@ const RecoverPasswordScreen = ({ navigation }) => {
             recuperação de senha
           </Paragraph>
 
-          <Input
-            placeholder={"Usuário ou E-mail"}
-            fieldValue={email}
-            onChangeText={(txt) => setEmail(txt)}
+          <InputEmail
+            visible={loginError}
+            value={email}
+            onChangeText={(txt) => {
+              setEmail(txt);
+              handleErrors();
+            }}
           />
 
           <ButtonAsync
-            onPress={() => enviarEmail()}
+            buttonAtivado={!loginError && email}
+            onPress={!loginError && email ? () => enviarEmail() : null}
             disabled={loading}
             loading={loading}
             textButton={"Continuar"}

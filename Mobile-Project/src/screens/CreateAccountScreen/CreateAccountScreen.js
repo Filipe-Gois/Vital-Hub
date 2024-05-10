@@ -13,16 +13,17 @@ import {
   MainContent,
   MainContentScroll,
 } from "../../components/Container/style";
-import { Input } from "../../components/Input";
+import { Input, InputEmail, InputPassword } from "../../components/Input";
 import { LogoComponent } from "../../components/Logo";
 import {
   Paragraph,
   TextCreateAccount2,
 } from "../../components/Paragraph/style";
 import { Title } from "../../components/Title/style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ButtonAsync } from "../../components/Button";
+import DialogComponent from "../../components/Dialog/Dialog";
 
 const CreateAccountScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(false);
@@ -33,6 +34,16 @@ const CreateAccountScreen = ({ navigation }) => {
     email: "",
     senha: "",
   });
+
+  const [loginError, setLoginError] = useState(false);
+
+  const [dialog, setDialog] = useState({});
+
+  const [showDialog, setShowDialog] = useState(false);
+
+  const [senhaVisivel, setSenhaVisivel] = useState(false);
+  const [senhaVisivelConfirmar, setSenhaVisivelConfirmar] = useState(false);
+
   const HandleSubmit = async () => {
     setLoading(true);
     try {
@@ -41,12 +52,22 @@ const CreateAccountScreen = ({ navigation }) => {
         user.nome.trim() === "" ||
         user.senha.trim() === ""
       ) {
-        Alert.alert("Erro!", "Preencha todos os campos!");
+        setDialog({
+          status: "alerta",
+          contentMessage: "Preencha todos os campos!",
+        });
+        setShowDialog(true);
+        setLoading(false);
         return;
       }
 
       if (user.senha !== confirmPassword) {
-        Alert.alert("Erro!", "OPS!", "As senhas devem ser iguais!");
+        setDialog({
+          status: "alerta",
+          contentMessage: "As senhas devem ser iguais!",
+        });
+        setLoading(false);
+        setShowDialog(true);
         return;
       }
 
@@ -57,7 +78,11 @@ const CreateAccountScreen = ({ navigation }) => {
       );
 
       if (responseCreateAccount.status !== 200) {
-        Alert.alert("Erro!", "Erro ao criar conta.");
+        setDialog({
+          status: "erro",
+          contentMessage: "Erro ao criar conta.",
+        });
+        setShowDialog(true);
         return;
       }
 
@@ -69,13 +94,31 @@ const CreateAccountScreen = ({ navigation }) => {
 
       navigation.replace("Perfil");
     } catch (error) {
-      Alert.alert("OPS!", "Já existe um usuário com esse Email!");
+      setDialog({
+        status: "erro",
+        contentMessage: "Erro ao criar conta.",
+      });
+      setShowDialog(true);
     }
     setLoading(false);
   };
 
+  const handleErrors = () => {
+    setLoginError(!user.email.includes("@") && user.email);
+  };
+
+  useEffect(() => {
+    setLoginError(!user.email.includes("@") && user.email);
+  }, [user.email]);
+
   return (
     <Container>
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
       <MainContentScroll>
         <MainContent>
           <LogoComponent />
@@ -85,7 +128,7 @@ const CreateAccountScreen = ({ navigation }) => {
               Insira seu endereço de e-mail e senha para realizar seu cadastro.
             </Paragraph>
 
-            <InputBox gap={"20px"}>
+            <InputBox gap={"10px"}>
               <Input
                 // keyType={"email-address"}
                 onChangeText={(txt) => setUser({ ...user, nome: txt })}
@@ -93,32 +136,49 @@ const CreateAccountScreen = ({ navigation }) => {
                 placeholder={"Nome:"}
               />
 
-              <Input
-                keyType={"email-address"}
-                onChangeText={(txt) => setUser({ ...user, email: txt })}
-                fieldValue={user.email}
-                placeholder={"E-mail"}
+              <InputEmail
+                visible={loginError}
+                value={user.email}
+                onChangeText={(txt) => {
+                  setUser({ ...user, email: txt });
+                  handleErrors();
+                }}
               />
 
-              <Input
-                secureTextEntry={hidePassword}
-                // keyType={"visible-password"}
+              <InputPassword
+                label={"Senha"}
+                senhaVisivel={senhaVisivel}
+                setSenhaVisivel={setSenhaVisivel}
+                value={user.senha}
                 onChangeText={(txt) => setUser({ ...user, senha: txt })}
-                fieldValue={user.senha}
-                placeholder={"Senha"}
               />
 
-              <Input
-                secureTextEntry={hidePassword}
-                // keyType={"visible-password"}
+              <InputPassword
+                label={"Confirmar senha"}
+                senhaVisivel={senhaVisivelConfirmar}
+                setSenhaVisivel={setSenhaVisivelConfirmar}
+                value={confirmPassword}
                 onChangeText={(txt) => setconfirmPassword(txt)}
-                fieldValue={confirmPassword}
-                placeholder={"Confirmar Senha"}
               />
             </InputBox>
 
             <ButtonAsync
-              onPress={() => HandleSubmit()}
+              buttonAtivado={
+                !loginError &&
+                user.email &&
+                user.senha &&
+                user.nome &&
+                confirmPassword
+              }
+              onPress={
+                !loginError &&
+                user.email &&
+                user.senha &&
+                user.nome &&
+                confirmPassword
+                  ? () => HandleSubmit()
+                  : null
+              }
               disabled={loading}
               loading={loading}
               textButton={"CADASTRAR"}

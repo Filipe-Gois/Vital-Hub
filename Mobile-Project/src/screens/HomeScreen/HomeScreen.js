@@ -197,6 +197,8 @@ const HomeScreen = ({ navigation }) => {
           <ContainerBoxStyle fieldAlignItems="center" fieldGap={"15px"}>
             {consultas ? (
               <FlatListStyle
+                fieldMargin={"20px 0 0 0"}
+                // fieldPadding={"0 0 20px 0"}
                 data={consultas && consultas}
                 scrollEnabled={false}
                 renderItem={({ item }) =>
