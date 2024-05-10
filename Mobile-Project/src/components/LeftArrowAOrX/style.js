@@ -6,8 +6,8 @@ export const LeftArrowAndXStyle = styled.View`
   height: 30px;
   position: absolute;
   border-radius: 30px;
-  top: 20px;
-  left: 20px;
+  top: ${(props) => (props.top ? props.top : "20px")};
+  left: ${(props) => (props.left ? props.left : "20px")};
   align-items: center;
   justify-content: center;
   background-color: ${Theme.colors.lightGreen};

@@ -4,7 +4,7 @@ import { HeaderContentBox, HeaderStyle } from "./style";
 import { MaterialIcons } from "@expo/vector-icons";
 import { WelCome } from "../WelCome";
 import BadgeComponent from "../Badge/Badge";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 
 export const Header = ({
@@ -30,18 +30,16 @@ export const Header = ({
             uri={user.foto ? user.foto : null}
             name={user.role === "Medico" ? `Dr. ${user.name}` : user.name}
           />
-          <View>
+          <TouchableOpacity
+            style={{ padding: 20 }}
+            onPress={() => {
+              setExibeBadge(false);
+              setVerModalProximasConsultas(true);
+            }}
+          >
             {exibeBadge && <BadgeComponent number={number} />}
-            <MaterialIcons
-              onPress={() => {
-                setExibeBadge(false);
-                setVerModalProximasConsultas(true);
-              }}
-              name="notifications"
-              size={25}
-              color="white"
-            />
-          </View>
+            <MaterialIcons name="notifications" size={25} color="white" />
+          </TouchableOpacity>
         </HeaderContentBox>
       </LinearGradient>
     </HeaderStyle>

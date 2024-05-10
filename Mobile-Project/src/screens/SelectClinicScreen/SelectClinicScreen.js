@@ -31,6 +31,11 @@ const SelectClinicScreen = ({ navigation, route }) => {
       ...route.params,
       ...selectedClinic,
     });
+
+    setSelectedClinic({
+      clinicaId: "",
+      clinicaLabel: "",
+    });
   };
 
   const fetchClinics = async () => {

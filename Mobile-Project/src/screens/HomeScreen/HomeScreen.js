@@ -41,6 +41,8 @@ import { Dialog } from "react-native-paper";
 import CardProximasConsultas from "../../components/CardProximasConsultas/CardProximasConsultas";
 
 const HomeScreen = ({ navigation }) => {
+  const [contador, setContador] = useState(0);
+
   const [profile, setProfile] = useState({});
 
   //pega o id da consulta ao clicar no card
@@ -77,12 +79,11 @@ const HomeScreen = ({ navigation }) => {
 
   const getProximasConsultas = async () => {
     try {
-      const response = await apiFilipe.get(
-        `${consultasResource}/ListarProximas`,
-        { headers: { Authorization: `Bearer ${profile.token}` } }
-      );
+      const response = await apiFilipe.get(`${url}/ListarProximas`, {
+        headers: { Authorization: `Bearer ${profile.token}` },
+      });
 
-      if (response.data.length > 0) {
+      if (response.data.length > 0 && contador === 1) {
         setExibeBadge(true);
       }
 
@@ -125,6 +126,9 @@ const HomeScreen = ({ navigation }) => {
     listarConsultas();
     fetchUserName();
     setRefreshing(false);
+    setContador(contador + 1);
+
+    console.log(contador);
   };
 
   useEffect(() => {
@@ -132,6 +136,9 @@ const HomeScreen = ({ navigation }) => {
     getProximasConsultas();
     listarConsultas();
 
+    setContador(contador + 1);
+
+    console.log(contador);
     //passar o profile como dependencia dá looping infinito
   }, [dataConsulta, consultaSelecionada, profile.token]);
 
@@ -326,6 +333,8 @@ const HomeScreen = ({ navigation }) => {
               textButton2={"Cancelar"}
               cancel={false}
               HandleModal={() => {
+                setVerModalProximasConsultas(false);
+
                 profile.role === "Paciente"
                   ? navigation.navigate("ClinicAddress", {
                       clinicaId: consultaSelecionada.medicoClinica.clinicaId,
@@ -374,11 +383,15 @@ const HomeScreen = ({ navigation }) => {
             />
 
             <ModalProximasConsultas
-              verModalProximasConsultas={verModalProximasConsultas}
               setVerModalProximasConsultas={setVerModalProximasConsultas}
-              keyExtractor={(item) => item.id}
-              data={proximasConsultas}
-              renderItem={({ consulta }) => <CardProximasConsultas />}
+              verModalProximasConsultas={verModalProximasConsultas}
+              profileData={profile}
+              proximasConsultas={proximasConsultas}
+              setConsultaSelecionada={setConsultaSelecionada}
+              setShowModalAppointment={setShowModalAppointment}
+              setShowModalCancel={setShowModalCancel}
+              getProximasConsultas={getProximasConsultas}
+              navigation={navigation}
             />
           </ContainerBoxStyle>
         </MainContent>
@@ -393,7 +406,7 @@ const HomeScreen = ({ navigation }) => {
           setNavigation={"SelectClinic"}
         />
       )}
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
     </Container>
   );
 };

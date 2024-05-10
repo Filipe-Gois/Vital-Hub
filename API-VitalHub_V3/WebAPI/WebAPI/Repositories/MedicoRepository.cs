@@ -170,5 +170,64 @@ namespace WebAPI.Repositories
                 throw;
             }
         }
+
+        public List<Consulta> ListarProximasConsultasMedico(Guid idMedico)
+        {
+            try
+            {
+                return ctx.Consultas
+                    .Include(x => x.MedicoClinica)
+                    .Include(x => x.Paciente)
+                    .Include(x => x.Paciente!.IdNavigation)
+                    .Include(x => x.Situacao)
+                    .Include(x => x.Prioridade)
+                    .Where(x => x.MedicoClinica!.MedicoId == idMedico && x.DataConsulta > DateTime.Now && x.Situacao!.Situacao == "Pendente")
+                    .Select(c => new Consulta
+                    {
+                        Id = c.Id,
+                        DataConsulta = c.DataConsulta,
+
+                        Paciente = new Paciente
+                        {
+                            Id = c.Paciente!.Id,
+                            DataNascimento = c.Paciente!.DataNascimento,
+
+                            IdNavigation = new Usuario
+                            {
+                                Nome = c.Paciente!.IdNavigation.Nome,
+                                Foto = c.Paciente!.IdNavigation.Foto,
+
+                            }
+                        },
+
+                        MedicoClinica = new MedicosClinica
+                        {
+
+                            Id = c.MedicoClinica!.Id,
+                            ClinicaId = c.MedicoClinica!.ClinicaId,
+
+
+                        },
+
+                        Situacao = new SituacaoConsulta
+                        {
+                            Situacao = c.Situacao!.Situacao,
+                        },
+
+                        Prioridade = new NiveisPrioridade
+                        {
+                            Prioridade = c.Prioridade!.Prioridade
+                        }
+                        // Projetar apenas as propriedades necessárias
+                    })
+                    .ToList();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -91,6 +91,14 @@ export const ConsultaInfoBoxStyle = styled.View`
 
 // `;
 
-export const FlatListProximasConsulta = styled(FlatList)`
+export const ModalContentVerProximas = styled(ModalContent)`
+  /* height: 80%; */
+  padding: 70px 0 70px 0;
+`;
 
+export const ModalProximasConsultasContentTitleBox = styled(View)`
+  /* height: 100px; */
+  width: max-content;
+  flex-direction: row-reverse;
+  /* background-color: red; */
 `;

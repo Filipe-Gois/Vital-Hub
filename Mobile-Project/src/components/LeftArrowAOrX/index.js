@@ -7,15 +7,15 @@ export const LeftArrowAOrXComponent = ({
   color = "#34898f",
   isLefArrow = true,
   navigation,
+  isNavigation = true,
+  onPress,
+  top,
+  left,
 }) => {
   return (
-    // <GreenCircleComponent>
-    //     <LeftArrowStyle source={require('../../assets/leftarrowback.svg')} />
-    // </GreenCircleComponent>
-
-    <LeftArrowAndXStyle>
+    <LeftArrowAndXStyle top={top} left={left}>
       <AntDesign
-        onPress={() => navigation.goBack()}
+        onPress={!isNavigation ? onPress : () => navigation.goBack()}
         name={isLefArrow ? "arrowleft" : "close"}
         size={size}
         color={color}

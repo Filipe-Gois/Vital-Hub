@@ -12,6 +12,6 @@ namespace WebAPI.Interfaces
         public List<Medico> ListarPorClinica(Guid id);
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idMedico);
 
-        public List<Medico> ListarProximasConsultasMedico(Guid idUsuario);
+        public List<Consulta> ListarProximasConsultasMedico(Guid idMedico);
     }
 }

@@ -54,11 +54,11 @@ import DialogComponent from "../../components/Dialog/Dialog.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  // const [user, setUser] = useState({ email: "a@a.com", senha: "12345" });
-  const [user, setUser] = useState({
-    email: "fythoy@gmail.com",
-    senha: "12345",
-  });
+  const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
+  // const [user, setUser] = useState({
+  //   email: "fythoy@gmail.com",
+  //   senha: "12345",
+  // });
 
   const [showDialog, setShowDialog] = useState(false);
 

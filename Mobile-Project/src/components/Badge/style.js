@@ -3,6 +3,6 @@ import styled from "styled-components";
 
 export const BadgeStyle = styled(Badge)`
   position: absolute;
-  left: 17px;
-  bottom: 17px;
+  left: 37px;
+  bottom: 37px;
 `;

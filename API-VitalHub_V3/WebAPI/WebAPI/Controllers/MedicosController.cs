@@ -149,7 +149,15 @@ namespace WebAPI.Controllers
             try
             {
                 Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-                return StatusCode(200, _medicoRepository.ListarProximasConsultasMedico(idUsuario));
+                List<Consulta> consultas = _medicoRepository.ListarProximasConsultasMedico(idUsuario);
+
+                if (consultas.Count != 0)
+                {
+                    return StatusCode(200, consultas);
+
+                }
+
+                return StatusCode(404);
             }
             catch (Exception e)
             {
