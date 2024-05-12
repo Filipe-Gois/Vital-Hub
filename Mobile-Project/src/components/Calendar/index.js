@@ -3,12 +3,14 @@ import { StyleSheet } from "react-native";
 // import lib moment
 import moment from "moment";
 import { StyledCalendarStrip } from "./style";
+import { useEffect, useState } from "react";
+import { getDataAtual } from "../../Utils/stringFunctions";
 
 const formatDate = (date) => {
   return date.padStart(2, "0");
 };
 
-export const CalendarList = ({ setDataConsulta }) => {
+export const CalendarList = ({ setDataConsulta, dataConsulta = "" }) => {
   //define padrão pt-br para calendário
   moment.updateLocale("pt-br", {
     //meses
@@ -54,12 +56,16 @@ export const CalendarList = ({ setDataConsulta }) => {
     return formatDate(day);
   };
 
+  const handleDate = (date) => {
+    setDataConsulta(moment(date).format("YYYY-MM-DD"));
+
+    // sendFromForm(moment(date).format("YYYY-MM-DD"));
+  };
+
   //retorna o componente StyleCalendarStrip
   return (
     <StyledCalendarStrip
-      onDateSelected={(date) =>
-        setDataConsulta(moment(date).format("YYYY-MM-DD"))
-      }
+      onDateSelected={(date) => handleDate(date)}
       // animação e seleção de cada data
       calendarAnimation={{ type: "sequence", duration: 30 }}
       daySelectionAnimation={styles.selectedAnimationStyle}
@@ -67,7 +73,9 @@ export const CalendarList = ({ setDataConsulta }) => {
       iconLeftStyle={styles.iconsStyle}
       iconRightStyle={styles.iconsStyle}
       // deixa uma marcação default - data atual
-      selectedDate={currentDate}
+      selectedDate={
+        !dataConsulta ? currentDate : moment(dataConsulta).format("YYYY-MM-DD")
+      }
       // dia que começamos a visualizar a barra
       startingDate={moment()}
       //data min e max - início do mês e final do mês

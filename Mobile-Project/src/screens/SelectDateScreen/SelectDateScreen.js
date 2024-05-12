@@ -21,7 +21,8 @@ import CalendarMaximized from "../../components/CalendarMaximized";
 import { InputSelectHours } from "../../components/Input";
 import { LabelStyle } from "../../components/Label/style";
 import { ModalConfirmarAgendamento } from "../../components/Modal";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
+import TimeInput from "@tighten/react-native-time-input";
 
 const SelectDateScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState(false);

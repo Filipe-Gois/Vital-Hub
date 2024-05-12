@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Theme } from "../../themes";
+import { Animated } from "react-native";
 
 export const CardConsultaStyle = styled.TouchableOpacity`
   width: 90%;
@@ -7,7 +8,7 @@ export const CardConsultaStyle = styled.TouchableOpacity`
   padding: 10px 30px 10px 10px;
   background-color: ${Theme.colors.whiteColor};
   flex-direction: row;
-  margin-top: 0px;
+  margin-top: 20px;
   margin-bottom: 20px;
   gap: 5px;
   border-radius: 5px;
@@ -73,4 +74,29 @@ export const HourBox = styled.View`
   justify-content: center;
   align-items: center;
   gap: 6px;
+`;
+
+export const FlipContainer = styled.View`
+  width: 200px;
+  height: 200px;
+  perspective: 1000px;
+`;
+
+export const FlipCard = styled.View`
+  width: 100%;
+  height: 100%;
+  background-color: #f00;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  position: absolute;
+`;
+
+export const FlipCardFront = styled(FlipCard)`
+  justify-content: center;
+  align-items: center;
+`;
+
+export const FlipCardBack = styled(FlipCard)`
+  background-color: #00f;
+  transform: rotateY(180deg);
 `;

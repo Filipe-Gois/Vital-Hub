@@ -127,11 +127,11 @@ const CameraComponent = ({
     } catch (error) {}
   };
 
-  const requestGaleriaPermissions = async () => {
-    await Camera.requestCameraPermissionsAsync();
-    await MediaLibrary.requestPermissionsAsync();
-    await ImagePicker.requestMediaLibraryPermissionsAsync();
-  };
+  // const requestGaleriaPermissions = async () => {
+  //   await Camera.requestCameraPermissionsAsync();
+  //   await MediaLibrary.requestPermissionsAsync();
+  //   await ImagePicker.requestMediaLibraryPermissionsAsync();
+  // };
 
   useEffect(() => {
     //verificar se tem a necessidade de mostrar a galeria
@@ -141,7 +141,7 @@ const CameraComponent = ({
     //     await Camera.requestCameraPermissionsAsync();
     // })();
 
-    requestGaleriaPermissions(); //TAVA SEM PARANTESES
+    // requestGaleriaPermissions(); //TAVA SEM PARANTESES
 
     if (getMediaLibrary) {
       getLatestPhoto();

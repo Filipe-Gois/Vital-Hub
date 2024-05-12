@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Dialog, Portal, Text } from "react-native-paper";
+import { Button, Dialog, Portal, Text } from "react-native-paper";
 import { Theme } from "../../themes";
 import {
   DialogContent,
@@ -12,6 +12,7 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { MainContentScroll } from "../Container/style";
 
 const DialogComponent = ({
   visible,
@@ -82,3 +83,21 @@ const DialogComponent = ({
 };
 
 export default DialogComponent;
+
+export const DialogSelectLocation = ({ visible, setVisible }) => {
+  return (
+    <Portal>
+      <Dialog visible={visible} onDismiss={() => setVisible(false)}>
+        <Dialog.Actions style={{ flexDirection: "column" }}>
+          <MainContentScroll
+            style={{
+              backgroundColor: "transparent",
+              width: "100%",
+              height: "100%",
+            }}
+          ></MainContentScroll>
+        </Dialog.Actions>
+      </Dialog>
+    </Portal>
+  );
+};

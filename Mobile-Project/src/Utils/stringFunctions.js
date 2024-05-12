@@ -11,7 +11,8 @@ export const cpfMasked = (data) => mask(unMask(data), ["999.999.999-99"]);
 
 export const rgMasked = (rg) => mask(unMask(rg), ["99.999.999-9"]);
 
-export const dateMasked = (data) => mask(unMask(data), ["99/99/9999"]);
+export const dateMasked = (data) => mask(unMask(data), ["99/99"]);
+export const dateMaskedFull = (data) => mask(unMask(data), ["99/99/9999"]);
 //formato DD/MM/AAAA
 
 //tira a mascara do value que contém o cep
@@ -19,20 +20,34 @@ export const unMasked = (data) => unMask(data);
 
 //-----------------//
 
-export const getLocation = async (cep) => {
+export const getLocation = async (cep, { setDialog, setShowDialog }) => {
   try {
     const response = await apiCep.get("/" + cep);
 
     return response.data.result;
   } catch (error) {
-    Alert.alert("Erro", "Cep não encontrado!");
+    setDialog({
+      status: "erro",
+      contentMessage: "Cep não encontrado!",
+    });
+    setShowDialog(true);
   }
 };
 
 export const dateDbToView = (date) => {
   date = date.substr(0, 10);
   date = date.split("-").reverse().join("/");
+  date = date.split("/");
+  date = `${date[0]}${date[1]}`;
   date = dateMasked(date);
+
+  return date;
+};
+
+export const dateDbToViewFull = (date) => {
+  date = date.substr(0, 10);
+  date = date.split("-").reverse().join("/");
+  date = dateMaskedFull(date);
 
   return date;
 };
@@ -72,14 +87,7 @@ export const hourDbToView = (hour) => {
   return hour;
 };
 
-export const getDataAtual = () => {
-  const dataAtual = new Date();
-
-  const anoAtual = dataAtual.getFullYear();
-  const mesAtual = dataAtual.getMonth() + 1;
-  const diaAtual = dataAtual.getDate();
-  return `${anoAtual}-${mesAtual}-${diaAtual}`;
-};
+export const getDataAtual = () => moment(new Date()).format("YYYY-MM-DD");
 
 /*
 biblioteca para mascarar input (recomendação do Lucão)

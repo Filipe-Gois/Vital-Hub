@@ -39,6 +39,7 @@ import { StatusBar } from "expo-status-bar";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Dialog } from "react-native-paper";
 import CardProximasConsultas from "../../components/CardProximasConsultas/CardProximasConsultas";
+import Illustration from "../../components/Illustration/Illustration";
 
 const HomeScreen = ({ navigation }) => {
   const [contador, setContador] = useState(0);
@@ -117,7 +118,9 @@ const HomeScreen = ({ navigation }) => {
       );
 
       setConsultas(response.data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onRefresh = () => {
@@ -127,8 +130,6 @@ const HomeScreen = ({ navigation }) => {
     fetchUserName();
     setRefreshing(false);
     setContador(contador + 1);
-
-    console.log(contador);
   };
 
   useEffect(() => {
@@ -137,9 +138,6 @@ const HomeScreen = ({ navigation }) => {
     listarConsultas();
 
     setContador(contador + 1);
-
-    console.log(contador);
-    //passar o profile como dependencia dá looping infinito
   }, [dataConsulta, consultaSelecionada, profile.token]);
 
   return (
@@ -160,7 +158,10 @@ const HomeScreen = ({ navigation }) => {
             setVerModalProximasConsultas={setVerModalProximasConsultas}
           />
 
-          <CalendarList setDataConsulta={setDataConsulta} />
+          <CalendarList
+            setDataConsulta={setDataConsulta}
+            dataConsulta={dataConsulta}
+          />
 
           <ButtonBox
             fieldFlexDirection={"row"}
@@ -197,7 +198,7 @@ const HomeScreen = ({ navigation }) => {
           <ContainerBoxStyle fieldAlignItems="center" fieldGap={"15px"}>
             {consultas ? (
               <FlatListStyle
-                fieldMargin={"20px 0 0 0"}
+                fieldMargin={"0px 0 0 0"}
                 // fieldPadding={"0 0 20px 0"}
                 data={consultas && consultas}
                 scrollEnabled={false}
@@ -269,6 +270,10 @@ const HomeScreen = ({ navigation }) => {
                 keyExtractor={(item) => item.id}
               />
             ) : (
+              // <Illustration
+              //   textNote="Nenhuma consulta para hoje"
+              //   imgIcon="nocontent"
+              // />
               <ActivityIndicator />
             )}
             {/* modal cancelar */}
@@ -282,7 +287,6 @@ const HomeScreen = ({ navigation }) => {
               }
               textButton1={"Cancelar consulta"}
               textButton2={"Voltar"}
-              // goBack={true}
               HandleModal={() => {
                 handleCancelarConsulta(consultaSelecionada.id);
                 setShowModalCancel(false);
@@ -394,6 +398,7 @@ const HomeScreen = ({ navigation }) => {
               setShowModalCancel={setShowModalCancel}
               getProximasConsultas={getProximasConsultas}
               navigation={navigation}
+              setDataSelecionada={setDataConsulta}
             />
           </ContainerBoxStyle>
         </MainContent>
@@ -408,7 +413,6 @@ const HomeScreen = ({ navigation }) => {
           setNavigation={"SelectClinic"}
         />
       )}
-      {/* <StatusBar style="auto" /> */}
     </Container>
   );
 };

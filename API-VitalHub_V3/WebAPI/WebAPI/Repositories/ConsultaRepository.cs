@@ -170,7 +170,7 @@ namespace WebAPI.Repositories
                 }
 
 
-                ctx.Update(buscada);
+                ctx.Consultas.Update(buscada);
                 ctx.SaveChanges();
 
             }

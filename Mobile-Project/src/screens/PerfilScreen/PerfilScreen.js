@@ -25,8 +25,7 @@ import {
 import {
   cepMasked,
   cpfMasked,
-  dateDbToView,
-  dateMasked,
+  dateDbToViewFull,
   dateViewToDb,
   getLocation,
   rgMasked,
@@ -34,6 +33,7 @@ import {
 import { ActivityIndicator, Alert, Text, TouchableOpacity } from "react-native";
 import { ButtonAsync } from "../../components/Button";
 import { unMask, unmask } from "remask";
+import DialogComponent from "../../components/Dialog/Dialog";
 
 export const PerfilScreen = ({ navigation }) => {
   //dados do usuario
@@ -72,6 +72,8 @@ export const PerfilScreen = ({ navigation }) => {
   const [editUserInfo, setEditUserInfo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingExit, setLoadingExit] = useState(false);
+  const [dialog, setDialog] = useState({});
+  const [showDialog, setShowDialog] = useState(false);
 
   //Câmera
   const [showCamera, setShowCamera] = useState(false);
@@ -197,14 +199,12 @@ export const PerfilScreen = ({ navigation }) => {
 
   const getCidadeELogradouro = async () => {
     try {
-      const enderecoApi = await getLocation(cep);
+      const enderecoApi = await getLocation(cep, { setDialog, setShowDialog });
 
       if (enderecoApi) {
         setEnderecoLocalizado(enderecoApi);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   //A FOTO ESTÁ VINDO COM .EXP, TRATAR ISSO!!!!!!
@@ -248,6 +248,12 @@ export const PerfilScreen = ({ navigation }) => {
 
   return (
     <Container>
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
       <MainContentScroll>
         <MainContent>
           <BannerUserComponent
@@ -277,10 +283,12 @@ export const PerfilScreen = ({ navigation }) => {
                       ? Theme.colors.primary
                       : Theme.colors.grayV1
                   }
-                  onChangeText={(txt) => setDataNascimento(dateDbToView(txt))}
+                  onChangeText={(txt) =>
+                    setDataNascimento(dateDbToViewFull(txt))
+                  }
                   fieldValue={
                     userGlobalData.role === "Paciente"
-                      ? dataNascimento && dateDbToView(dataNascimento)
+                      ? dataNascimento && dateDbToViewFull(dataNascimento)
                       : crm
                   }
                   editable={false}

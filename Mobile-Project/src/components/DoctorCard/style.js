@@ -2,13 +2,13 @@ import styled, { css } from "styled-components";
 import { Theme } from "../../themes";
 
 export const DoctorCardStyle = styled.TouchableOpacity`
-  width: 100%;
+  width: ${(props) => (props.fieldWidth ? fieldWidth : "90%")};
   height: 102px;
   padding: 11px;
   border-radius: 5px;
   box-shadow: 0 4px 4px #000;
   flex-direction: row;
-  /* justify-content: center; */
+  align-self: center;
   align-items: center;
   background-color: ${Theme.colors.whiteColor};
   margin: 15px 0;

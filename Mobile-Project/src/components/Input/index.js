@@ -5,12 +5,15 @@ import {
   InputSelectBox,
   InputStyle,
 } from "./style";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Button, StyleSheet, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import moment from "moment";
 import { HelperText, TextInput } from "react-native-paper";
 import { Theme } from "../../themes";
 import { LabelStyle } from "../Label/style";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+// import TimeInput from "@tighten/react-native-time-input";
+// import TimePicker from "react-native-24h-timepicker";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 // import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -278,37 +281,84 @@ export const InputPassword = ({
   onPressIcon,
   value,
   onChangeText,
-  label,
+  label = "Senha:",
 }) => {
   return (
-    <InputLibrary
-      multiline={false}
-      secureTextEntry={!senhaVisivel}
-      underlineColor="transparent"
-      right={
-        <TextInput.Icon
-          style={{ margin: 10 }}
-          //trocar o "icon" por "name" em alguma futura atualizacao do react native paper
-          icon={senhaVisivel ? "eye" : "eye-off"}
-          onPress={
-            () =>
-              senhaVisivel ? setSenhaVisivel(false) : setSenhaVisivel(true)
-            //setSenhaVisivel(!senhaVisivel) testar com essa lógica
-          }
-          color={senhaVisivel ? Theme.colors.primary : Theme.colors.grayV5}
-        />
-      }
-      keyboardType="default"
-      activeUnderlineColor={Theme.colors.primary}
-      textColor={Theme.colors.primary}
-      outlineColor="transparent"
-      label={label}
-      value={value}
-      onChangeText={onChangeText}
-    />
+    <View>
+      <InputLibrary
+        multiline={false}
+        secureTextEntry={!senhaVisivel}
+        underlineColor="transparent"
+        // right={
+        //   <TextInput.Icon
+        //     style={{ margin: 10 }}
+        //     //trocar o "icon" por "name" em alguma futura atualizacao do react native paper
+        //     icon={senhaVisivel ? "eye" : "eye-off"}
+        //     onPress={
+        //       () =>
+        //         senhaVisivel ? setSenhaVisivel(false) : setSenhaVisivel(true)
+        //       //setSenhaVisivel(!senhaVisivel) testar com essa lógica
+        //     }
+        //     color={senhaVisivel ? Theme.colors.primary : Theme.colors.grayV5}
+        //   />
+        // }
+        keyboardType="default"
+        activeUnderlineColor={Theme.colors.primary}
+        textColor={Theme.colors.primary}
+        outlineColor="transparent"
+        label={label}
+        value={value}
+        onChangeText={onChangeText}
+      />
+
+      <MaterialCommunityIcons
+        style={{ position: "absolute", right: 15, top: 18 }}
+        onPress={() => setSenhaVisivel(!senhaVisivel)}
+        name={senhaVisivel ? "eye" : "eye-off"}
+        size={24}
+        color={senhaVisivel ? Theme.colors.primary : Theme.colors.grayV5}
+      />
+    </View>
   );
 };
 
 export const SelectInput = () => {
   return <></>;
+};
+
+export const TimeInputComponent = ({ time, setTime }) => {
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("time");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showTimePicker = () => {
+    showMode("time");
+  };
+
+  return (
+    <View>
+      <Button title="Show Time Picker" onPress={showTimePicker} />
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
+    </View>
+  );
 };

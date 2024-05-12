@@ -13,8 +13,8 @@ export const ContainerBoxStyle = styled.View`
   flex-direction: ${(props) => props.fieldDirection};
   justify-content: ${(props) => props.fieldJustifyContent};
   align-items: ${(props) => props.fieldAlignItems};
-  width: 100%;
-  height: ${(props) => (props.fieldHeight ? props.fieldHeight : "100%")};
+  width: ${(props) => (props.fieldwidth ? props.fieldwidth : "100%")};
+  height: ${(props) => (props.fieldHeight ? props.fieldHeight : "max-content")};
   margin: ${(props) => (props.fieldMargin ? props.fieldMargin : "0")};
   gap: ${(props) => (props.fieldGap ? props.fieldGap : "0")};
 `;
@@ -27,7 +27,7 @@ export const MainContentScroll = styled(ScrollView)`
 export const MainContent = styled.View`
   background-color: ${Theme.colors.lightWhite};
   width: ${(props) => (props.fieldWidth ? props.fieldWidth : "100%")};
-  height: 100%;
+  height: ${(props) => (props.fieldHeight ? props.fieldHeight : "max-content")};
   margin: ${(props) => (props.fieldMargin ? props.fieldMargin : "0 0 90px 0")};
   align-items: center;
   background-color: ${Theme.colors.lightWhite};
@@ -40,10 +40,12 @@ export const ContainerText = styled(MainContent)`
 
 export const FormBox = styled.View`
   width: ${(props) => (props.fieldWidth ? props.fieldWidth : "90%")};
-  max-height: 100%;
+  /* max-height: 100%; */
+  height: max-content;
   align-items: center;
   gap: ${(props) => (props.gap ? props.gap : "20px")};
   margin: ${(props) => (props.margin ? props.margin : "0")};
+  /* background-color: red; */
 `;
 
 export const InputBox = styled(FormBox)`
@@ -73,6 +75,8 @@ export const ButtonBox = styled(FormBox)`
 
   flex-direction: ${(props) =>
     props.fieldFlexDirection ? props.fieldFlexDirection : "column"};
+
+  margin: ${(props) => (props.fieldMargin ? props.fieldMargin : "0")};
 `;
 
 export const CreateAccountBox = styled.View`

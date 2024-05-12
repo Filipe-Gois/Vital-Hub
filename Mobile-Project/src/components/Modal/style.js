@@ -3,13 +3,14 @@ import { Theme } from "../../themes";
 import { FlatList, Image, Modal } from "react-native";
 import { MainContentScroll } from "../Container/style";
 import { View } from "react-native";
+import { BlurView } from "expo-blur";
 
 export const ModalStyle = styled(Modal)`
   flex: 1;
   background-color: ${Theme.colors.grayV4};
 `;
 
-export const PatientModal = styled.View`
+export const PatientModal = styled(View)`
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -91,14 +92,21 @@ export const ConsultaInfoBoxStyle = styled.View`
 
 // `;
 
-export const ModalContentVerProximas = styled(ModalContent)`
-  /* height: 80%; */
+export const ModalContentVerProximas = styled(View)`
+  height: 70%;
   padding: 70px 0 70px 0;
+  background-color: ${Theme.colors.lightWhite};
+
+  /* padding: 30px 30px 10px; */
+  width: 90%;
+  border-radius: 10px;
+  /* background-color: ${Theme.colors.whiteColor}; */
+  align-items: center;
+  gap: 30px;
 `;
 
 export const ModalProximasConsultasContentTitleBox = styled(View)`
   /* height: 100px; */
   width: max-content;
   flex-direction: row-reverse;
-  /* background-color: red; */
 `;

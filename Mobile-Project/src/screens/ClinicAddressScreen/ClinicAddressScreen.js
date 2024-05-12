@@ -24,9 +24,7 @@ const ClinicAddressScreen = ({ navigation, route }) => {
       );
 
       setClinic(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

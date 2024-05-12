@@ -1,3 +1,4 @@
+import * as LocalAuthentication from "expo-local-authentication";
 import {
   Container,
   InputBox,
@@ -50,7 +51,9 @@ import { jwtDecode } from "jwt-decode";
 import { HelperText, TextInput } from "react-native-paper";
 import { InputLibrary } from "../../components/Input/style.js";
 import { Text } from "react-native";
-import DialogComponent from "../../components/Dialog/Dialog.js";
+import DialogComponent, {
+  DialogSelectLocation,
+} from "../../components/Dialog/Dialog.js";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -68,35 +71,59 @@ const LoginScreen = ({ navigation }) => {
 
   const [senhaVisivel, setSenhaVisivel] = useState(false);
 
+  const [isBiometricSupported, setIsBiometricSupported] = useState(false);
+
+  const [biometricExist, setBiometricExist] = useState(false);
+
+  //função para verificar se o aparelho tem suoprte a biometria
+  const checkExistAuthentications = async () => {
+    const compatible = await LocalAuthentication.hasHardwareAsync(); //salvar a referencia de suporte a biometria
+
+    const biometricExistsValidation =
+      await LocalAuthentication.isEnrolledAsync();
+
+    setBiometricExist(biometricExistsValidation);
+
+    setIsBiometricSupported(compatible);
+  };
+
+  const handleAuthentication = async () => {};
+
   const Login = async () => {
-    setLoading(true); //ao ficar como true, indica que o spinner de loading do botão deve aparecer
+    setLoading(true); // Indica que o spinner de loading do botão deve aparecer
+
     try {
       const response = await apiFilipe.post(loginResource, user);
 
-      await AsyncStorage.setItem("token", JSON.stringify(response.data));
+      // Verifica se existe uma biometria cadastrada no dispositivo
+      const biometricExist = await LocalAuthentication.isEnrolledAsync();
+      const isBiometricSupported = await LocalAuthentication.hasHardwareAsync();
 
-      const decoded = jwtDecode(response.data.token);
-
-      if (decoded.role === "Paciente") {
-        const responsePaciente = await apiFilipe.get(
-          `${pacientesResource}/PerfilLogado`,
-          {
-            headers: { Authorization: `Bearer ${response.data.token}` },
-          }
-        );
-        if (
-          !responsePaciente.data.dataNascimento ||
-          !responsePaciente.data.cpf ||
-          !responsePaciente.data.rg ||
-          !responsePaciente.data.endereco.cep ||
-          !responsePaciente.data.endereco.logradouro ||
-          !responsePaciente.data.endereco.cidade
-        ) {
-          navigation.replace("Perfil");
-          return;
-        }
+      if (!biometricExist || !isBiometricSupported) {
+        await AsyncStorage.setItem("token", JSON.stringify(response.data));
+        handlePostAuthentication(response.data);
+        return;
       }
-      navigation.replace("Main", { token: response.data.token });
+
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: "Por favor, autentique-se para acessar o aplicativo.",
+        fallbackLabel: "Usar senha do dispositivo?",
+        disableDeviceFallback: false, // Permite o fallback para a senha do dispositivo
+      });
+
+      if (result.success) {
+        await AsyncStorage.setItem("token", JSON.stringify(response.data));
+        handlePostAuthentication(response.data);
+        return;
+      } else {
+        setDialog({
+          status: "erro",
+          contentMessage: "Erro",
+        });
+        setShowDialog(true);
+        setLoading(false);
+        return;
+      }
     } catch (error) {
       setDialog({
         status: "erro",
@@ -104,7 +131,32 @@ const LoginScreen = ({ navigation }) => {
       });
       setShowDialog(true);
     }
-    setLoading(false); //ao ficar como false, indica que o spinner de loading do botão deve desaparecer
+    setLoading(false); // Indica que o spinner de loading do botão deve desaparecer
+  };
+
+  const handlePostAuthentication = async (responseData) => {
+    const decoded = jwtDecode(responseData.token);
+
+    if (decoded.role === "Paciente") {
+      const responsePaciente = await apiFilipe.get(
+        `${pacientesResource}/PerfilLogado`,
+        {
+          headers: { Authorization: `Bearer ${responseData.token}` },
+        }
+      );
+      if (
+        !responsePaciente.data.dataNascimento ||
+        !responsePaciente.data.cpf ||
+        !responsePaciente.data.rg ||
+        !responsePaciente.data.endereco.cep ||
+        !responsePaciente.data.endereco.logradouro ||
+        !responsePaciente.data.endereco.cidade
+      ) {
+        navigation.replace("Perfil");
+        return;
+      }
+    }
+    navigation.replace("Main", { token: responseData.token });
   };
 
   const handleErrors = () => {
@@ -112,6 +164,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    checkExistAuthentications();
     setLoginError(!user.email.includes("@") && user.email);
   }, [user.email]);
 
@@ -123,6 +176,7 @@ const LoginScreen = ({ navigation }) => {
         setVisible={setShowDialog}
         setDialog={setDialog}
       />
+      {/* <DialogSelectLocation visible={true} setVisible={setDialog} /> */}
       <MainContentScroll>
         <MainContent>
           <LogoComponent />

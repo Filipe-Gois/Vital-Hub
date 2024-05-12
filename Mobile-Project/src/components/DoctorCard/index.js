@@ -5,9 +5,13 @@ import { WelComeImage } from "../ImageProfile";
 
 import DoctorAlessandra from "../../assets/doctorAlessandra.png";
 
-const DoctorCard = ({ dados = [], clickButton, onPress }) => {
+const DoctorCard = ({ dados = [], clickButton, onPress, fieldWidth }) => {
   return (
-    <DoctorCardStyle clickButton={clickButton} onPress={onPress}>
+    <DoctorCardStyle
+      clickButton={clickButton}
+      fieldWidth={fieldWidth}
+      onPress={onPress}
+    >
       <WelComeImage
         widthImage="26%"
         heigthImage="100%"

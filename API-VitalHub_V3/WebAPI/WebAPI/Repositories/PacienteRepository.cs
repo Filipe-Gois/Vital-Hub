@@ -178,6 +178,7 @@ namespace WebAPI.Repositories
            }
            // Projetar apenas as propriedades necessárias
        })
+       .OrderBy(x => x.DataConsulta)
        .ToList();
 
 

@@ -1,5 +1,6 @@
+import RNPickerSelect from "react-native-picker-select";
 import React, { useEffect, useState } from "react";
-import { Alert, Modal, TouchableHighlight, View } from "react-native";
+import { Alert, StyleSheet, TouchableHighlight, View } from "react-native";
 import { Title } from "../Title/style";
 import {
   Paragraph,
@@ -37,11 +38,15 @@ import { Theme } from "../../themes";
 import moment from "moment";
 import { apiFilipe, consultasResource } from "../../Services/Service";
 import { userDecodeToken } from "../../Utils/Auth";
-import { ActivityIndicator, Dialog } from "react-native-paper";
+import { ActivityIndicator, Dialog, Text } from "react-native-paper";
 import DialogComponent from "../Dialog/Dialog";
 import { FlatListStyle } from "../FlatList/style";
 import { CardConsulta } from "../CardConsulta";
 import { LeftArrowAOrXComponent } from "../LeftArrowAOrX";
+import { PaperSelect } from "react-native-paper-select";
+import DropDownPicker from "react-native-dropdown-picker";
+import Illustration from "../Illustration/Illustration";
+import { InputSelectBox } from "../Input/style";
 
 export const ModalComponent = ({
   consulta,
@@ -123,6 +128,17 @@ export const ModalAgendarConsulta = ({
   goBack = false,
   ...rest
 }) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "Apple", value: "apple" },
+    { label: "Banana", value: "banana" },
+    { label: "Pear", value: "pear" },
+    { label: "Pear", value: "pear2" },
+    { label: "Pear", value: "pear3" },
+    { label: "Pear", value: "pear4" },
+    { label: "Pear", value: "pear5" },
+  ]);
   const [agendamento, setAgendamento] = useState({
     prioridadeId: "",
     prioridadeLabel: "",
@@ -257,14 +273,42 @@ export const ModalAgendarConsulta = ({
             </ButtonBox>
           </LabelStyle>
 
-          <Label
+          {/* <Label
             fieldValue={agendamento ? agendamento.localizacao : null}
             titulo="Informe a localização desejada"
             placeholder={"Informe a localização"}
             onChangeText={(txt) => {
               setAgendamento({ ...agendamento, localizacao: txt });
             }}
-          />
+          /> */}
+          {/* 
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            placeholder={"Escolha uma fruta."}
+          /> */}
+          <InputSelectBox>
+            <RNPickerSelect
+              style={styleInputSelect}
+              placeholder={{
+                label: "Selecione uma região",
+                value: null,
+                color: Theme.colors.primary,
+              }}
+              onValueChange={(txt) => {
+                setAgendamento({ ...agendamento, localizacao: txt });
+              }}
+              items={[
+                { label: "São Paulo", value: "São Paulo" },
+                { label: "Santa Catarina", value: "Santa Catarina" },
+                { label: "Rio Grande Do Sul", value: "Rio Grande Do Sul" },
+              ]}
+            />
+          </InputSelectBox>
 
           <ButtonActive
             buttonAtivado={agendamento.prioridadeId && agendamento.localizacao}
@@ -286,6 +330,40 @@ export const ModalAgendarConsulta = ({
     </ModalStyle>
   );
 };
+
+const styleInputSelect = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    padding: 16,
+    borderWidth: 2,
+    borderColor: "#60BFC5",
+    borderRadius: 5,
+    color: "#34898F",
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "MontserratAlternates_600SemiBold",
+  },
+  inputAndroid: {
+    fontSize: 16,
+    padding: 16,
+    borderWidth: 2,
+    borderColor: "#60BFC5",
+    borderRadius: 5,
+    color: "#34898F",
+    alignItems: "center",
+    justifyContent: "center",
+
+    fontFamily: "MontserratAlternates_600SemiBold",
+  },
+  iconContainer: {
+    top: "25%",
+    marginRight: 10,
+  },
+  placeholder: {
+    color: "#34898F",
+  },
+});
 
 export const ModalConfirmarAgendamento = ({
   visible,
@@ -320,7 +398,7 @@ export const ModalConfirmarAgendamento = ({
     try {
       const response = await apiFilipe.post(
         `${consultasResource}/Cadastrar`,
-        { ...agendamento },
+        { ...agendamento, dataConsulta: "" },
         //a situação já é setada como pendente automaticamente na api
 
         { headers: { Authorization: `Bearer ${profile.token}` } }
@@ -436,6 +514,7 @@ export const ModalProximasConsultas = ({
   getProximasConsultas,
   setShowModalCancel,
   navigation,
+  setDataSelecionada,
 }) => {
   useEffect(() => {
     return (cleanUp = () => {});
@@ -452,7 +531,7 @@ export const ModalProximasConsultas = ({
         <ModalContentVerProximas>
           <ModalProximasConsultasContentTitleBox>
             <LeftArrowAOrXComponent
-              top={"-20px"}
+              top={"-50px"}
               left={"230px"}
               isLefArrow={false}
               onPress={() => setVerModalProximasConsultas(false)}
@@ -468,67 +547,33 @@ export const ModalProximasConsultas = ({
               renderItem={({ item }) => (
                 <CardConsulta
                   profileData={profileData}
-                  onPress={() => {
-                    setConsultaSelecionada(item);
-                    setShowModalAppointment(true);
-                  }}
+                  onPress={
+                    profileData.role === "Paciente"
+                      ? () => {
+                          setDataSelecionada(item.dataConsulta);
+                          setConsultaSelecionada(item);
+
+                          setShowModalAppointment(true);
+                        }
+                      : () => {
+                          setDataSelecionada(item.dataConsulta);
+                          setVerModalProximasConsultas(false);
+                        }
+                  }
                   onPressCancel={() => {
                     setConsultaSelecionada(item);
                     setShowModalCancel(true);
                   }}
-                  onPressAppointment={
-                    profileData !== "Paciente" &&
-                    item.situacao.situacao === "Pendente"
-                      ? () => {
-                          setConsultaSelecionada(item);
-                          // setShowModalAppointment(true);
-                        }
-                      : () => {
-                          navigation.navigate("ViewMedicalRecord", {
-                            consulta: {
-                              idConsulta: item.id,
-                              descricao: item.descricao,
-                              diagnostico: item.diagnostico,
-                              prescricao: item.receita.medicamento,
-                              foto:
-                                profileData.role === "Medico"
-                                  ? item.paciente.idNavigation.foto
-                                  : item.medicoClinica.medico.idNavigation.foto,
-                              nome:
-                                profileData.role !== "Medico"
-                                  ? item.medicoClinica.medico.idNavigation.nome
-                                  : item.paciente.idNavigation.nome,
-
-                              medico: {
-                                idMedico: item.medicoClinica.medico.id,
-                                // fotoMedico:
-                                //   item.medicoClinica.medico.idNavigation.foto,
-
-                                crm: item.medicoClinica.medico.crm,
-                                especialidade:
-                                  item.medicoClinica.medico.especialidade
-                                    .especialidade1,
-                              },
-
-                              paciente: {
-                                idPaciente: item.paciente.id,
-                                // fotoPaciente: item.paciente.idNavigation.foto,
-                                email: item.paciente.idNavigation.email,
-                                idade: calcularIdadeDoUsuario(
-                                  item.paciente.dataNascimento
-                                ),
-                              },
-                            },
-                          });
-                        }
-                  }
                   dados={item}
                 />
               )}
               keyExtractor={(item) => item.id}
             />
           ) : (
-            <ActivityIndicator size={"small"} color={Theme.colors.primary} />
+            <Illustration
+              textNote="Ops, não há nenhuma consulta agendada."
+              imgIcon="nocontent"
+            />
           )}
         </ModalContentVerProximas>
       </PatientModal>
