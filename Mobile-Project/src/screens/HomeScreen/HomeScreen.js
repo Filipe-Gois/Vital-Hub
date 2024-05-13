@@ -47,7 +47,71 @@ const HomeScreen = ({ navigation }) => {
   const [profile, setProfile] = useState({});
 
   //pega o id da consulta ao clicar no card
-  const [consultaSelecionada, setConsultaSelecionada] = useState(null);
+  const [consultaSelecionada, setConsultaSelecionada] = useState({
+    dataConsulta: "",
+    descricao: "",
+    diagnostico: "",
+    exames: [],
+    id: "",
+    medicoClinica: {
+      clinicaId: "",
+      consulta: [],
+      id: "",
+      medico: {
+        crm: "",
+        enderecoId: "",
+        especialidade: {},
+        especialidadeId: "",
+        id: "",
+        medicosClinicas: [],
+        idNavigation: {
+          email: "",
+          foto: "",
+          id: "",
+          nome: "",
+          senha: "",
+          tipoUsuarioId: "",
+        },
+      },
+      medicoId: "",
+    },
+    medicoClinicaId: "",
+    paciente: {
+      consulta: [],
+      cpf: "",
+      dataNascimento: "",
+      enderecoId: "",
+      id: "",
+      idNavigation: {
+        email: "",
+        foto: "",
+        id: "",
+        nome: "",
+        senha: "",
+        tipoUsuarioId: "",
+      },
+      rg: "",
+    },
+    pacienteId: "",
+    prioridade: {
+      consulta: [],
+      id: "",
+      prioridade: 0,
+    },
+    prioridadeId: "",
+    receita: {
+      consulta: [],
+      id: "",
+      medicamento: "",
+    },
+    receitaId: "",
+    situacao: {
+      consulta: [],
+      id: "",
+      situacao: "",
+    },
+    situacaoId: "",
+  });
 
   const [dataConsulta, setDataConsulta] = useState(getDataAtual());
 
@@ -132,6 +196,8 @@ const HomeScreen = ({ navigation }) => {
     setContador(contador + 1);
   };
 
+  const handleButtonModal = () => (profile.role !== "Paciente" ? false : false);
+
   useEffect(() => {
     fetchUserName();
     getProximasConsultas();
@@ -207,8 +273,11 @@ const HomeScreen = ({ navigation }) => {
                     <CardConsulta
                       profileData={profile}
                       onPress={() => {
-                        setConsultaSelecionada(item);
-                        setShowModalAppointment(true);
+                        if (item.situacao.situacao !== "Cancelada") {
+                          setConsultaSelecionada(item);
+                          setShowModalAppointment(true);
+                          console.log(item);
+                        }
                       }}
                       onPressCancel={() => {
                         setConsultaSelecionada(item);
@@ -334,10 +403,21 @@ const HomeScreen = ({ navigation }) => {
               textButton1={
                 profile.role === "Paciente"
                   ? "Ver local da consulta"
-                  : "Inserir Prontuário"
+                  : profile.role === "Medico" &&
+                    !consultaSelecionada.receita.medicamento
+                  ? "Inserir Prontuário"
+                  : "Atualizar prontuário"
               }
               textButton2={"Cancelar"}
               cancel={false}
+              buttonAtivado={
+                profile.role === "Paciente"
+                  ? true
+                  : profile.role === "Medico" &&
+                    new Date(consultaSelecionada.dataConsulta) < Date.now()
+                  ? true
+                  : false
+              }
               HandleModal={() => {
                 setVerModalProximasConsultas(false);
 
@@ -345,7 +425,9 @@ const HomeScreen = ({ navigation }) => {
                   ? navigation.navigate("ClinicAddress", {
                       clinicaId: consultaSelecionada.medicoClinica.clinicaId,
                     })
-                  : navigation.navigate("ViewMedicalRecord", {
+                  : profile.role === "Medico" &&
+                    consultaSelecionada.receita.medicamento
+                  ? navigation.navigate("ViewMedicalRecord", {
                       consulta: {
                         idConsulta: consultaSelecionada.id,
                         descricao: consultaSelecionada.descricao,
@@ -383,7 +465,8 @@ const HomeScreen = ({ navigation }) => {
                           ),
                         },
                       },
-                    });
+                    })
+                  : null;
                 setShowModalAppointment(false);
               }}
             />

@@ -54,7 +54,7 @@ export const Point = styled.View`
 export const CancelBox = styled.View`
   width: max-content;
   height: 100%;
-  justify-content: flex-end;
+  justify-content: ${(props) => (!props.isNext ? "flex-end" : "space-between")};
   position: absolute;
   right: 20px;
   bottom: 15px;

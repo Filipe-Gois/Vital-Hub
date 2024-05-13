@@ -77,9 +77,11 @@ namespace WebAPI.Repositories
                 Exame exameBuscado = ctx.Exames.Include(x => x.Consulta)
                     .FirstOrDefault(x => x.ConsultaId == exame.ConsultaId)!;
 
-                if (exameBuscado != null)
+                Consulta consultaBuscada = ctx.Consultas.Include(x => x.Situacao).FirstOrDefault(x => x.Id == exame.ConsultaId)! ?? throw new Exception("Consulta não encontrada!");
+
+                if (exameBuscado != null || consultaBuscada.Situacao!.Situacao != "Realizada" || consultaBuscada.DataConsulta > DateTime.Now)
                 {
-                    throw new Exception("Já existe um exame para essa conmsulta!");
+                    throw new Exception("Impossível cadastrar exame!");
                 }
                 ctx.Exames.Add(exame);
                 ctx.SaveChanges();

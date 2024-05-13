@@ -10,6 +10,8 @@ export const ParagraphMA500 = styled.Text`
   color: ${(props) => (!props.color ? Theme.colors.grayV2 : props.color)};
   font-family: "MontserratAlternates_500Medium";
   font-size: 12px;
+  text-align: ${(props) => (props.textAlign ? props.textAlign : "left")};
+  margin: ${(props) => (props.fieldMargin ? props.fieldMargin : "0px")};
 `;
 
 export const TextCreateAccount2 = styled(TextCreateAccount1)`

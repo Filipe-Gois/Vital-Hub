@@ -181,6 +181,7 @@ export const PerfilScreen = ({ navigation }) => {
     } catch (error) {
       editActionAbort();
       Alert.alert("Erro!", "Não foi possível atualizar os dados!");
+      console.log("erro:", error);
     }
 
     setEditUserInfo(!editUserInfo);

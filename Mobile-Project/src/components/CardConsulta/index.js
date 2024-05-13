@@ -22,6 +22,8 @@ import {
   calcularIdadeDoUsuario,
   hourDbToView,
 } from "../../Utils/stringFunctions";
+import { Title } from "../Title/style";
+import moment from "moment";
 
 export const CardConsulta = ({
   dados = {},
@@ -29,6 +31,7 @@ export const CardConsulta = ({
   onPressAppointment,
   onPress,
   profileData = {},
+  isNext = false,
 }) => {
   return (
     <CardConsultaStyle onPress={onPress}>
@@ -65,7 +68,12 @@ export const CardConsulta = ({
         />
       </InfoTextBox>
 
-      <CancelBox>
+      <CancelBox isNext={isNext}>
+        {isNext && (
+          <ParagraphMA500 fieldMargin={"10px 0 0 0"} textAlign={"right"}>
+            {moment(dados.dataConsulta).format("DD/MM")}
+          </ParagraphMA500>
+        )}
         {dados.situacao.situacao === "Pendente" ? (
           <ButtonSecondary padding={"0"} onPress={onPressCancel}>
             <ParagraphMA500

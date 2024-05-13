@@ -64,7 +64,7 @@ export const ModalComponent = ({
   onPressNotification,
   navigation,
   HandleModal,
-
+  buttonAtivado = true,
   ...rest
 }) => {
   const handleClose = async () => {
@@ -97,13 +97,14 @@ export const ModalComponent = ({
             {!cancel && <Paragraph>{texto2}</Paragraph>}
           </ModalTextBox>
 
-          <Button
+          <ButtonActive
+            buttonAtivado={buttonAtivado}
             onPress={HandleModal}
             // onPress={() =>setShowModalCancel(false)}
             padding={"0"}
           >
             <ButtonTitle>{textButton1}</ButtonTitle>
-          </Button>
+          </ButtonActive>
 
           <ButtonSecondary onPress={() => handleClose()}>
             <TextCreateAccount2>{textButton2}</TextCreateAccount2>
@@ -398,7 +399,7 @@ export const ModalConfirmarAgendamento = ({
     try {
       const response = await apiFilipe.post(
         `${consultasResource}/Cadastrar`,
-        { ...agendamento, dataConsulta: "" },
+        { ...agendamento },
         //a situação já é setada como pendente automaticamente na api
 
         { headers: { Authorization: `Bearer ${profile.token}` } }
@@ -429,12 +430,12 @@ export const ModalConfirmarAgendamento = ({
       title=""
       {...rest}
     >
-      <DialogComponent
+      {/* <DialogComponent
         contentMessage="Consulta marcada!"
         status={"sucess"}
         visible={true}
         setVisible={setShowDialog}
-      />
+      /> */}
       <PatientModal>
         <ModalContentAgendarConsulta>
           <TitleBox>
@@ -546,6 +547,7 @@ export const ModalProximasConsultas = ({
               scrollEnabled={true}
               renderItem={({ item }) => (
                 <CardConsulta
+                  isNext
                   profileData={profileData}
                   onPress={
                     profileData.role === "Paciente"

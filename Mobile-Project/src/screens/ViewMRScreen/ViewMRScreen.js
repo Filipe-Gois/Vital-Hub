@@ -26,6 +26,7 @@ import {
   consultasResource,
   examesResource,
 } from "../../Services/Service";
+import DialogComponent from "../../components/Dialog/Dialog";
 
 const ViewMRScreen = ({ navigation, route }) => {
   //Dados do usuário
@@ -45,6 +46,10 @@ const ViewMRScreen = ({ navigation, route }) => {
   const [editUserInfo, setEditUserInfo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uriCameraCapture, setUriCameraCapture] = useState(null);
+
+  //propriedades do componente de diálogo
+  const [dialog, setDialog] = useState({});
+  const [showDialog, setShowDialog] = useState(false);
 
   //pega as propriedades do token
   const fetchProfileData = async () => {
@@ -77,7 +82,7 @@ const ViewMRScreen = ({ navigation, route }) => {
         getConsulta();
       }
     } catch (error) {
-      console.log(error);
+      getConsulta();
     }
     setEditUserInfo(false);
     setLoading(false);
@@ -124,7 +129,12 @@ const ViewMRScreen = ({ navigation, route }) => {
         setExameExists(true);
       }
     } catch (error) {
-      console.log(error);
+      setDialog({
+        status: "erro",
+        contentMessage: "Não foi possível identificar um texto!",
+      });
+      setShowDialog(true);
+      setLoading(false);
     }
     setLoading(false);
   };
@@ -161,7 +171,14 @@ const ViewMRScreen = ({ navigation, route }) => {
         Alert.alert("Atualizado");
         setExameDescicao(response.data.descricao);
       }
-    } catch (error) {}
+    } catch (error) {
+      setDialog({
+        status: "erro",
+        contentMessage: "Não foi possível identificar um texto.",
+      });
+      setShowDialog(true);
+      setLoading(false);
+    }
     setLoading(false);
   };
 
@@ -210,6 +227,12 @@ const ViewMRScreen = ({ navigation, route }) => {
   }, [route.params, uriCameraCapture, exameDescicao, exameFoto]);
   return (
     <Container>
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
       <MainContentScroll>
         <MainContent>
           <BannerUserComponent

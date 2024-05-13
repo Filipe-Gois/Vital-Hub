@@ -9,7 +9,7 @@ const ipFilipePcDoSenai = "172.16.39.113";
 
 const apiPortFilipePcDoSenai = "4466";
 
-const localApiUrlFilipe = `http://${ipFilipePcDeCasa}:${apiPortFilipePcDoSenai}/api`;
+const localApiUrlFilipe = `http://${ipFilipePcDoSenai}:${apiPortFilipePcDoSenai}/api`;
 
 //------------------------
 

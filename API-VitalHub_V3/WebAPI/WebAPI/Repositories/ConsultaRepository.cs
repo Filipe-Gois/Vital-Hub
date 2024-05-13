@@ -155,10 +155,10 @@ namespace WebAPI.Repositories
                 //SituacaoConsulta situacaoPendente = ctx.Situacoes.FirstOrDefault(s => s.Situacao == Pendente)! ?? throw new Exception("Situação não encontrada!");
                 SituacaoConsulta situacaoRealizada = ctx.Situacoes.FirstOrDefault(s => s.Situacao == Realizada)! ?? throw new Exception("Situação não encontrada!");
 
-                Consulta buscada = ctx.Consultas.Include(x => x.Receita).FirstOrDefault(x => x.Id == idConsulta)! ?? throw new Exception("Consulta não encontrada!");
+                Consulta buscada = ctx.Consultas.Include(x => x.Receita).Include(x => x.Situacao).FirstOrDefault(x => x.Id == idConsulta)! ?? throw new Exception("Consulta não encontrada!");
 
 
-                if (buscada.Situacao!.Situacao == Pendente && buscada.DataConsulta <= DateTime.Now)
+                if (buscada.Situacao!.Situacao == Realizada && buscada.DataConsulta <= DateTime.Now)
                 {
                     buscada.Descricao = prontuarioviewModel.Descricao;
                     buscada.Diagnostico = prontuarioviewModel.Diagnostico;
@@ -167,6 +167,10 @@ namespace WebAPI.Repositories
                     buscada.Receita!.Medicamento = prontuarioviewModel.Medicamento;
 
                     buscada.Situacao = situacaoRealizada;
+                }
+                else
+                {
+                    throw new Exception("Erro ao atualizar prontuário!");
                 }
 
 
