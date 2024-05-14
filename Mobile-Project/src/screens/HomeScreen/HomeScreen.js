@@ -182,9 +182,7 @@ const HomeScreen = ({ navigation }) => {
       );
 
       setConsultas(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const onRefresh = () => {
@@ -276,7 +274,6 @@ const HomeScreen = ({ navigation }) => {
                         if (item.situacao.situacao !== "Cancelada") {
                           setConsultaSelecionada(item);
                           setShowModalAppointment(true);
-                          console.log(item);
                         }
                       }}
                       onPressCancel={() => {
@@ -390,12 +387,12 @@ const HomeScreen = ({ navigation }) => {
                   : profile.role === "Medico" && consultaSelecionada
                   ? calcularIdadeDoUsuario(
                       consultaSelecionada.paciente.dataNascimento
-                    )
+                    ) + " anos"
                   : !consultaSelecionada && ""
               }
               texto2={
                 profile.role === "Paciente" && consultaSelecionada
-                  ? "crm: " + consultaSelecionada.medicoClinica.medico.crm
+                  ? "CRM: " + consultaSelecionada.medicoClinica.medico.crm
                   : profile.role === "Medico" && consultaSelecionada
                   ? consultaSelecionada.paciente.idNavigation.email
                   : !consultaSelecionada && ""
@@ -404,19 +401,18 @@ const HomeScreen = ({ navigation }) => {
                 profile.role === "Paciente"
                   ? "Ver local da consulta"
                   : profile.role === "Medico" &&
-                    !consultaSelecionada.receita.medicamento
+                    !consultaSelecionada.receita.medicamento &&
+                    !consultaSelecionada.descricao &&
+                    !consultaSelecionada.diagnostico
                   ? "Inserir Prontuário"
                   : "Atualizar prontuário"
               }
               textButton2={"Cancelar"}
               cancel={false}
               buttonAtivado={
-                profile.role === "Paciente"
-                  ? true
-                  : profile.role === "Medico" &&
-                    new Date(consultaSelecionada.dataConsulta) < Date.now()
-                  ? true
-                  : false
+                profile.role === "Paciente" ||
+                (profile.role === "Medico" &&
+                  new Date(consultaSelecionada.dataConsulta) < Date.now())
               }
               HandleModal={() => {
                 setVerModalProximasConsultas(false);
@@ -426,7 +422,7 @@ const HomeScreen = ({ navigation }) => {
                       clinicaId: consultaSelecionada.medicoClinica.clinicaId,
                     })
                   : profile.role === "Medico" &&
-                    consultaSelecionada.receita.medicamento
+                    new Date(consultaSelecionada.dataConsulta) < Date.now()
                   ? navigation.navigate("ViewMedicalRecord", {
                       consulta: {
                         idConsulta: consultaSelecionada.id,
@@ -472,6 +468,7 @@ const HomeScreen = ({ navigation }) => {
             />
 
             <ModalProximasConsultas
+              setStatusLista={setStatusLista}
               setVerModalProximasConsultas={setVerModalProximasConsultas}
               verModalProximasConsultas={verModalProximasConsultas}
               profileData={profile}

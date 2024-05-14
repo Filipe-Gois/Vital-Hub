@@ -128,7 +128,7 @@ const AgeAndType = ({
       <ParagraphRegular>
         {profileData.role !== "Paciente"
           ? ageOrCrm + " anos"
-          : "crm: " + ageOrCrm}
+          : "CRM: " + ageOrCrm}
       </ParagraphRegular>
 
       <Point />

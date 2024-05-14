@@ -297,7 +297,7 @@ export const ModalAgendarConsulta = ({
               style={styleInputSelect}
               placeholder={{
                 label: "Selecione uma região",
-                value: null,
+                value: "",
                 color: Theme.colors.primary,
               }}
               onValueChange={(txt) => {
@@ -516,6 +516,7 @@ export const ModalProximasConsultas = ({
   setShowModalCancel,
   navigation,
   setDataSelecionada,
+  setStatusLista,
 }) => {
   useEffect(() => {
     return (cleanUp = () => {});
@@ -541,7 +542,7 @@ export const ModalProximasConsultas = ({
 
             <Title color={Theme.colors.blackColor}>Próximas consultas</Title>
           </ModalProximasConsultasContentTitleBox>
-          {proximasConsultas ? (
+          {proximasConsultas.length > 0 ? (
             <FlatListStyle
               data={proximasConsultas && proximasConsultas}
               scrollEnabled={true}
@@ -552,12 +553,14 @@ export const ModalProximasConsultas = ({
                   onPress={
                     profileData.role === "Paciente"
                       ? () => {
+                          setStatusLista(item.situacao.situacao);
                           setDataSelecionada(item.dataConsulta);
                           setConsultaSelecionada(item);
 
                           setShowModalAppointment(true);
                         }
                       : () => {
+                          setStatusLista(item.situacao.situacao);
                           setDataSelecionada(item.dataConsulta);
                           setVerModalProximasConsultas(false);
                         }

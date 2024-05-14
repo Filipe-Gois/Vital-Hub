@@ -221,8 +221,6 @@ const ViewMRScreen = ({ navigation, route }) => {
       setPrescricao(route.params.consulta.prescricao);
     }
 
-    console.log("uriCameraCapture123", uriCameraCapture);
-
     return (cleanUp = () => {});
   }, [route.params, uriCameraCapture, exameDescicao, exameFoto]);
   return (
