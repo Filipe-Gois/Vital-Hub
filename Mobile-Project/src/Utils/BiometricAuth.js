@@ -11,7 +11,6 @@ const [isBiometricSupported, setIsBiometricSupported] = useState(false);
 export const checkExistAuthentications = async () => {
   const compatible = await LocalAuthentication.hasHardwareAsync(); //salvar a referencia de suporte a biometria
 
-  console.log(compatible)
   setIsBiometricSupported(compatible);
 };
 
@@ -35,14 +34,19 @@ export const getHistory = async () => {
   }
 };
 
-export const handleAuthentication = async () => {
+export const handleAuthentication = async ({ setDialog, setShowDialog }) => {
   //verificar se existe uma biometria cadastrada no dispositivo
 
   const biometricExist = await LocalAuthentication.isEnrolledAsync();
 
   //validar se existe ou nao uma biometria cadastrada
   if (!biometricExist) {
-    return Alert.alert("Falha ao logar. Nenhuma biometria encontrada!");
+    setDialog({
+      status: "erro",
+      contentMessage: "Falha ao logar. Nenhuma biometria encontrada!",
+    });
+    setShowDialog(true);
+    return;
   }
 
   //caso exista:

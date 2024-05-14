@@ -102,9 +102,15 @@ namespace WebAPI.Controllers
 
                 user.Senha = pacienteModel.Senha;
 
-                user.Paciente = new Paciente();
+                user.Paciente = new();
 
                 user.Paciente.DataNascimento = pacienteModel.DataNascimento;
+
+                if (user.Paciente.DataNascimento >= DateTime.Now)
+                {
+                    throw new Exception("Insira uma data de nascimento válida!");
+                }
+
                 user.Paciente.Rg = pacienteModel.Rg;
                 user.Paciente.Cpf = pacienteModel.Cpf;
 

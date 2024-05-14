@@ -108,6 +108,7 @@ namespace WebAPI.Repositories
             try
             {
                 usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
+
                 ctx.Add(usuario);
                 ctx.SaveChanges();
             }

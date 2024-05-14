@@ -139,7 +139,7 @@ const CheckEmailScreen = ({ navigation, route }) => {
             <Text>{codigo[2]}</Text>
             <Text>{codigo[3]}</Text>
             <Text>{codigo.split("")}</Text>
-            {console.log(codigo.split(""))} */}
+             */}
 
             <ButtonAsync
               // buttonAtivado={

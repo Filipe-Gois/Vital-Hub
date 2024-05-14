@@ -42,9 +42,7 @@ const SelectClinicScreen = ({ navigation, route }) => {
         `${clinicaResource}/BuscarPorCidade?cidade=${route.params.localizacao}`
       );
       setClinics(response.data);
-    } catch (error) {
-      console.log("Erro ao carregar as Clinicas:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

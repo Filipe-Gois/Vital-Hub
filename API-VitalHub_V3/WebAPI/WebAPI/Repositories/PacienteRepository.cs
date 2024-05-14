@@ -23,6 +23,11 @@ namespace WebAPI.Repositories
                 //if (paciente.Foto != null)
                 //    pacienteBuscado!.IdNavigation.Foto = paciente.Foto;
 
+                if (paciente.DataNascimento >= DateTime.Now)
+                {
+                    throw new Exception("Insira uma data de nascimento válida!");
+                }
+
 
 
                 pacienteBuscado!.DataNascimento = paciente.DataNascimento;
@@ -104,6 +109,8 @@ namespace WebAPI.Repositories
 
                 user.TipoUsuario = tipoPaciente;
                 user.Senha = Criptografia.GerarHash(user.Senha!);
+
+
                 ctx.Usuarios.Add(user);
                 ctx.SaveChanges();
             }

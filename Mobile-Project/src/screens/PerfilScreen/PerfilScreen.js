@@ -88,28 +88,12 @@ export const PerfilScreen = ({ navigation }) => {
     }
   };
 
-  const handleNavigate = async () => {
-    try {
-    } catch (error) {}
-  };
-
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
     navigation.replace("Login");
   };
 
   const getUserInfo = async () => {
-    try {
-      const response = await apiFilipe.get(`${url}/PerfilLogado`, {
-        headers: { Authorization: `Bearer ${userGlobalData.token}` },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //traz os dados pessoais do usuario Ex: cpf, logradouro, etc
-  const getUserInfoUpload = async () => {
     try {
       const response = await apiFilipe.get(`${url}/PerfilLogado`, {
         headers: { Authorization: `Bearer ${userGlobalData.token}` },
@@ -134,12 +118,73 @@ export const PerfilScreen = ({ navigation }) => {
     } catch (error) {}
   };
 
+  //traz os dados pessoais do usuario Ex: cpf, logradouro, etc
+  const getUserInfoUpload = async () => {
+    try {
+      const response = await apiFilipe.get(`${url}/PerfilLogado`, {
+        headers: { Authorization: `Bearer ${userGlobalData.token}` },
+      });
+      setUserFoto(response.data.idNavigation.foto);
+
+      if (
+        userGlobalData.role === "Paciente" &&
+        response.data.dataNascimento &&
+        response.data.rg &&
+        response.data.cpf &&
+        response.data.endereco.cep &&
+        response.data.endereco.logradouro &&
+        response.data.endereco.cidade
+      ) {
+        setDadosPessoaisDoUsuario(response.data);
+
+        setLogradouro(response.data.endereco.logradouro);
+        setCidade(response.data.endereco.cidade);
+        setCep(response.data.endereco.cep);
+
+        setDataNascimento(response.data.dataNascimento);
+        setCpf(response.data.cpf);
+        setRg(response.data.rg);
+      }
+
+      if (userGlobalData.role === "Medico") {
+        setCrm(response.data.crm);
+        setEspecialidadeMedico(response.data.especialidade.especialidade1);
+      }
+    } catch (error) {}
+  };
+
   const handleUpdate = async () => {
     setLoading(true);
     try {
       const response = await apiFilipe.get(`${url}/PerfilLogado`, {
         headers: { Authorization: `Bearer ${userGlobalData.token}` },
       });
+
+      if (new Date(dataNascimento) > Date.now()) {
+        setDialog({
+          status: "alerta",
+          contentMessage: "Insira uma data de nascimento válida!",
+        });
+        setShowDialog(true);
+        setLoading(false);
+        return;
+      }
+
+      if (
+        userGlobalData.role === "Paciente" &&
+        !dataNascimento &&
+        !cpf &&
+        !rg &&
+        !cep
+      ) {
+        setDialog({
+          status: "alerta",
+          contentMessage: "Preencha todos os campos!",
+        });
+        setShowDialog(true);
+        setLoading(false);
+        return;
+      }
 
       await apiFilipe.put(
         url,
@@ -165,11 +210,12 @@ export const PerfilScreen = ({ navigation }) => {
       );
 
       if (
-        !response.data.dataNascimento ||
-        !response.data.cpf ||
-        !response.data.rg ||
-        !response.data.endereco.cep ||
-        !response.data.endereco.logradouro ||
+        userGlobalData.role === "Paciente" &&
+        !response.data.dataNascimento &&
+        !response.data.cpf &&
+        !response.data.rg &&
+        !response.data.endereco.cep &&
+        !response.data.endereco.logradouro &&
         !response.data.endereco.cidade
       ) {
         navigation.replace("Main");
@@ -177,11 +223,18 @@ export const PerfilScreen = ({ navigation }) => {
       }
 
       getUserInfoUpload();
-      Alert.alert("Sucesso", "Dados atualizados com sucesso!");
+      setDialog({
+        status: "sucesso",
+        contentMessage: "Dados atualizados com sucesso!",
+      });
+      setShowDialog(true);
     } catch (error) {
       editActionAbort();
-      Alert.alert("Erro!", "Não foi possível atualizar os dados!");
-      console.log("erro:", error);
+      setDialog({
+        status: "erro",
+        contentMessage: "Não foi possível atualizar os dados!",
+      });
+      setShowDialog(true);
     }
 
     setEditUserInfo(!editUserInfo);
@@ -230,9 +283,7 @@ export const PerfilScreen = ({ navigation }) => {
 
       // setUserFoto(uriPhoto)
       setUriPhoto(null);
-    } catch (error) {
-      console.log("Erro:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -274,6 +325,7 @@ export const PerfilScreen = ({ navigation }) => {
             {userGlobalData.role !== "Medico" && (
               <>
                 <Label
+                  keyboardType={"numeric"}
                   pointerEvents={
                     !editUserInfo || userGlobalData.role !== "Paciente"
                       ? "none"
@@ -317,6 +369,7 @@ export const PerfilScreen = ({ navigation }) => {
                 />
 
                 <Label
+                  keyboardType={"numeric"}
                   pointerEvents={
                     !editUserInfo || userGlobalData.role !== "Paciente"
                       ? "none"
@@ -348,6 +401,7 @@ export const PerfilScreen = ({ navigation }) => {
             )}
 
             <Label
+              keyboardType={"numeric"}
               pointerEvents={
                 !editUserInfo || userGlobalData.role !== "Paciente"
                   ? "none"
@@ -412,6 +466,7 @@ export const PerfilScreen = ({ navigation }) => {
               fieldJustifyContent="space-between"
             >
               <Label
+                keyboardType={"numeric"}
                 textColor={
                   editUserInfo ? Theme.colors.primary : Theme.colors.grayV1
                 }

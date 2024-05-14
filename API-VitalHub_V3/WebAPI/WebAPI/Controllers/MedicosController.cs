@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
 
                 user.Nome = medicoModel.Nome;
                 user.Email = medicoModel.Email;
-                user.TipoUsuarioId = medicoModel.IdTipoUsuario;
+                //user.TipoUsuarioId = medicoModel.IdTipoUsuario;
                 user.Senha = medicoModel.Senha;
 
 

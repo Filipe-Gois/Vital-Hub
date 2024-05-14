@@ -30,9 +30,7 @@ export const userDecodeToken = async () => {
       );
 
       return response.data.foto;
-    } catch (error) {
-      console.log("Erro ao buscar foto:", error);
-    }
+    } catch (error) {}
   };
 
   return {

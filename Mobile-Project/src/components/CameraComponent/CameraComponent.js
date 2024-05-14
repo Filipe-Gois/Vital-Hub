@@ -19,7 +19,6 @@ import {
 
 // import do modal
 import {
-  Alert,
   Image,
   Modal,
   StyleSheet,
@@ -36,6 +35,7 @@ import { LeftArrowAOrXCameraComponent } from "../LeftArrowAOrX";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { apiFilipe } from "../../Services/Service";
+import DialogComponent from "../Dialog/Dialog";
 
 const CameraComponent = ({
   visible,
@@ -52,6 +52,10 @@ const CameraComponent = ({
   const [tipoCamera, setTipoCamera] = useState("back");
   const [openModal, setOpenModal] = useState(false);
   const [lastPhoto, setLastPhoto] = useState(null);
+
+  const [dialog, setDialog] = useState({});
+
+  const [showDialog, setShowDialog] = useState(false);
 
   const SendPhotoForm = async () => {
     await setUriCameraCapture(photo);
@@ -72,7 +76,11 @@ const CameraComponent = ({
       await SendPhotoForm();
       setOpenModal(false);
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível processar a foto");
+      setDialog({
+        status: "erro",
+        contentMessage: "Não foi possível processar a foto",
+      });
+      setShowDialog(true);
     }
   };
 
@@ -104,11 +112,13 @@ const CameraComponent = ({
         await setUriCameraCapture(result.assets[0].uri);
 
         await SendPhotoForm2(result.assets[0].uri);
-
-        Alert.alert("Sucesso", "Foto salva com sucesso!");
       }
     } catch (error) {
-      console.log(error);
+      setDialog({
+        status: "erro",
+        contentMessage: "Erro ao salvar foto.",
+      });
+      setShowDialog(true);
     }
   };
 
@@ -152,6 +162,12 @@ const CameraComponent = ({
 
   return (
     <CameraStyle visible={visible}>
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
       <CameraComponentStyle
         ref={cameraReference}
         ratio="16:9"

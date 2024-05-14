@@ -13,11 +13,21 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export const HandleCallNotification = async ({ title, body, sound }) => {
+export const HandleCallNotification = async ({
+  title,
+  body,
+  sound,
+  setShowDialog,
+  setDialog,
+}) => {
   const { granted } = await Notifications.requestPermissionsAsync();
 
   if (!granted) {
-    alert("Você não ativou as notificações!");
+    setDialog({
+      status: "erro",
+      contentMessage: "Permita o uso das notificações!",
+    });
+    setShowDialog(true);
     return;
   }
 

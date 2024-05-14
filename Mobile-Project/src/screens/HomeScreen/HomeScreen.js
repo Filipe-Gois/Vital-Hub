@@ -40,6 +40,7 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Dialog } from "react-native-paper";
 import CardProximasConsultas from "../../components/CardProximasConsultas/CardProximasConsultas";
 import Illustration from "../../components/Illustration/Illustration";
+import DialogComponent from "../../components/Dialog/Dialog";
 
 const HomeScreen = ({ navigation }) => {
   const [contador, setContador] = useState(0);
@@ -134,6 +135,10 @@ const HomeScreen = ({ navigation }) => {
   const [verModalProximasConsultas, setVerModalProximasConsultas] =
     useState(false);
 
+  const [dialog, setDialog] = useState({});
+
+  const [showDialog, setShowDialog] = useState(false);
+
   const fetchUserName = async () => {
     const userInfo = await userDecodeToken();
 
@@ -166,7 +171,11 @@ const HomeScreen = ({ navigation }) => {
         listarConsultas();
       }
     } catch (error) {
-      Alert.alert("Erro!", "Erro ao desmarcar consulta.");
+      setDialog({
+        status: "erro",
+        contentMessage: "Erro ao desmarcar consulta.",
+      });
+      setShowDialog(true);
     }
   };
 
@@ -206,6 +215,12 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <Container>
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
       <MainContentScroll
         //lógica para scrollar para cima e atualizar página
         refreshControl={
@@ -359,6 +374,8 @@ const HomeScreen = ({ navigation }) => {
                 HandleCallNotification({
                   body: "Notificação recebida!",
                   title: "Consulta desmarcada com sucesso!",
+                  setDialog: setDialog,
+                  setShowDialog: setShowDialog,
                 });
               }}
             />

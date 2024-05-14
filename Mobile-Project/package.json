@@ -40,6 +40,7 @@
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-maps": "1.14.0",
     "react-native-maps-directions": "^1.9.0",
+    "react-native-mask-input": "^1.2.3",
     "react-native-os": "^1.2.6",
     "react-native-paper": "^5.12.3",
     "react-native-paper-select": "^1.1.1",

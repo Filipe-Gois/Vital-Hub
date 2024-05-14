@@ -2,6 +2,7 @@ import { mask, unMask } from "remask";
 import { apiCep } from "../Services/Service";
 import { Alert } from "react-native";
 import moment from "moment";
+import { Masks, useMaskedInputProps } from "react-native-mask-input";
 
 //máscara para input que receber cep
 // export const cepMasked = data => mask(unMask(data), ["99.999.999/9999-99"])

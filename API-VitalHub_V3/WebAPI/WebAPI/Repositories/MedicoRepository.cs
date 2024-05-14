@@ -128,6 +128,13 @@ namespace WebAPI.Repositories
             try
             {
                 user.Senha = Criptografia.GerarHash(user.Senha!);
+
+                string tipoMedico = "Medico";
+
+                TiposUsuario tipoMedicoBuscado = ctx.TiposUsuarios.FirstOrDefault(x => x.TipoUsuario == tipoMedico) ?? throw new Exception("Tipo usuário médico não encontrado!");
+
+                user.TipoUsuario = tipoMedicoBuscado;
+
                 ctx.Usuarios.Add(user);
                 ctx.SaveChanges();
 

@@ -33,7 +33,10 @@ const RecoverPasswordScreen = ({ navigation }) => {
     setLoading(true);
     try {
       if (!email) {
-        Alert.alert("Alerta", "Preencha o campo de e-mail.");
+        setDialog({
+          status: "alerta",
+          contentMessage: "Preencha o campo de e-mail!",
+        });
       }
 
       const response = await apiFilipe.post(

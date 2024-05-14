@@ -129,6 +129,9 @@ export const ModalAgendarConsulta = ({
   goBack = false,
   ...rest
 }) => {
+  const [dialog, setDialog] = useState({});
+  const [showDialog, setShowDialog] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -143,7 +146,7 @@ export const ModalAgendarConsulta = ({
   const [agendamento, setAgendamento] = useState({
     prioridadeId: "",
     prioridadeLabel: "",
-    localizacao: "São Paulo",
+    localizacao: "",
   });
 
   const niveisPrioridade = {
@@ -179,7 +182,11 @@ export const ModalAgendarConsulta = ({
       navigation.navigate("SelectClinic", agendamento);
       setAgendamento({});
     } else {
-      Alert.alert("Insira todos os dados!");
+      setDialog({
+        status: "alerta",
+        contentMessage: "Insira todos os dados!",
+      });
+      setShowDialog(true);
     }
   };
   return (
@@ -190,6 +197,12 @@ export const ModalAgendarConsulta = ({
       title=""
       {...rest}
     >
+      <DialogComponent
+        {...dialog}
+        visible={showDialog}
+        setVisible={setShowDialog}
+        setDialog={setDialog}
+      />
       <AgendarConsultaContent>
         <FormBoxModal>
           <Title>{title}</Title>
@@ -384,6 +397,7 @@ export const ModalConfirmarAgendamento = ({
 }) => {
   const [profile, setProfile] = useState({});
   const [showDialog, setShowDialog] = useState(false);
+  const [dialog, setDialog] = useState({});
 
   const profileLoad = async () => {
     try {
@@ -410,8 +424,11 @@ export const ModalConfirmarAgendamento = ({
         navigation.replace("Main");
       }
     } catch (error) {
-      console.log(error);
-      Alert.alert("Erro", "Erro ao agendadar consulta.");
+      setDialog({
+        status: "erro",
+        contentMessage: "Erro ao agendadar consulta.",
+      });
+      setShowDialog(true);
       navigation.replace("Main");
     }
   };
@@ -430,12 +447,6 @@ export const ModalConfirmarAgendamento = ({
       title=""
       {...rest}
     >
-      {/* <DialogComponent
-        contentMessage="Consulta marcada!"
-        status={"sucess"}
-        visible={true}
-        setVisible={setShowDialog}
-      /> */}
       <PatientModal>
         <ModalContentAgendarConsulta>
           <TitleBox>

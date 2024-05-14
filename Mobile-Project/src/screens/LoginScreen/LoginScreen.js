@@ -57,9 +57,9 @@ import DialogComponent, {
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  // const [user, setUser] = useState({ email: "m@m.com", senha: "12345" });
+  // const [user, setUser] = useState({ email: "paciente@paciente.com", senha: "12345" });
   const [user, setUser] = useState({
-    email: "fythoy@gmail.com",
+    email: "medico@medico.com",
     senha: "12345",
   });
 
@@ -86,8 +86,6 @@ const LoginScreen = ({ navigation }) => {
 
     setIsBiometricSupported(compatible);
   };
-
-  const handleAuthentication = async () => {};
 
   const Login = async () => {
     setLoading(true); // Indica que o spinner de loading do botão deve aparecer

@@ -78,7 +78,11 @@ const ViewMRScreen = ({ navigation, route }) => {
       );
 
       if (response.status === 204) {
-        Alert.alert("Sucesso", "Prontuário atualizado!");
+        setDialog({
+          status: "sucesso",
+          contentMessage: "Prontuário atualizado!",
+        });
+        setShowDialog(true);
         getConsulta();
       }
     } catch (error) {
@@ -101,7 +105,11 @@ const ViewMRScreen = ({ navigation, route }) => {
     const formData = new FormData();
 
     if (!uriCameraCapture) {
-      Alert.alert("Erro", "Nenhuma imagem selecionada!");
+      setDialog({
+        status: "alerta",
+        contentMessage: "Selecione uma imagem!",
+      });
+      setShowDialog(true);
       setLoading(false);
       return;
     }
@@ -144,7 +152,11 @@ const ViewMRScreen = ({ navigation, route }) => {
     const formData = new FormData();
 
     if (!uriCameraCapture) {
-      Alert.alert("Erro", "Nenhuma imagem selecionada!");
+      setDialog({
+        status: "erro",
+        contentMessage: "Nenhuma imagem selecionada!",
+      });
+      setShowDialog(true);
       setLoading(false);
 
       return;
@@ -168,7 +180,6 @@ const ViewMRScreen = ({ navigation, route }) => {
       );
 
       if (response.status === 200) {
-        Alert.alert("Atualizado");
         setExameDescicao(response.data.descricao);
       }
     } catch (error) {

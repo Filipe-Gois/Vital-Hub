@@ -39,9 +39,7 @@ const SelectDoctorScreen = ({ navigation, route }) => {
       );
 
       setDoctors(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleContinue = async () => {
