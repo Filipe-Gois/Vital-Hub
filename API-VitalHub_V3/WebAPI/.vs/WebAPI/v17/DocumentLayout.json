@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "WebAPI\\Controllers\\MedicosController.cs",
               "ToolTip": "C:\\Users\\46633783825\\Desktop\\GitHub\\Vital-Hub-Duo-Project\\API-VitalHub_V3\\WebAPI\\WebAPI\\Controllers\\MedicosController.cs",
               "RelativeToolTip": "WebAPI\\Controllers\\MedicosController.cs",
-              "ViewState": "AQIAADUAAAAAAAAAAAAgwFYAAAAAAAAA",
+              "ViewState": "AQIAADUAAAAAAAAAAAA3wFYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-14T19:49:29.975Z",
               "EditorCaption": ""
@@ -55,8 +55,7 @@
               "RelativeToolTip": "WebAPI\\Repositories\\MedicoRepository.cs",
               "ViewState": "AQIAAGcAAAAAAAAAAAAkwIcAAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-14T19:47:30.397Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-14T19:47:30.397Z"
             },
             {
               "$type": "Document",
@@ -68,8 +67,7 @@
               "RelativeToolTip": "WebAPI\\Controllers\\PacientesController.cs",
               "ViewState": "AQIAAJoAAAAAAAAAAADwv2wAAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-14T19:38:43.104Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-14T19:38:43.104Z"
             },
             {
               "$type": "Document",
