@@ -54,8 +54,15 @@ import { Text } from "react-native";
 import DialogComponent, {
   DialogSelectLocation,
 } from "../../components/Dialog/Dialog.js";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+// import {
+//   GoogleSignin,
+//   statusCodes,
+// } from "@react-native-google-signin/google-signin";
 
 const LoginScreen = ({ navigation }) => {
+  const [userInfoGoogle, setuserInfoGoogle] = useState({});
+
   const [loading, setLoading] = useState(false);
   // const [user, setUser] = useState({ email: "paciente@paciente.com", senha: "12345" });
   const [user, setUser] = useState({
@@ -74,6 +81,35 @@ const LoginScreen = ({ navigation }) => {
   const [isBiometricSupported, setIsBiometricSupported] = useState(false);
 
   const [biometricExist, setBiometricExist] = useState(false);
+
+  const logarComGoogle = async () => {
+    console.log("logar com google");
+
+    try {
+      await GoogleSignin.hasPlayServices();
+
+      const userInfoGoogle = await GoogleSignin.signIn();
+
+      setuserInfoGoogle(userInfoGoogle);
+    } catch (error) {
+      setDialog({
+        status: "erro",
+        contentMessage: "Erro ao logar com Google.",
+      });
+      setShowDialog(true);
+      setLoading(false);
+    }
+  };
+
+  const configureGoogleSignIn = () => {
+    GoogleSignin.configure({
+      webClientId:
+        "814369502848-o7qsrc0vebol2fqftri0359na1in9290.apps.googleusercontent.com",
+      androidClientId: "",
+      iosClientId:
+        "814369502848-pti1e8rqipvsainns9orfbapstesgil4.apps.googleusercontent.com",
+    });
+  };
 
   //função para verificar se o aparelho tem suoprte a biometria
   const checkExistAuthentications = async () => {
@@ -162,6 +198,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    // configureGoogleSignIn();
     checkExistAuthentications();
     setLoginError(!user.email.includes("@") && user.email);
   }, [user.email]);
@@ -222,7 +259,7 @@ const LoginScreen = ({ navigation }) => {
                 textButton={"Entrar"}
               />
 
-              <ButtonGoogle>
+              <ButtonGoogle onPress={logarComGoogle}>
                 <FontAwesome6
                   name="google"
                   size={16}

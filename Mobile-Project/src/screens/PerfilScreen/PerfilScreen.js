@@ -88,6 +88,10 @@ export const PerfilScreen = ({ navigation }) => {
     }
   };
 
+  const handleLogoutGoogle = async () => {
+    
+  }
+
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
     navigation.replace("Login");
