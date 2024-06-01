@@ -8,7 +8,7 @@ import HomeScreen from "../HomeScreen/HomeScreen";
 import { useEffect } from "react";
 const BottomTab = createBottomTabNavigator();
 
-const Main = ({ route, navigation }) => {
+const Main = ({ route }) => {
   useEffect(() => {
     return (cleanUp = () => {});
   }, [route]);

@@ -59,7 +59,7 @@ const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   // const [user, setUser] = useState({ email: "paciente@paciente.com", senha: "12345" });
   const [user, setUser] = useState({
-    email: "medico@medico.com",
+    email: "m@m.com",
     senha: "12345",
   });
 
