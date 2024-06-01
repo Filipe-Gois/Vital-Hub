@@ -15,88 +15,96 @@ import SelectDateScreen from "../screens/SelectDateScreen/SelectDateScreen";
 import ViewMRScreen from "../screens/ViewMRScreen/ViewMRScreen";
 import ClinicAddressScreen from "../screens/ClinicAddressScreen/ClinicAddressScreen";
 import { StatusBar } from "react-native";
+import AuthProvider from "../Contexts/Auth";
+import SplashScreen from "../screens/SplashScreen/SplashScreen";
 
 const Routes = () => {
   const Stack = createNativeStackNavigator();
   return (
     <PaperProvider>
-      <NavigationContainer>
-        <StatusBar backgroundColor="#000" barStyle="default" />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ title: "Login" }}
-          />
+      <AuthProvider>
+        <NavigationContainer>
+          <StatusBar backgroundColor="#000" barStyle="default" />
+          <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
+            <Stack.Screen
+              name="Splash"
+              component={SplashScreen}
+              options={{ title: "Splash" }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ title: "Login" }}
+            />
+            <Stack.Screen name="Main" component={Main} />
 
-          <Stack.Screen name="Main" component={Main} />
+            <Stack.Screen
+              name="RecoverPassword"
+              component={RecoverPasswordScreen}
+              options={{ title: "RecoverPassword" }}
+            />
 
-          <Stack.Screen
-            name="RecoverPassword"
-            component={RecoverPasswordScreen}
-            options={{ title: "RecoverPassword" }}
-          />
+            <Stack.Screen
+              name="CheckEmail"
+              component={CheckEmailScreen}
+              options={{ title: "CheckyourEmail" }}
+            />
 
-          <Stack.Screen
-            name="CheckEmail"
-            component={CheckEmailScreen}
-            options={{ title: "CheckyourEmail" }}
-          />
+            <Stack.Screen
+              name="RedefinePassword"
+              component={RedefinePasswordScreen}
+              options={{ title: "Redefineyourpassword" }}
+            />
 
-          <Stack.Screen
-            name="RedefinePassword"
-            component={RedefinePasswordScreen}
-            options={{ title: "Redefineyourpassword" }}
-          />
+            <Stack.Screen
+              name="CreateAccount"
+              component={CreateAccountScreen}
+              options={{ title: "CreateAccount" }}
+            />
 
-          <Stack.Screen
-            name="CreateAccount"
-            component={CreateAccountScreen}
-            options={{ title: "CreateAccount" }}
-          />
+            <Stack.Screen
+              name="Perfil"
+              component={PerfilScreen}
+              options={{ title: "Perfil" }}
+            />
 
-          <Stack.Screen
-            name="Perfil"
-            component={PerfilScreen}
-            options={{ title: "Perfil" }}
-          />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ title: "Home" }}
+            />
 
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ title: "Home" }}
-          />
+            <Stack.Screen
+              name="SelectClinic"
+              component={SelectClinicScreen}
+              options={{ title: "SelectClinic" }}
+            />
+            <Stack.Screen
+              name="SelectDoctor"
+              component={SelectDoctorScreen}
+              options={{ title: "SelectDoctor" }}
+            />
 
-          <Stack.Screen
-            name="SelectClinic"
-            component={SelectClinicScreen}
-            options={{ title: "SelectClinic" }}
-          />
-          <Stack.Screen
-            name="SelectDoctor"
-            component={SelectDoctorScreen}
-            options={{ title: "SelectDoctor" }}
-          />
+            <Stack.Screen
+              name="SelectDate"
+              component={SelectDateScreen}
+              options={{ title: "SelectDate" }}
+            />
 
-          <Stack.Screen
-            name="SelectDate"
-            component={SelectDateScreen}
-            options={{ title: "SelectDate" }}
-          />
+            <Stack.Screen
+              name="ViewMedicalRecord"
+              component={ViewMRScreen}
+              options={{ title: "ViewMedicalRecord" }}
+            />
 
-          <Stack.Screen
-            name="ViewMedicalRecord"
-            component={ViewMRScreen}
-            options={{ title: "ViewMedicalRecord" }}
-          />
-
-          <Stack.Screen
-            name="ClinicAddress"
-            component={ClinicAddressScreen}
-            options={{ title: "ClinicAddress" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen
+              name="ClinicAddress"
+              component={ClinicAddressScreen}
+              options={{ title: "ClinicAddress" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
     </PaperProvider>
   );
 };

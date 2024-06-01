@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   ButtonBox,
   Container,
@@ -41,8 +41,11 @@ import { Dialog } from "react-native-paper";
 import CardProximasConsultas from "../../components/CardProximasConsultas/CardProximasConsultas";
 import Illustration from "../../components/Illustration/Illustration";
 import DialogComponent from "../../components/Dialog/Dialog";
+import { AuthContext } from "../../Contexts/Auth";
 
 const HomeScreen = ({ navigation }) => {
+  const { userGlobalData, setUserGlobalData } = useContext(AuthContext);
+
   const [contador, setContador] = useState(0);
 
   const [profile, setProfile] = useState({});
@@ -211,6 +214,7 @@ const HomeScreen = ({ navigation }) => {
     listarConsultas();
 
     setContador(contador + 1);
+    console.log("bleh", userGlobalData);
   }, [dataConsulta, consultaSelecionada, profile.token]);
 
   return (

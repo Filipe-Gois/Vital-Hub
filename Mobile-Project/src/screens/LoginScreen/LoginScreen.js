@@ -8,21 +8,13 @@ import {
   MainContent,
   MainContentScroll,
 } from "../../components/Container/style";
-// import LogoVitalHub from "../../assets/logo.svg"
 import { LogoComponent } from "../../components/Logo";
 import { Title } from "../../components/Title/style";
 
-import { Input, InputEmail, InputPassword } from "../../components/Input";
+import { InputEmail, InputPassword } from "../../components/Input";
 import { LinkMedium } from "../../components/Link/style";
-import {
-  Button,
-  ButtonGoogle,
-  ButtonSecondary,
-} from "../../components/Button/style";
-import {
-  ButtonTitle,
-  ButtonTitleGoogle,
-} from "../../components/ButtonTitle/style";
+import { ButtonGoogle, ButtonSecondary } from "../../components/Button/style";
+import { ButtonTitleGoogle } from "../../components/ButtonTitle/style";
 
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Theme } from "../../themes";
@@ -37,25 +29,18 @@ import {
   loginResource,
   pacientesResource,
 } from "../../Services/Service.js";
-import { ActivityIndicator, Alert, TouchableHighlight } from "react-native";
-import os from "react-native-os";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  UserContext,
-  userDecodeToken,
-  userDecodeToken2,
-} from "../../Utils/Auth.js";
-import { AuthContext } from "../../Context/AuthProvider.js";
 import { ButtonAsync } from "../../components/Button/index.js";
 import { jwtDecode } from "jwt-decode";
-import { HelperText, TextInput } from "react-native-paper";
-import { InputLibrary } from "../../components/Input/style.js";
-import { Text } from "react-native";
-import DialogComponent, {
-  DialogSelectLocation,
-} from "../../components/Dialog/Dialog.js";
+import DialogComponent from "../../components/Dialog/Dialog.js";
+import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../Contexts/Auth.js";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
+  const navigation = useNavigation();
+
+  const { userGlobalData, setUserGlobalData } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(false);
   // const [user, setUser] = useState({ email: "paciente@paciente.com", senha: "12345" });
   const [user, setUser] = useState({
@@ -111,6 +96,7 @@ const LoginScreen = ({ navigation }) => {
 
       if (result.success) {
         await AsyncStorage.setItem("token", JSON.stringify(response.data));
+        // setUserGlobalData({ token: response.data });
         handlePostAuthentication(response.data);
         return;
       } else {
@@ -134,6 +120,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handlePostAuthentication = async (responseData) => {
     const decoded = jwtDecode(responseData.token);
+    setUserGlobalData(decoded);
 
     if (decoded.role === "Paciente") {
       const responsePaciente = await apiFilipe.get(
@@ -178,7 +165,6 @@ const LoginScreen = ({ navigation }) => {
       <MainContentScroll>
         <MainContent>
           <LogoComponent />
-
           <FormBox>
             <Title>Entrar ou criar conta</Title>
 

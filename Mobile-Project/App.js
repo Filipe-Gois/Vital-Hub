@@ -13,6 +13,8 @@ import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import Routes from "./src/Routes/Routes";
 
+import AuthProvider from "./src/Contexts/Auth";
+
 const App = () => {
   // const [userData, setUserData] = useState({});
 
@@ -43,6 +45,7 @@ const App = () => {
     //options(title): titulo da tela
 
     //PaperProvider: usado para envolver os componentes do react native paper
+
     <Routes />
   );
 };
