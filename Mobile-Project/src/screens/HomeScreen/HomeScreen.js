@@ -193,8 +193,12 @@ const HomeScreen = ({ navigation }) => {
         }
       );
 
+      console.log("oioi", response.data)
+
       setConsultas(response.data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const onRefresh = () => {
@@ -214,7 +218,6 @@ const HomeScreen = ({ navigation }) => {
     listarConsultas();
 
     setContador(contador + 1);
-    console.log("bleh", userGlobalData);
   }, [dataConsulta, consultaSelecionada, profile.token]);
 
   return (

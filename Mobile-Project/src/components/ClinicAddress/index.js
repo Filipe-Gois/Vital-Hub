@@ -48,7 +48,7 @@ const ClinicAddress = ({ dados = {} }) => {
               placeholderTextColor={Theme.colors.grayV1}
               border="none"
               backGround={Theme.colors.v2LightWhite}
-              titulo="Bairro"
+              titulo="Cidade"
               // placeholder={dados && dados.bairro}
               fieldValue={dados.endereco.cidade && dados.endereco.cidade}
             />

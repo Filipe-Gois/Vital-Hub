@@ -25,7 +25,10 @@ const Routes = () => {
       <AuthProvider>
         <NavigationContainer>
           <StatusBar backgroundColor="#000" barStyle="default" />
-          <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="Splash"
+          >
             <Stack.Screen
               name="Splash"
               component={SplashScreen}

@@ -42,11 +42,11 @@ const LoginScreen = () => {
   const { userGlobalData, setUserGlobalData } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
-  // const [user, setUser] = useState({ email: "paciente@paciente.com", senha: "12345" });
-  const [user, setUser] = useState({
-    email: "m@m.com",
-    senha: "12345",
-  });
+  const [user, setUser] = useState({ email: "f@f.com", senha: "12345" });
+  // const [user, setUser] = useState({
+  //   email: "m@m.com",
+  //   senha: "12345",
+  // });
 
   const [dialog, setDialog] = useState({});
 
@@ -146,6 +146,20 @@ const LoginScreen = () => {
 
   const handleErrors = () => {
     setLoginError(!user.email.includes("@") && user.email);
+  };
+
+  const handleLoginGoogle = async () => {
+    try {
+    } catch (error) {
+      switch (error.code) {
+        case value:
+          break;
+
+        default:
+          break;
+      }
+      console.log("erro ao logar com google:", error);
+    }
   };
 
   useEffect(() => {
