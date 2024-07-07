@@ -457,7 +457,6 @@ export const ModalConfirmarAgendamento = ({
               Consulte os dados selecionados para a sua consulta
             </Paragraph>
           </TitleBox>
-
           {agendamento && (
             <ConsultaInfoContent>
               <ConsultaInfoBox

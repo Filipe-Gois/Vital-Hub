@@ -14,6 +14,7 @@ public partial class Usuario
     public string? Email { get; set; }
 
     public string? Senha { get; set; }
+    public string? IdGoogleAccount { get; set; }
 
     public string? Foto { get; set; }
     public string? BlobNameUsuario { get; set; }

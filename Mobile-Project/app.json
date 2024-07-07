@@ -2,6 +2,7 @@
   "expo": {
     "name": "vitalhub",
     "slug": "vitalhub",
+    "scheme": "vitalhub",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -27,12 +26,10 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
+    "plugins": ["expo-font"],
     "extra": {
       "eas": {
-        "projectId": "04910051-0c9d-4f96-8ebe-e2e52e3b5175"
+        "projectId": "1ab7e3d0-8ca3-4d2e-9866-fa9159613aac"
       }
     }
   }

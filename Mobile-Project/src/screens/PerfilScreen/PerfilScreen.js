@@ -34,6 +34,7 @@ import { ActivityIndicator, Alert, Text, TouchableOpacity } from "react-native";
 import { ButtonAsync } from "../../components/Button";
 import { unMask, unmask } from "remask";
 import DialogComponent from "../../components/Dialog/Dialog";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 export const PerfilScreen = ({ navigation }) => {
   //dados do usuario
@@ -79,6 +80,10 @@ export const PerfilScreen = ({ navigation }) => {
   const [showCamera, setShowCamera] = useState(false);
   const [uriPhoto, setUriPhoto] = useState(null);
 
+  const { signOut } = useAuth();
+
+  const { isSignedIn } = useUser();
+
   //pega as propriedades do token
   const fetchProfileData = async () => {
     const userInfo = await userDecodeToken();
@@ -89,6 +94,11 @@ export const PerfilScreen = ({ navigation }) => {
   };
 
   const handleLogout = async () => {
+    console.log(isSignedIn);
+    // if (isSignedIn) {
+    await signOut();
+    // }
+
     await AsyncStorage.removeItem("token");
     navigation.replace("Login");
   };

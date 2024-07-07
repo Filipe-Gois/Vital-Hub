@@ -9,6 +9,7 @@ namespace WebAPI.ViewModels
         public string? Rg { get; set; }
 
         public string? Cpf { get; set; }
+        public string? IdGoogleAccount { get; set; }
 
         public DateTime? DataNascimento { get; set; }
 

@@ -147,6 +147,8 @@ export const InputSelectHours = ({ setHoraSelecionada }) => {
   const dataAtual = moment().format("YYYY-MM-DD");
   const [arrayOptions, setArrayOptions] = useState(null);
 
+  const formatarHoraComZero = (hora) => (hora < 10 ? `0${hora}` : hora);
+
   const loadOptions = async () => {
     //capturar a quantidade de horas q faltam p dar meia noite
 
@@ -158,8 +160,8 @@ export const InputSelectHours = ({ setHoraSelecionada }) => {
       let valor = new Date().getHours() + (index + 1);
 
       return {
-        label: `${valor}:00`,
-        value: `${valor}:00`,
+        label: `${formatarHoraComZero(valor)}:00`,
+        value: `${formatarHoraComZero(valor)}:00`,
       };
     });
 

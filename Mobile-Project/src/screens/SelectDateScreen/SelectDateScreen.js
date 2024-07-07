@@ -44,7 +44,7 @@ const SelectDateScreen = ({ navigation, route }) => {
       <MainContentScroll>
         <MainContent>
           <FormBox margin={"30px 0 0 0"}>
-            <Title>Selecionar clínica</Title>
+            <Title>Selecionar data</Title>
 
             <CalendarMaximized
               selected={dateSelected}

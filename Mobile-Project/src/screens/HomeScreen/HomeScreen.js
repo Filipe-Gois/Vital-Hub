@@ -193,11 +193,11 @@ const HomeScreen = ({ navigation }) => {
         }
       );
 
-      console.log("oioi", response.data)
+      console.log("oioi", response.data);
 
       setConsultas(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -209,8 +209,6 @@ const HomeScreen = ({ navigation }) => {
     setRefreshing(false);
     setContador(contador + 1);
   };
-
-  const handleButtonModal = () => (profile.role !== "Paciente" ? false : false);
 
   useEffect(() => {
     fetchUserName();

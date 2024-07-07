@@ -13,11 +13,28 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { Theme } from "../../themes";
 import { ActivityIndicator } from "react-native-paper";
+import { FontAwesome6 } from "@expo/vector-icons";
 
-export const ButtonGoogleComponent = () => {
+export const ButtonGoogleComponent = ({
+  onPress = () => {},
+  loading = false,
+  colorsizeActivityIndicator = Theme.colors.secondary,
+}) => {
   return (
-    <ButtonGoogle>
-      <ButtonTitleGoogle>Entrar com Google</ButtonTitleGoogle>
+    <ButtonGoogle onPress={onPress}>
+      {!loading ? (
+        <>
+          <FontAwesome6
+            name="google"
+            size={16}
+            color={Theme.colors.secondary}
+          />
+
+          <ButtonTitleGoogle>Entrar com Google</ButtonTitleGoogle>
+        </>
+      ) : (
+        <ActivityIndicator size={"small"} color={colorsizeActivityIndicator} />
+      )}
     </ButtonGoogle>
   );
 };

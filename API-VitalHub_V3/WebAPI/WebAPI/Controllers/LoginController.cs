@@ -22,22 +22,12 @@ namespace WebAPI.Controllers
         }
         //post
         [HttpPost]
-        public IActionResult Login(LoginViewModel usuario)
+        public IActionResult Login(LoginViewModel usuario, bool isGoogleLogin = false)
         {
             try
             {
-                //busca usuário por email e senha 
-                Usuario usuarioBuscado = _usuarioRepository.BuscarPorEmailESenha(usuario.Email!, usuario.Senha!);
+                Usuario usuarioBuscado = !isGoogleLogin ? _usuarioRepository.BuscarPorEmailESenha(usuario.Email!, usuario.Senha!) ?? throw new Exception("Usuário não encontrado!") : _usuarioRepository.BuscarPorEmailEGoogleId(usuario.Email!, usuario.IdGoogleAccount!) ?? throw new Exception("Usuário google não encontrado!");
 
-                //caso não encontre
-                if (usuarioBuscado == null)
-                {
-                    //retorna 401 - sem autorização
-                    return StatusCode(401, "Email ou senha inválidos!");
-                }
-
-
-                //caso encontre, prossegue para a criação do token
 
                 //informações que serão fornecidas no token
                 var claims = new[]

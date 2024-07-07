@@ -81,47 +81,48 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post(PacienteViewModel pacienteModel)
+        public async Task<IActionResult> Post(PacienteViewModel pacienteModel, bool isCreateAccountGoogle = false)
         {
             try
             {
                 //objeto a ser cadastrado
                 Usuario user = new();
 
-                user = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo!);
+                if (!isCreateAccountGoogle)
+                {
+                    user = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo!);
+                    user.Senha = pacienteModel.Senha;
+                }
+                else
+                {
+                    user.IdGoogleAccount = pacienteModel.IdGoogleAccount;
+                    user.Foto = pacienteModel.Foto;
+                    user.BlobNameUsuario = "ProfileGoogle" + pacienteModel.IdGoogleAccount;
+                }
 
-                //recebe os valores e preenche as propriedades específicas
                 user.Nome = pacienteModel.Nome;
                 user.Email = pacienteModel.Email;
-                user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
 
-
-
-
-                //aqui vamos chamar o metodo de upload de imagem
-
-                user.Senha = pacienteModel.Senha;
-
-                user.Paciente = new();
-
-                user.Paciente.DataNascimento = pacienteModel.DataNascimento;
+                user.Paciente = new()
+                {
+                    DataNascimento = pacienteModel.DataNascimento,
+                    Rg = pacienteModel.Rg,
+                    Cpf = pacienteModel.Cpf,
+                    Endereco = new Endereco()
+                    {
+                        Logradouro = pacienteModel.Logradouro,
+                        Numero = pacienteModel.Numero,
+                        Cep = pacienteModel.Cep,
+                        Cidade = pacienteModel.Cidade
+                    }
+                };
 
                 if (user.Paciente.DataNascimento >= DateTime.Now)
                 {
                     throw new Exception("Insira uma data de nascimento válida!");
                 }
 
-                user.Paciente.Rg = pacienteModel.Rg;
-                user.Paciente.Cpf = pacienteModel.Cpf;
-
-                user.Paciente.Endereco = new Endereco();
-
-                user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
-                user.Paciente.Endereco.Numero = pacienteModel.Numero;
-                user.Paciente.Endereco.Cep = pacienteModel.Cep;
-                user.Paciente.Endereco.Cidade = pacienteModel.Cidade;
-
-                pacienteRepository.Cadastrar(user);
+                pacienteRepository.Cadastrar(user, isCreateAccountGoogle);
 
                 await _emailSendingService.SendWelcomeEmail(user.Email!, user.Nome!);
 

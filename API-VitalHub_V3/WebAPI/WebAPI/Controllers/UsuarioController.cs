@@ -15,9 +15,6 @@ namespace WebAPI.Controllers
     public class UsuarioController : ControllerBase
     {
         private IUsuarioRepository usuarioRepository { get; set; }
-        private readonly string containerName = "containervitalhubfilipegoisg2";
-
-        private readonly string connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
 
         public UsuarioController()
         {
@@ -46,7 +43,6 @@ namespace WebAPI.Controllers
 
             //lógica para upload de imagem
 
-
             Usuario userPreenchido = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!);
 
             //user.Foto = userPreenchido.Foto;
@@ -59,7 +55,6 @@ namespace WebAPI.Controllers
 
         }
 
-
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {
@@ -70,6 +65,20 @@ namespace WebAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("BuscarPorIdGoogle")]
+        public IActionResult BuscarPorEmailEGoogleId(string email, string idGoogleAccount)
+        {
+            try
+            {
+                return StatusCode(200, usuarioRepository.BuscarPorEmailEGoogleId(email, idGoogleAccount));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
             }
         }
     }

@@ -6,10 +6,19 @@ import { MainContentIcon, TextIcon } from "./style";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import HomeScreen from "../HomeScreen/HomeScreen";
 import { useEffect } from "react";
+import { useUser } from "@clerk/clerk-expo";
 const BottomTab = createBottomTabNavigator();
 
 const Main = ({ route }) => {
+  const { user } = useUser();
+
   useEffect(() => {
+    if (user?.id) {
+      console.log("teste!!!");
+      console.log("nome usuario:", user.fullName);
+      console.log("usuario:", user);
+    }
+
     return (cleanUp = () => {});
   }, [route]);
   return (

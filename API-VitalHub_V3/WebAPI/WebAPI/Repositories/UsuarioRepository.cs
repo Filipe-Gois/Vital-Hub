@@ -1,4 +1,5 @@
-﻿using WebAPI.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Utils;
@@ -8,9 +9,8 @@ namespace WebAPI.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        VitalContext ctx = new VitalContext();
-        private readonly string containerName = "containervitalhubfilipegoisg2";
-        private readonly string connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubfilipegoisg2;AccountKey=hfM4sN0TXxZyi9/g/T0AJTvRTYXeP05PE9WiZX37UOH5t9ERfLrtevegeuXLUsau/Uw6A4XajeaW+AStVhyL7Q==;EndpointSuffix=core.windows.net";
+        VitalContext ctx = new();
+
 
         public bool AlterarSenha(string email, string senhaNova)
         {
@@ -61,6 +61,24 @@ namespace WebAPI.Repositories
             }
         }
 
+        public Usuario BuscarPorEmailEGoogleId(string email, string idGoogleAccount)
+        {
+            return ctx.Usuarios.Select(u => new Usuario
+            {
+                Id = u.Id,
+                Nome = u.Nome,
+                Email = u.Email,
+                Senha = u.Senha,
+                IdGoogleAccount = u.IdGoogleAccount,
+
+                TipoUsuario = new TiposUsuario
+                {
+                    Id = u.Id,
+                    TipoUsuario = u.TipoUsuario!.TipoUsuario,
+                }
+            }).FirstOrDefault(x => x.Email == email && x.IdGoogleAccount == idGoogleAccount)! ?? throw new Exception("Usuário não encontrado!");
+        }
+
         public Usuario BuscarPorEmailESenha(string email, string senha)
         {
             try
@@ -103,13 +121,36 @@ namespace WebAPI.Repositories
             }
         }
 
-        public void Cadastrar(Usuario usuario)
+        public void Cadastrar(Usuario usuario, bool isCreateAccountGoogle = false)
         {
             try
             {
-                usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
+                if (!isCreateAccountGoogle && usuario.Senha != null)
+                {
+                    usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
+                }
 
-                ctx.Add(usuario);
+                if (usuario.Senha != null && usuario.IdGoogleAccount != null)
+                {
+                    throw new Exception("Não é possível cadastrar uma conta google com senha!");
+                }
+
+                if (usuario.Senha == null && usuario.IdGoogleAccount == null)
+                {
+                    throw new Exception("Informe uma senha ou um Google id!");
+                }
+
+                if (usuario.Senha == null && !isCreateAccountGoogle)
+                {
+                    throw new Exception("Cadastre uma senha!");
+                }
+
+                if (usuario.IdGoogleAccount == null && isCreateAccountGoogle)
+                {
+                    throw new Exception("Cadastre um id google!");
+                }
+
+                ctx.Usuarios.Add(usuario);
                 ctx.SaveChanges();
             }
             catch (Exception)

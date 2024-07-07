@@ -100,18 +100,50 @@ namespace WebAPI.Repositories
             }
         }
 
-        public void Cadastrar(Usuario user)
+        public void Cadastrar(Usuario usuario, bool isCreateAccountGoogle = false)
         {
             try
             {
+                Usuario usuarioBuscado = ctx.Usuarios.FirstOrDefault(x => x.Email == usuario.Email)!;
+
+                if (usuarioBuscado != null)
+                {
+                    throw new Exception("Já existe um usuário com esse email!");
+                }
+
+                if (!isCreateAccountGoogle && usuario.Senha != null)
+                {
+                    usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
+                }
+
+                if (usuario.Senha != null && usuario.IdGoogleAccount != null)
+                {
+                    throw new Exception("Não é possível cadastrar uma conta google com senha!");
+                }
+
+                if (usuario.Senha == null && usuario.IdGoogleAccount == null)
+                {
+                    throw new Exception("Informe uma senha ou um Google id!");
+                }
+
+                if (usuario.Senha == null && !isCreateAccountGoogle)
+                {
+                    throw new Exception("Cadastre uma senha!");
+                }
+
+                if (usuario.IdGoogleAccount == null && isCreateAccountGoogle)
+                {
+                    throw new Exception("Cadastre um id google!");
+                }
+
+
                 string paciente = "Paciente";
                 TiposUsuario tipoPaciente = ctx.TiposUsuarios.FirstOrDefault(x => x.TipoUsuario == paciente)! ?? throw new Exception("Não existe um tipo usuário paciente no banco de dados!");
 
-                user.TipoUsuario = tipoPaciente;
-                user.Senha = Criptografia.GerarHash(user.Senha!);
+                usuario.TipoUsuario = tipoPaciente;
 
+                ctx.Usuarios.Add(usuario);
 
-                ctx.Usuarios.Add(user);
                 ctx.SaveChanges();
             }
             catch (Exception)

@@ -234,6 +234,7 @@ const ViewMRScreen = ({ navigation, route }) => {
 
     return (cleanUp = () => {});
   }, [route.params, uriCameraCapture, exameDescicao, exameFoto]);
+
   return (
     <Container>
       <DialogComponent
