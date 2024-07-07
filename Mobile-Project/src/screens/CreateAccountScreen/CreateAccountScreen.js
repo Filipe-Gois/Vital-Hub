@@ -73,7 +73,7 @@ const CreateAccountScreen = ({ navigation }) => {
 
       //idTipoUsuario já é setado automaticamente na api
       const responseCreateAccount = await apiFilipe.post(
-        pacientesResource,
+        `${pacientesResource}?Nome=${user.nome}&Email=${user.email}&Senha=${user.senha}&isCreateAccountGoogle=false`,
         user
       );
 
@@ -88,7 +88,10 @@ const CreateAccountScreen = ({ navigation }) => {
 
       //essa parte é responsável por logar o usuário na conta que acabou de ser criada
 
-      const responseLogin = await apiFilipe.post(loginResource, user);
+      const responseLogin = await apiFilipe.post(
+        `${loginResource}?isGoogleLogin=false`,
+        user
+      );
 
       await AsyncStorage.setItem("token", JSON.stringify(responseLogin.data));
 

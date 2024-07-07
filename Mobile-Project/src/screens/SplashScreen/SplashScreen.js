@@ -12,26 +12,27 @@ const SplashScreen = () => {
   const { isSignedIn, isLoaded } = useAuth();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isSignedIn) {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "Main" }],
-          })
-        );
-      } else {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "Login" }],
-          })
-        );
-      }
-    }, 2000);
-
+    if (isLoaded) {
+      setTimeout(() => {
+        if (isSignedIn) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Main" }],
+            })
+          );
+        } else {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Login" }],
+            })
+          );
+        }
+      }, 2000);
+    }
     return (cleanUp = () => {});
-  }, [isSignedIn]);
+  }, [isSignedIn, isLoaded]);
 
   return (
     <LinearGradientView>
