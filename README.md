@@ -62,19 +62,13 @@
     <li><strong>Gestão de Consultas:</strong>
         <ul>
             <li>Agendar, visualizar prontuário e cancelar consulta.</li>
-            <li>Converter palavras da imagem do prontuário para texto.</li>
+            <li>Converter palavras da imagem do prontuário para texto com Azure OCR.</li>
         </ul>
     </li>
     <br/>
     <li><strong>Login com Biometria/Face ID:</strong>
         <ul>
             <li>Melhora a segurança com autenticação biométrica ou reconhecimento facial.</li>
-        </ul>
-    </li>
-    <br/>
-    <li><strong>OCR com Azure:</strong>
-        <ul>
-            <li>Utiliza Azure OCR para converter fotos de prontuários em texto no aplicativo.</li>
         </ul>
     </li>
 </ol>
