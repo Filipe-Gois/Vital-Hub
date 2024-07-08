@@ -121,6 +121,9 @@
         <img src="./assets/readme/login.jpeg" alt="Tela de Login" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
     <figure>
+        <img src="./assets/readme/loginGoogle.jpeg" alt="Autenticação com google" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
         <img src="./assets/readme/criarConta.jpeg" alt="Tela de criar conta" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
     <figure>
@@ -175,6 +178,9 @@
     </figure>
        <figure>
         <img src="./assets/readme/paciente/visualizarLocalizacaoDaClinica.jpeg" alt=" Tela de visualizar localizacao da clinica" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+       <figure>
+        <img src="./assets/readme/paciente/perfilPaciente.jpeg" alt=" Tela de perfil do paciente" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
 </div>
 
