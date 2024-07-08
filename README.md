@@ -122,20 +122,65 @@
 
 <h2>📸 Exemplos Visuais do Aplicativo</h2>
 <div>
-    <figure style="display: flex; flex-direction: column; align-items: center;">
-        <img src="./Assets Readme/loginscreen.jpeg" alt="Tela de Login" style="width: 300px; height: 600px; object-fit: cover;">
+    <h3>Telas iniciais:</h3>
+    <figure>
+        <img src="./assets/readme/login.jpeg" alt="Tela de Login" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
-    <figure style="display: flex; flex-direction: column; align-items: center;">
-        <img src="./Assets Readme/perfilscreen.jpeg" alt="Tela de Perfil" style="width: 300px; height: 600px; object-fit: cover;">
+    <figure>
+        <img src="./assets/readme/criarConta.jpeg" alt="Tela de criar conta" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
-    <figure style="display: flex; flex-direction: column; align-items: center;">
-        <img src="./Assets Readme/agendarscreen.jpeg" alt="Tela de Agendar Consulta" style="width: 300px; height: 600px; object-fit: cover;">
+    <figure>
+        <img src="./assets/readme/dialogComponent.jpeg" alt="Dialog" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
-    <figure style="display: flex; flex-direction: column; align-items: center;">
-        <img src="./Assets Readme/consultasscreen.jpeg" alt="Tela de Consultas" style="width: 300px; height: 600px; object-fit: cover;">
+    <figure>
+        <img src="./assets/readme/recuperarSenha.jpeg" alt="Tela de recuperar senha" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
-    <figure style="display: flex; flex-direction: column; align-items: center;">
-        <img src="./Assets Readme/prontuarioscreen.jpeg" alt="Tela de Prontuário" style="width: 300px; height: 600px; object-fit: cover;">
+    <figure>
+        <img src="./assets/readme/redefinirSenha.jpeg" alt="Tela de redefinir senha" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/verificarCodigo.jpeg" alt="Tela de verificar código" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+     <h3>Fluxo do médico:</h3>
+    <figure>
+        <img src="./assets/readme/medico/homeDoutor.jpeg" alt="Tela home" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/medico/homeDoutor2.jpeg" alt="Tela home" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/medico/modalInserirProntuario.jpeg" alt="Modal inserir prontuário" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/medico/atualizarProntuario.jpeg" alt="Modal atualizar prontuário" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/medico/modalProximasConsultas.jpeg" alt="Modal próximas consultas" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/medico/perfilMedico.jpeg" alt="Tela de perfil do médico" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+     <h3>Fluxo do paciente:</h3>
+    <figure>
+        <img src="./assets/readme/paciente/home.jpeg" alt="Tela home" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/paciente/modalNivelConsulta.jpeg" alt="M odal nivel consulta" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/paciente/selecionarClinica.jpeg" alt="Selecionar clinica" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/paciente/selecionarMedico.jpeg" alt="Selecionar medico" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/paciente/selecionarData.jpeg" alt="Selecionar data" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+    <figure>
+        <img src="./assets/readme/paciente/modalConfirmarAgendamento.jpeg" alt="Modal confirmar agendamento" style="width: 300px; height: 600px; object-fit: cover;">
+    </figure>
+       <figure>
+        <img src="./assets/readme/paciente/visualizarLocalizacaoDaClinica.jpeg" alt=" Tela de visualizar localizacao da clinica" style="width: 300px; height: 600px; object-fit: cover;">
     </figure>
 </div>
 
