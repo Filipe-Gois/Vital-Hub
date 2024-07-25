@@ -89,7 +89,7 @@
 <ul>
     <li><strong>Autenticação:</strong> Clerk</li>
     <li><strong>Armazenamento de Imagens:</strong> Azure Blob Storage</li>
-    <li><strong>Armazenamento de Imagens:</strong> Azure OCR</li>
+    <li><strong>Leitura de Imagens:</strong> Azure OCR</li>
 </ul>
 
 <h3>Banco de Dados:</h3>
